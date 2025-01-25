@@ -1,0 +1,48 @@
+*.psd1
+Build/*
+
+# General
+*.exe
+*.pdb
+*.nupkg
+bin/
+obj/
+*.log
+*.userprefs
+
+# Visual Studio
+*.suo
+*.user
+*.sln.docstates
+_ReSharper*/
+*.ReSharper*
+*.DotSettings
+.vscode/
+*.vsidx
+*.testlog
+*.manifest
+*.v2
+
+# Dependency Management
+packages/
+
+# Build/CI/CD
+*.swp
+*.ps1.xml
+src/DoFramework/.vs/*
+*.bin
+Sample/ProcessTestResults.xml
+Sample/ProcessTestCoverage.xml
+Sample/ModuleTestResults.xml
+Sample/ModuleTestCoverage.xml
+Sample/ClassTestResults.xml
+Sample/ClassTestCoverage.xml
+TestCoverage.xml
+TestResults.xml
+test-results/test-results.trx
+test-results/UnitTestResults.xml
+test-results/UnitTestCoverage.xml
+test-results/ComponentTestResults.xml
+test-results/ComponentTestCoverage.xml
+test-results/ProcessTestResults.xml
+test-results/ModuleTestResults.xml
