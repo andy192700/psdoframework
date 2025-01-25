@@ -1,0 +1,27 @@
+{
+  "Name": "Do",
+  "Version": "1.0.179",
+  "PSVersion": "7.4.6",
+  "Processes": [
+    "TestProcess1.ps1",
+    "TestProcess2.ps1",
+    "TestOrchestrator.ps1",
+    "TestProcess3.ps1",
+    "ServiceContainerProcess1.ps1",
+    "ServiceContainerProcess2.ps1",
+    "ProcessName.ps1"
+  ],
+  "Tests": {
+    "ProcessTests": [
+      "Processes\\ProcessNameTests.ps1"
+    ],
+    "ModuleTests": [
+      "Modules\\ExampleModuleForTestingTests.ps1"
+    ]
+  },
+  "Modules": [
+    "TestClassModule.psm1",
+    "TestClassModule2.psm1",
+    "ExampleModuleForTesting.psm1"
+  ]
+}

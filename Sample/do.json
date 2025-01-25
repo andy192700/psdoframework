@@ -1,0 +1,45 @@
+{
+  "Name": "SampleProject",
+  "Version": "1.0.179",
+  "PSVersion": "7.4.6",
+  "Processes": [
+    "Simple\\SimpleProcess.ps1",
+    "Advanced\\AdvancedProcess.ps1",
+    "Advanced\\Registrations.ps1",
+    "Advanced\\CreateData.ps1",
+    "Advanced\\CreateFile.ps1",
+    "Advanced\\ReadFile.ps1",
+    "Advanced\\DeleteFile.ps1",
+    "Simple\\DoublesANumber.ps1",
+    "Simple\\FailingProcess.ps1"
+  ],
+  "Tests": {
+    "ProcessTests": [
+      "Processes\\Advanced\\AdvancedProcessTests.ps1",
+      "Processes\\Advanced\\RegistrationsTests.ps1",
+      "Processes\\Advanced\\CreateDataTests.ps1",
+      "Processes\\Advanced\\CreateFileTests.ps1",
+      "Processes\\Advanced\\ReadFileTests.ps1",
+      "Processes\\Advanced\\DeleteFileTests.ps1",
+      "Processes\\Simple\\SimpleProcessTests.ps1",
+      "Processes\\Simple\\DoublesANumberTests.ps1",
+      "Processes\\Simple\\FailingProcessTests.ps1"
+    ],
+    "ModuleTests": [
+      "Modules\\Models\\PersonTests.ps1",
+      "Modules\\CreatePersonsFileTests.ps1",
+      "Modules\\DeletePersonsFileTests.ps1",
+      "Modules\\ReadPersonsFileTests.ps1",
+      "Modules\\CreatePersonsTests.ps1",
+      "Modules\\ModuleWithFunctionsTests.ps1"
+    ]
+  },
+  "Modules": [
+    "Models\\Person.psm1",
+    "CreatePersonsFile.psm1",
+    "DeletePersonsFile.psm1",
+    "ReadPersonsFile.psm1",
+    "CreatePersons.psm1",
+    "ModuleWithFunctions.psm1"
+  ]
+}
