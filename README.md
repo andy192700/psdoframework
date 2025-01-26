@@ -1,7 +1,7 @@
 # PSDoFramework
 We are always doing something!
 
-The PSDoFramework (referred to as `DoFramework` internally) is a PowerShell module that enables developers to create fully object-orientated PowerShell projects rather than isolated and unstructured scripts. The objective is to bring practices from modern application development into the realm of PowerShell.
+The PSDoFramework (referred to as `DoFramework` internally) is an open source PowerShell module that enables developers to create fully object-orientated PowerShell projects rather than isolated and unstructured scripts. The objective is to bring practices from modern application development into the realm of PowerShell.
 
 This framework offers developers some excellent features:
 - Fully object-orientated code and project structure
@@ -14,6 +14,8 @@ This framework offers developers some excellent features:
 See the [getting started](./Documentation/GettingStarted.md) documentation to install the PowerShell module and create a project.
 
 A [sample project](./Sample/) is provided to demonstrate the framework's capabilities.
+
+All available package versions can be found via Microsoft's [PowerShell Gallery](https://www.powershellgallery.com/packages/PSDoFramework).
 
 Release notes are stored [here](./Documentation/ReleaseNotes/).
 
