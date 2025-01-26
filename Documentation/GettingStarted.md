@@ -35,7 +35,11 @@ Alternatively, to be explicit, install the Module using the official PowerShell 
 install-module -Name PSDoFramework -RequiredVersion x.x.x -Repository PSGallery
 ```
 
-Above, `x.x.x` indicates the framework version.
+Above, `x.x.x` indicates the framework version, to find all available versions of this module run the following:
+
+```PowerShell
+find-module -Name PSDoFramework -allversions
+```
 
 Installing this Module delivers all required dependencies.
 
