@@ -14,4 +14,16 @@ class VersionCalculator {
 
         return $version;
     }
+
+    static [string] GetLatest([string] $psNuGetSourceName) {
+        [PSCustomObject] $module = Find-Module -Name "PSDoFramework" -Repository $psNuGetSourceName -ErrorAction SilentlyContinue;
+
+        [string] $version = "1.1.0";
+
+        if ($null -ne $module) {
+            return $module.Version;
+        }
+
+        return $version;
+    }
 }

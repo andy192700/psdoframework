@@ -1,38 +1,35 @@
-using namespace DoFramework.Logging;
-using namespace DoFramework.Testing;
+using module ".\lib\VersionCalculator.psm1";
 
 param (
-    [switch] $isBuildRun
+    [switch] $useLatest,
+    [string] $psNuGetSourceName
 )
 
 $ErrorActionPreference = "Stop";
 
-[ILogger] $logger = [Logger]::new([ConsoleWrapper]::new());
+if ($useLatest) {
+    [string] $version = [VersionCalculator]::GetLatest($psNuGetSourceName);
 
-[char] $sep = [DoFramework.Environment.Environment]::Separator;
-
-[string] $testRoot = [string]::Empty;
-
-if ($isBuildRun) {
-    $testRoot = Join-Path -Path $PSScriptRoot -ChildPath "..$($sep)Build$($sep)PSDoFramework$($sep)DoCli$($sep)Tests";
+    Import-Module -name PSDoFramework -RequiredVersion $version -Force;
 }
 else {
-    $testRoot = Join-Path -Path $PSScriptRoot -ChildPath "..$($sep)src$($sep)DoCli$($sep)Tests";
+    Import-Module .\Build\PSDoFramework\PSDoFramework.psd1 -Force;
 }
+
+[char] $sep = [System.IO.Path]::DirectorySeparatorChar;
+
+[string] $testRoot = Join-Path -Path $PSScriptRoot -ChildPath "..$($sep)src$($sep)DoCli$($sep)Tests";
 
 [string] $script:testResultsPath = "$(Get-Location)$($sep)test-results";
 
 function RunTests {
     param (
-        [string] $testRoot,
-        [string] $name,
-        [ILogger] $logger
+        [string] $testRoot
     )
 
     [string[]] $paths = Get-ChildItem -Path $testRoot -Recurse -File -Filter "*Tests.ps1" | ForEach-Object { $_.FullName };
 
-    $logger.LogInfo("Running $($paths.Length) test files.");
-
+    Write-Host "Running $($paths.Length) test files.";
 
     if (!(Test-Path -Path $script:testResultsPath)) {
         New-Item -ItemType Directory -Path $script:testResultsPath;
@@ -46,12 +43,9 @@ function RunTests {
         }
         CodeCoverage = @{
             Enabled = $false
-            OutputPath = "$($script:testResultsPath)$($sep)$($name)TestCoverage.xml"
         }
         TestResult = @{
-            OutputPath = "$($script:testResultsPath)$($sep)$($name)TestResults.xml"
-            OutputFormat = "NUnitXml"
-            Enabled = $true
+            Enabled = $false
         }
     };
 
@@ -62,35 +56,13 @@ function RunTests {
     }
 }
 
-# run unit tests
-RunTests -testRoot "$($testRoot)$($sep)Unit" -name "Unit" -logger $logger;
+if (!$useLatest) {
+    # run unit tests
+    RunTests -testRoot "$($testRoot)$($sep)Unit";
+}
 
 # run component tests
-RunTests -testRoot "$($testRoot)$($sep)Component" -name "Component" -logger $logger;
+RunTests -testRoot "$($testRoot)$($sep)Component";
 
 # run sample project tests
-[string] $currentLocation = (Get-Location);
-
-try {
-    Set-Location "$($currentLocation)$($sep)Sample$($sep)";
-
-    doing run-tests -filter .* -outputFormat NUnitXml -silent;
-}
-catch {
-    Set-Location $currentLocation;
-    
-    throw $_;
-}
-
-Set-Location $currentLocation;
-
-if ((Test-Path -Path "$($script:testResultsPath)$($sep)ModuleTestResults.xml")) {
-    Remove-Item -Path "$($script:testResultsPath)$($sep)ModuleTestResults.xml"
-}
-
-if ((Test-Path -Path "$($script:testResultsPath)$($sep)ProcessTestResults.xml")) {
-    Remove-Item -Path "$($script:testResultsPath)$($sep)ProcessTestResults.xml"
-}
-
-Move-Item -Path "$($currentLocation)$($sep)Sample$($sep)ModuleTestResults.xml" -Destination "$($script:testResultsPath)$($sep)ModuleTestResults.xml";
-Move-Item -Path "$($currentLocation)$($sep)Sample$($sep)ProcessTestResults.xml" -Destination "$($script:testResultsPath)$($sep)ProcessTestResults.xml";
+doing run-tests -filter .* -outputFormat NUnitXml -silent -projectPath "$(Get-Location)$($sep)Sample$($sep)";
