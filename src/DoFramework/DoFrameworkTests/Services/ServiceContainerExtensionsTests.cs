@@ -6,6 +6,8 @@ using DoFramework.Processing;
 using DoFramework.Services;
 using FluentAssertions;
 using Moq;
+using DoFramework.FileSystem;
+using System.Net.Http.Headers;
 
 namespace DoFrameworkTests.Services;
 
@@ -17,11 +19,11 @@ public class ServiceContainerExtensionsTests
         // Arrange
         var sut = new ServiceContainer();
 
-        sut.RegisterService<IEnvironment, TestEnvironment>();
-
+        sut.RegisterService<IFileManager, PassingFileManager>();
+        sut.RegisterService<IReadProcessLocation, TestLocationReader>();
 
         // Act
-        var func = ()=> sut.CheckEnvironment();
+        var func = () => sut.CheckEnvironment();
 
         // Assert
         func.Should().NotThrow();
@@ -33,26 +35,14 @@ public class ServiceContainerExtensionsTests
         // Arrange
         var sut = new ServiceContainer();
 
-        sut.RegisterService<IEnvironment, TestThrowingEnvironment>();
+        sut.RegisterService<IFileManager, FailingFileManager>();
+        sut.RegisterService<IReadProcessLocation, TestLocationReader>();
 
         // Act
         var func = () => sut.CheckEnvironment();
 
         // Assert
-        func.Should().Throw<Exception>().WithMessage("Test Exception.");
-    }
-
-    [Fact]
-    public void ServiceContainerExtensions_EnvironmentNotRegisteredResolutionFailure()
-    {
-        // Arrange
-        var sut = new ServiceContainer();
-
-        // Act
-        var func = () => sut.CheckEnvironment();
-
-        // Assert
-        func.Should().Throw<Exception>().WithMessage($"Service of Type '{typeof(IEnvironment)}' could not be resolved.");
+        func.Should().Throw<Exception>().WithMessage("Could not find do.json.");
     }
 
     [Theory]
@@ -140,5 +130,109 @@ public class TestConsumeEnvFiles : IConsumeEnvFiles
     public void Consume() 
     {
         Called = true;
+    }
+}
+
+public class TestLocationReader : IReadProcessLocation
+{
+    public string Read()
+    {
+        return string.Empty;
+    }
+}
+
+public class PassingFileManager : IFileManager
+{
+    public void CreateParentDirectory(string path)
+    {
+        throw new NotImplementedException();
+    }
+
+    public void DeleteFile(string path)
+    {
+        throw new NotImplementedException();
+    }
+
+    public bool FileExists(string path)
+    {
+        return true;
+    }
+
+    public FileInfo GetFileInfo(string path)
+    {
+        throw new NotImplementedException();
+    }
+
+    public FileInfo[] GetFiles(string path, string searchPattern, SearchOption searchOption)
+    {
+        throw new NotImplementedException();
+    }
+
+    public bool ParentDirectoryExists(string path)
+    {
+        throw new NotImplementedException();
+    }
+
+    public string[] ReadAllLines(string path)
+    {
+        throw new NotImplementedException();
+    }
+
+    public string ReadAllText(string path)
+    {
+        throw new NotImplementedException();
+    }
+
+    public void WriteAllText(string path, string data)
+    {
+        throw new NotImplementedException();
+    }
+}
+
+public class FailingFileManager : IFileManager
+{
+    public void CreateParentDirectory(string path)
+    {
+        throw new NotImplementedException();
+    }
+
+    public void DeleteFile(string path)
+    {
+        throw new NotImplementedException();
+    }
+
+    public bool FileExists(string path)
+    {
+        return false;
+    }
+
+    public FileInfo GetFileInfo(string path)
+    {
+        throw new NotImplementedException();
+    }
+
+    public FileInfo[] GetFiles(string path, string searchPattern, SearchOption searchOption)
+    {
+        throw new NotImplementedException();
+    }
+
+    public bool ParentDirectoryExists(string path)
+    {
+        throw new NotImplementedException();
+    }
+
+    public string[] ReadAllLines(string path)
+    {
+        throw new NotImplementedException();
+    }
+
+    public string ReadAllText(string path)
+    {
+        throw new NotImplementedException();
+    }
+
+    public void WriteAllText(string path, string data)
+    {
+        throw new NotImplementedException();
     }
 }

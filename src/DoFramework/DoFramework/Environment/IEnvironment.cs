@@ -24,15 +24,4 @@ public interface IEnvironment
     /// Gets or sets the modules directory within the environment.
     /// </summary>
     string ModuleDir { get; set; }
-
-    /// <summary>
-    /// Checks if the environment is valid by verifying the existence of a specific file.
-    /// </summary>
-    /// <returns>True if the environment is valid; otherwise, false.</returns>
-    bool CheckEnvironment();
-
-    /// <summary>
-    /// Validates the environment by checking for the existence of a required project file.
-    /// </summary>
-    void ValidateEnvironment();
 }
