@@ -20,14 +20,10 @@ dotnettest:
 
 # DoFramework PowerShell Testing
 pstests:
-	pwsh -ExecutionPolicy Bypass -Command " \
-		Import-Module .\Build\PSDoFramework\PSDoFramework.psd1 -Force -verbose -ErrorAction Stop; \
-		& '${CURDIR}/Scripts/PSTestOrchestrator.ps1';"
-
-pstestsbuild:
-	pwsh -ExecutionPolicy Bypass -Command " \
-		Import-Module .\Build\PSDoFramework\PSDoFramework.psd1 -Force -verbose -ErrorAction Stop; \
-		& '${CURDIR}/Scripts/PSTestOrchestrator.ps1' -isBuildRun;"
+	pwsh -ExecutionPolicy Bypass -Command "& '${CURDIR}/Scripts/PSTestOrchestrator.ps1';"
+	
+pstestspostinstall:
+	pwsh -ExecutionPolicy Bypass -Command "& '${CURDIR}/Scripts/PSTestOrchestrator.ps1' -useLatest -psNuGetSourceName $(psNuGetSourceName);"
 
 # Module deployment
 createmanifest:
@@ -35,6 +31,9 @@ createmanifest:
 
 publishmodule:
 	pwsh -ExecutionPolicy Bypass -Command "& '${CURDIR}/Scripts/PublishPowerShellModule.ps1' -psNuGetSourceName $(psNuGetSourceName) -psNuGetApiKey $(psNuGetApiKey)"
+
+installmodule:
+	pwsh -ExecutionPolicy Bypass -Command "& '${CURDIR}/Scripts/InstallModule.ps1' -psNuGetSourceName $(psNuGetSourceName)"
 
 # Local Development support features
 createlocalnugetsource:

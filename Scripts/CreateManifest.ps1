@@ -22,7 +22,11 @@ if ((Test-Path -Path $buildDir)) {
 
 New-Item -ItemType Directory -Path $buildDir | Out-Null;
 
-Copy-Item -Path "$rootDir$($sep)src$($sep)DoCli" -Destination "$buildDir$($sep)DoCli" -Recurse -Force;
+New-Item -ItemType Directory -Path "$buildDir$($sep)DoCli" | Out-Null;
+
+Copy-Item -Path "$rootDir$($sep)src$($sep)DoCli$($sep)Functions" -Destination "$buildDir$($sep)DoCli$($sep)Functions" -Recurse -Force;
+
+Copy-Item -Path "$rootDir$($sep)src$($sep)DoCli$($sep)Objects" -Destination "$buildDir$($sep)DoCli$($sep)Objects" -Recurse -Force;
 
 Copy-Item -Path "$rootDir$($sep)Scripts$($sep)ModuleDependenciesInstall.ps1" -Destination "$buildDir$($sep)ModuleDependenciesInstall.ps1" -Force;
 
@@ -36,7 +40,6 @@ $items += Get-ChildItem "$baseDir$($sep)Objects$($sep)Environment" -Recurse;
 $items += Get-ChildItem "$baseDir$($sep)Objects$($sep)Mappers" -Recurse;
 $items += Get-ChildItem "$baseDir$($sep)Objects$($sep)Modules" -Recurse;
 $items += Get-ChildItem "$baseDir$($sep)Objects$($sep)Processing" -Recurse;
-$items += Get-ChildItem "$baseDir$($sep)Objects$($sep)Testing" -Recurse;
 $items += Get-ChildItem "$baseDir$($sep)Objects$($sep)Validators" -Recurse;
 $items += Get-ChildItem "$baseDir$($sep)Objects$($sep)Services$($sep)ApplicationServiceContainer.psm1";
 $items += Get-ChildItem "$baseDir$($sep)Objects$($sep)CLI" -Recurse;

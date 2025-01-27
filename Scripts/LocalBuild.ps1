@@ -18,18 +18,13 @@ if (!$skipTests) {
 make createmanifest;
 
 if (!$skipTests) {
-    make pstestsbuild;
+    make pstests;
 }
 
 make publishmodule psNuGetSourceName=$psNuGetSourceName;
 
-[PSCustomObject] $module = Find-Module -Name "PSDoFramework" -Repository $psNuGetSourceName -ErrorAction SilentlyContinue;
+make installmodule;
 
-[string] $version = $module.Version;
-
-if (Get-Module -ListAvailable -Name "PSDoFramework") {
-    Update-Module -Name "PSDoFramework" -Force -Verbose;
-}
-else {
-    Install-Module -Name "PSDoFramework" -Repository $psNuGetSourceName -Force -Verbose;
+if (!$skipTests) {
+    make pstestspostinstall;
 }

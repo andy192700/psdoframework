@@ -53,7 +53,7 @@ jobs:
       id: ps_tests
       if: steps.manifest_build.conclusion == 'success'
       run: |
-        make pstestsbuild
+        make pstests
 
   macosbuild:
     name: "MacOS Build"
@@ -107,7 +107,7 @@ jobs:
       id: ps_tests
       if: steps.manifest_build.conclusion == 'success'
       run: |
-        make pstestsbuild
+        make pstests
 
   linuxbuild:
     name: "Linux Build & Publish"
@@ -161,10 +161,79 @@ jobs:
       id: ps_tests
       if: steps.manifest_build.conclusion == 'success'
       run: |
-        make pstestsbuild
+        make pstests
 
     - name: publish module
       id: publish_module
-      if: steps.ps_tests.conclusion == 'success'
+      if: ${{ github.ref == 'refs/heads/main' && steps.ps_tests.conclusion == 'success' }}
       run: |
         make publishmodule psNuGetSourceName=PSGallery psNuGetApiKey=${{ secrets.PSGALLERY_KEY }}
+
+  windowsinstall:
+    name: "Windows Install & Test"
+    needs: linuxbuild
+    if: ${{ github.ref == 'refs/heads/main' && success() }}
+    runs-on: windows-latest
+
+    steps:
+    - name: Checkout code
+      id: checkout
+      uses: actions/checkout@v2
+
+    - name: install module
+      id: ps_tests
+      if: steps.checkout.conclusion == 'success'
+      run: |
+        make installmodule psNuGetSourceName=PSGallery
+
+    - name: run powershell tests
+      id: ps_tests
+      if: steps.manifest_build.conclusion == 'success'
+      run: |
+        make pstestspostinstall psNuGetSourceName=PSGallery
+
+  macosinstall:
+    name: "MacOS Install & Test"
+    needs: windowsinstall
+    if: ${{ github.ref == 'refs/heads/main' && success() }}
+    runs-on: macos-latest
+
+    steps:
+    - name: Checkout code
+      id: checkout
+      uses: actions/checkout@v2
+
+    - name: install module
+      id: ps_tests
+      if: steps.checkout.conclusion == 'success'
+      run: |
+        make installmodule psNuGetSourceName=PSGallery
+
+    - name: run powershell tests
+      id: ps_tests
+      if: steps.manifest_build.conclusion == 'success'
+      run: |
+        make pstestspostinstall psNuGetSourceName=PSGallery
+
+  linuxinstall:
+    name: "Linux Install & Test"
+    needs: macosinstall
+    if: ${{ github.ref == 'refs/heads/main' && success() }}
+    runs-on: linux-latest
+
+    steps:
+    - name: Checkout code
+      id: checkout
+      uses: actions/checkout@v2
+
+    - name: install module
+      id: ps_tests
+      if: steps.checkout.conclusion == 'success'
+      run: |
+        make installmodule psNuGetSourceName=PSGallery
+
+    - name: run powershell tests
+      id: ps_tests
+      if: steps.manifest_build.conclusion == 'success'
+      run: |
+        make pstestspostinstall psNuGetSourceName=PSGallery
