@@ -1,6 +1,5 @@
 ﻿using DoFramework.CLI;
-using DoFramework.Data;
-using DoFramework.Environment;
+using DoFramework.FileSystem;
 using DoFramework.Logging;
 using DoFramework.Processing;
 
@@ -18,9 +17,14 @@ public static class ServiceContainerExtensions
     /// <returns>The service container with the validated environment.</returns>
     public static IServiceContainer CheckEnvironment(this IServiceContainer container)
     {
-        var environment = container.GetService<IEnvironment>();
+        var fileManager = container.GetService<IFileManager>();
 
-        environment!.ValidateEnvironment();
+        var processLocationReader = container.GetService<IReadProcessLocation>();
+
+        if (!fileManager.FileExists($"{processLocationReader.Read()}{Environment.Environment.Separator}do.json"))
+        {
+            throw new Exception("Could not find do.json.");
+        }
 
         return container;
     }

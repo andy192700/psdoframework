@@ -185,7 +185,6 @@ Describe 'ProcessTestRunnerTests' {
 
         [DoFramework.Environment.Environment] $env = [DoFramework.Environment.Environment]::new(
             $mockReadProcessLocation.Instance,
-            $mockFileSystem.Instance,
             $mockProjectProvider.Instance
         );
 
