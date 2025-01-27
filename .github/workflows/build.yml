@@ -181,14 +181,14 @@ jobs:
       uses: actions/checkout@v2
 
     - name: install module
-      id: ps_tests
+      id: install_module
       if: steps.checkout.conclusion == 'success'
       run: |
         make installmodule psNuGetSourceName=PSGallery
 
     - name: run powershell tests
-      id: ps_tests
-      if: steps.manifest_build.conclusion == 'success'
+      id: ps_tests_install
+      if: steps.install_module.conclusion == 'success'
       run: |
         make pstestspostinstall psNuGetSourceName=PSGallery
 
@@ -204,14 +204,14 @@ jobs:
       uses: actions/checkout@v2
 
     - name: install module
-      id: ps_tests
+      id: install_module
       if: steps.checkout.conclusion == 'success'
       run: |
         make installmodule psNuGetSourceName=PSGallery
 
     - name: run powershell tests
-      id: ps_tests
-      if: steps.manifest_build.conclusion == 'success'
+      id: ps_tests_install
+      if: steps.install_module.conclusion == 'success'
       run: |
         make pstestspostinstall psNuGetSourceName=PSGallery
 
@@ -227,13 +227,13 @@ jobs:
       uses: actions/checkout@v2
 
     - name: install module
-      id: ps_tests
+      id: install_module
       if: steps.checkout.conclusion == 'success'
       run: |
         make installmodule psNuGetSourceName=PSGallery
 
     - name: run powershell tests
-      id: ps_tests
-      if: steps.manifest_build.conclusion == 'success'
+      id: ps_tests_install
+      if: steps.install_module.conclusion == 'success'
       run: |
         make pstestspostinstall psNuGetSourceName=PSGallery
