@@ -63,4 +63,10 @@ public interface IServiceContainer
     /// <typeparam name="TBaseType">The base type of the services to retrieve.</typeparam>
     /// <returns>A list of services of the specified base type.</returns>
     List<TBaseType> GetServicesByType<TBaseType>() where TBaseType : class;
+
+    /// <summary>
+    /// Configures an Object, registering it to this container.
+    /// </summary>
+    /// <typeparam name="TObject">The type to be registered and populated.</typeparam>
+    void Configure<TObject>() where TObject : class, new();
 }
