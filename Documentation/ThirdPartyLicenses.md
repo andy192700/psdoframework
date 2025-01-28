@@ -15,5 +15,5 @@ Below are the documented third party ingredients which have been used to help cr
 | xunit | 2.9.3 | Used for unit testing Do's dotnet library. | [License](https://github.com/xunit/xunit/blob/main/LICENSE) |
 | xunit.runner.visualstudio | 3.0.1 | Used for unit testing Do's dotnet library. | [License](https://www.nuget.org/packages/xunit.runner.visualstudio) |
 | System.Management.Automation | 7.4.6 | Enriches Do's dotnet library with PowerShell domain functionality. | [License](https://github.com/PowerShell/PowerShell/blob/master/LICENSE.txt) |
-| GNU Make | 4.4.1 | Used for local development & build pipeline, it is not distributed with the framework. | [License](https://github.com/wkusnierczyk/make?tab=GPL-3.0-1-ov-file) |
+| GNU Make | N/A | Used for local development & build pipeline, it is not distributed with the framework. | [License](https://github.com/wkusnierczyk/make?tab=GPL-3.0-1-ov-file) |
 | Pester | 5.7.1 | Delivered with the DoFramework Module as a dependency. | [License](https://github.com/pester/Pester/blob/main/LICENSE) |

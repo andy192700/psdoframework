@@ -33,6 +33,25 @@ doing FUNCTIONNAME -arg1 1 -arg2 2 -switch1 -switch2
 
 The order in which parameters is supplied does not matter with exception to the desired function name which must always be first.
 
+# Universal Parameters
+The DoFramework offers optional parameters for universal use across **all** functions, these are documented here.
+
+Universal Parameters:
+| Parameter Name  | Desription | Type | Default Value |
+|----------|----------|----------|----------|
+| silent | A switch which suppresses logging by the framework | switch/boolean | false |
+| projectPath | This framework requires the executing shell to be in the directory of a project by default, by supplying this parameter, this does not have to be the case. By supplying the full path of the parent directory of a project, a developer can use the functions specified in this document from anywhere. The make targets `sampleproject` and `sampleprojecttests` in the root of this repository demonstrate its usage. | string | N/A | 
+
+Example calls via PowerShell, demonstrated using the `create-project` function:
+
+```PowerShell
+doing create-project -silent
+
+doing create-project -projectPath "C:\\my\path\to\my\project"
+
+doing create-project -projectPath "my/path/to/my/project"
+```
+
 # Available Functions
 This section contains all of the available functions, their purpose, parameter information and examples.
 
@@ -304,24 +323,4 @@ Example calls via PowerShell:
 
 # A Dictionary with 2 entries.
 [System.Collections.Generic.Dictionary[string, object]] $dictionary = doing read-args -key1 val1 -key2 val2;
-```
-
-# Universal Parameters
-
-The DoFramework offers optional parameters for universal use across **all** functions, these are documented here.
-
-Universal Parameters:
-| Parameter Name  | Desription | Type | Default Value |
-|----------|----------|----------|----------|
-| silent | A switch which suppresses logging by the framework | switch/boolean | false |
-| projectPath | This framework requires the executing shell to be in the directory of a project by default, by supplying this parameter, this does not have to be the case. By supplying the full path of the parent directory of a project, a developer can use the functions specified in this document from anywhere. The make targets `sampleproject` and `sampleprojecttests` in the root of this repository demonstrate its usage. | string | N/A | 
-
-Example calls via PowerShell, demonstrated using the `create-project` function:
-
-```PowerShell
-doing create-project -silent
-
-doing create-project -projectPath "C:\\my\path\to\my\project"
-
-doing create-project -projectPath "my/path/to/my/project"
 ```
