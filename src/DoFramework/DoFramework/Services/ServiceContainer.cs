@@ -122,9 +122,7 @@ public class ServiceContainer : IServiceContainer
 
         foreach (var field in fields)
         {
-            var propertyName = field.Name;
-
-            var value = context.Get($"{type.Name}.{propertyName}");
+            var value = context.Get($"{type.Name}.{field.Name}");
 
             if (value != null && field.FieldType.IsAssignableFrom(value.GetType()))
             {

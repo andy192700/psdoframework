@@ -192,7 +192,7 @@ public class ServiceContainerTests
     }
 
     [Fact]
-    public void ConfiguresObject()
+    public void ConfiguresObject_AllPropertiesSet()
     {
         // Arrange
         var sut = new ServiceContainer();
@@ -228,6 +228,35 @@ public class ServiceContainerTests
         result.myLong.Should().Be(4444444L);
         result.myDecimal.Should().Be(1.14m);
         result.myString.Should().Be("exampleString");
+    }
+
+    [Fact]
+    public void ConfiguresObject_NoPropertiesSet()
+    {
+        // Arrange
+        var sut = new ServiceContainer();
+
+        sut.RegisterService<ISession, Session>();
+        sut.RegisterService<IContext, Context>();
+
+        var context = sut.GetService<IContext>();
+
+        // Act
+        sut.Configure<ExampleType>();
+
+        var result = sut.GetService<ExampleType>();
+
+        // Assert
+        result.myInt.Should().Be(default);
+        result.myFloat.Should().Be(default);
+        result.myDouble.Should().Be(default);
+        result.myBool.Should().Be(default);
+        result.myChar.Should().Be(default);
+        result.myByte.Should().Be(default);
+        result.myShort.Should().Be(default);
+        result.myLong.Should().Be(default);
+        result.myDecimal.Should().Be(default);
+        result.myString.Should().Be(default);
     }
 }
 
