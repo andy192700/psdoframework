@@ -11,7 +11,7 @@ This framework offers developers some excellent features:
 - Unit and end to end testing
 - Simple mocking of PowerShell classes and dotnet interfaces
 
-See the [getting started](./Documentation/GettingStarted.md) documentation to install the PowerShell module and create a project.
+To install the module and start creating projects see the [getting started](./Documentation/GettingStarted.md) documentation.
 
 A [sample project](./Sample/) is provided to demonstrate the framework's capabilities.
 
