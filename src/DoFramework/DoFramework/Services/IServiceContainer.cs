@@ -68,5 +68,5 @@ public interface IServiceContainer
     /// Configures an Object, registering it to this container.
     /// </summary>
     /// <typeparam name="TObject">The type to be registered and populated.</typeparam>
-    void Configure<TObject>() where TObject : class, new();
+    void Configure(Type type);
 }

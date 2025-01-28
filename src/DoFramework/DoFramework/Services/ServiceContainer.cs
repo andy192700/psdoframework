@@ -108,25 +108,23 @@ public class ServiceContainer : IServiceContainer
     }
 
     /// <inheritdoc/>
-    public void Configure<TObject>() where TObject : class, new()
+    public void Configure(Type type)
     {
-        RegisterService<TObject>();
+        RegisterService(type);
 
-        var type = typeof(TObject);
+        var obj = GetService(type);
 
-        var obj = GetService<TObject>();
-
-        var fields = type.GetFields(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance);
+        var properties = type.GetProperties();
 
         var context = GetService<IContext>();
 
-        foreach (var field in fields)
+        foreach (var property in properties)
         {
-            var value = context.Get($"{type.Name}.{field.Name}");
+            var value = context.Get($"{type.Name}.{property.Name}");
 
-            if (value != null && field.FieldType.IsAssignableFrom(value.GetType()))
+            if (value != null)
             {
-                field.SetValue(obj, value);
+                property.SetValue(obj, Convert.ChangeType(value, property.PropertyType));
             }
         }
     }

@@ -213,11 +213,12 @@ public class ServiceContainerTests
         context.AddOrUpdate("ExampleType.myString", "exampleString");
 
         // Act
-        sut.Configure<ExampleType>();
+        sut.Configure(typeof(ExampleType));
 
         var result = sut.GetService<ExampleType>();
 
         // Assert
+        result.Should().NotBeNull();
         result.myInt.Should().Be(3);
         result.myFloat.Should().Be(2.2f);
         result.myDouble.Should().Be(3.5);
@@ -242,11 +243,12 @@ public class ServiceContainerTests
         var context = sut.GetService<IContext>();
 
         // Act
-        sut.Configure<ExampleType>();
+        sut.Configure(typeof(ExampleType));
 
         var result = sut.GetService<ExampleType>();
 
         // Assert
+        result.Should().NotBeNull();
         result.myInt.Should().Be(default);
         result.myFloat.Should().Be(default);
         result.myDouble.Should().Be(default);
@@ -283,14 +285,14 @@ public class ExampleService4
 
 public class ExampleType
 {
-    public int myInt;
-    public float myFloat;
-    public double myDouble;
-    public bool myBool;
-    public char myChar;
-    public byte myByte;
-    public short myShort;
-    public long myLong;
-    public decimal myDecimal;
-    public string myString;
+    public int myInt { get; set; }
+    public float myFloat { get; set; }
+    public double myDouble { get; set; }
+    public bool myBool { get; set; }
+    public char myChar { get; set; }
+    public byte myByte { get; set; }
+    public short myShort { get; set; }
+    public long myLong { get; set; }
+    public decimal myDecimal { get; set; }
+    public string myString { get; set; }
 }
