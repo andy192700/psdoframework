@@ -1,4 +1,5 @@
-﻿using DoFramework.Services;
+﻿using DoFramework.Processing;
+using DoFramework.Services;
 using FluentAssertions;
 
 namespace DoFrameworkTests.Services;
@@ -189,6 +190,76 @@ public class ServiceContainerTests
         services.Any(x => x.GetType() == typeof(ExampleService)).Should().BeTrue();
         services.Any(x => x.GetType() == typeof(ExampleService2)).Should().BeTrue();
     }
+
+    [Fact]
+    public void ConfiguresObject_AllPropertiesSet()
+    {
+        // Arrange
+        var sut = new ServiceContainer();
+
+        sut.RegisterService<ISession, Session>();
+        sut.RegisterService<IContext, Context>();
+
+        var context = sut.GetService<IContext>();
+        context.AddOrUpdate("ExampleType.myInt", 3);
+        context.AddOrUpdate("ExampleType.myFloat", 2.2f);
+        context.AddOrUpdate("ExampleType.myDouble", 3.5);
+        context.AddOrUpdate("ExampleType.myBool", true);
+        context.AddOrUpdate("ExampleType.myChar", 'a');
+        context.AddOrUpdate("ExampleType.myByte", (byte)8);
+        context.AddOrUpdate("ExampleType.myShort", (short)9);
+        context.AddOrUpdate("ExampleType.myLong", 4444444L);
+        context.AddOrUpdate("ExampleType.myDecimal", 1.14m);
+        context.AddOrUpdate("ExampleType.myString", "exampleString");
+
+        // Act
+        sut.Configure(typeof(ExampleType));
+
+        var result = sut.GetService<ExampleType>();
+
+        // Assert
+        result.Should().NotBeNull();
+        result.myInt.Should().Be(3);
+        result.myFloat.Should().Be(2.2f);
+        result.myDouble.Should().Be(3.5);
+        result.myBool.Should().Be(true);
+        result.myChar.Should().Be('a');
+        result.myByte.Should().Be((byte)8);
+        result.myShort.Should().Be((short)9);
+        result.myLong.Should().Be(4444444L);
+        result.myDecimal.Should().Be(1.14m);
+        result.myString.Should().Be("exampleString");
+    }
+
+    [Fact]
+    public void ConfiguresObject_NoPropertiesSet()
+    {
+        // Arrange
+        var sut = new ServiceContainer();
+
+        sut.RegisterService<ISession, Session>();
+        sut.RegisterService<IContext, Context>();
+
+        var context = sut.GetService<IContext>();
+
+        // Act
+        sut.Configure(typeof(ExampleType));
+
+        var result = sut.GetService<ExampleType>();
+
+        // Assert
+        result.Should().NotBeNull();
+        result.myInt.Should().Be(default);
+        result.myFloat.Should().Be(default);
+        result.myDouble.Should().Be(default);
+        result.myBool.Should().Be(default);
+        result.myChar.Should().Be(default);
+        result.myByte.Should().Be(default);
+        result.myShort.Should().Be(default);
+        result.myLong.Should().Be(default);
+        result.myDecimal.Should().Be(default);
+        result.myString.Should().Be(default);
+    }
 }
 
 public interface ExampleInterface { }
@@ -210,4 +281,18 @@ public class ExampleService4
 #pragma warning disable
     public ExampleService4(string parameter) { }
 #pragma warning enable
+}
+
+public class ExampleType
+{
+    public int myInt { get; set; }
+    public float myFloat { get; set; }
+    public double myDouble { get; set; }
+    public bool myBool { get; set; }
+    public char myChar { get; set; }
+    public byte myByte { get; set; }
+    public short myShort { get; set; }
+    public long myLong { get; set; }
+    public decimal myDecimal { get; set; }
+    public string myString { get; set; }
 }
