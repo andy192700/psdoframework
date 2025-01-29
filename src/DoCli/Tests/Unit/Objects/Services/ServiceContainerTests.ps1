@@ -31,10 +31,10 @@ Describe 'ServiceContainerTests' {
         $context.AddOrUpdate("ExampleType.myDouble", 7.77);
         $context.AddOrUpdate("ExampleType.myBool", $true);
         $context.AddOrUpdate("ExampleType.myChar", 'c');
-        $context.AddOrUpdate("ExampleType.myByte", [byte]2);
-        $context.AddOrUpdate("ExampleType.myShort", [short]17);
+        $context.AddOrUpdate("ExampleType.myByte", 2);
+        $context.AddOrUpdate("ExampleType.myShort", 17);
         $context.AddOrUpdate("ExampleType.myLong", 44444424);
-        $context.AddOrUpdate("ExampleType.myDecimal", [decimal]1.14);
+        $context.AddOrUpdate("ExampleType.myDecimal", 1.14);
         $context.AddOrUpdate("ExampleType.myString", "exampleString2");
         
         # Act
