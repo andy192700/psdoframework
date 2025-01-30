@@ -7,18 +7,16 @@ namespace DoFramework.Processing;
 /// </summary>
 public class Session : ISession
 {
-    /// <summary>
-    /// Gets or sets the name of the current process.
-    /// </summary>
+    /// <inheritdoc/>
     public string? CurrentProcessName { get; set; }
 
-    /// <summary>
-    /// Gets or sets the count of processes.
-    /// </summary>
+    /// <inheritdoc/>
     public int ProcessCount { get; set; }
 
-    /// <summary>
-    /// Gets or sets the list of process reports.
-    /// </summary>
+    /// <inheritdoc/>
     public List<ProcessReport> ProcessReports { get; set; } = [];
+
+    public string? ComposedBy { get; set; }
+
+    public bool Composed => !string.IsNullOrEmpty(ComposedBy);
 }

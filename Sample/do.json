@@ -40,6 +40,10 @@
     "DeletePersonsFile.psm1",
     "ReadPersonsFile.psm1",
     "CreatePersons.psm1",
-    "ModuleWithFunctions.psm1"
+    "ModuleWithFunctions.psm1",
+    "ConfigurableObject.psm1"
+  ],
+  "Composers": [
+    "MrComposer.ps1"
   ]
 }

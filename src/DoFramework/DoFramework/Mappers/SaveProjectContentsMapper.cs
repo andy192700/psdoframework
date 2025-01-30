@@ -49,6 +49,11 @@ public class SaveProjectContentsMapper : IMapper<ProjectContents, ProjectContent
             contentsToSave.Modules.Add(module.Path!);
         }
 
+        foreach (var composer in source.Composers)
+        {
+            contentsToSave.Composers.Add(composer.Path!);
+        }
+
         return contentsToSave;
     }
 }

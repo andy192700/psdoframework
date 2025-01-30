@@ -13,7 +13,6 @@ public class ProcessRunner : IProcessRunner
     private readonly IResolver<ProcessDescriptor> _processResolver;
     private readonly IProcessExecutor _executor;
     private readonly ILogger _logger;
-    private readonly IComputeHierarchyPrefix _computeHierarchyPrefix;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="ProcessRunner"/> class.
@@ -27,14 +26,12 @@ public class ProcessRunner : IProcessRunner
         IContext context,
         IResolver<ProcessDescriptor> processResolver,
         IProcessExecutor executor,
-        ILogger logger,
-        IComputeHierarchyPrefix computeHierarchyPrefix)
+        ILogger logger)
     {
         _context = context;
         _processResolver = processResolver;
         _executor = executor;
         _logger = logger;
-        _computeHierarchyPrefix = computeHierarchyPrefix;
     }
 
     /// <summary>
@@ -71,7 +68,7 @@ public class ProcessRunner : IProcessRunner
             _logger.LogFatal($"Process not found: {task}");
         }
 
-        report.Name = $"{_computeHierarchyPrefix.Compute()}{report.Descriptor!.Name}";
+        report.Name = $"{report.Descriptor!.Name}";
 
         _context.Session.ProcessReports.Add(report);
     }

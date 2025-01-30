@@ -59,12 +59,8 @@ public class ServiceContainerExtensionsTests
         // Act
         sut.AddParameters(appParams);
 
-        var result = sut.Instances.Count;
-
         // Assert
         sut.GetService<CLIFunctionParameters>().Should().NotBeNull();
-
-        result.Should().Be(4);
 
         sut.GetService<ILogger>().Parameters!.Parameters.Should().BeEquivalentTo(appParams);
     }
@@ -93,6 +89,7 @@ public class TestEnvironment : IEnvironment
     public string ProcessesDir { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
     public string TestsDir { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
     public string ModuleDir { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+    public string ComposersDir { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
     public bool CheckEnvironment() 
     { 
@@ -111,6 +108,7 @@ public class TestThrowingEnvironment : IEnvironment
     public string ProcessesDir { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
     public string TestsDir { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
     public string ModuleDir { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+    public string ComposersDir { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
     public bool CheckEnvironment()
     {

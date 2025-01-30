@@ -31,6 +31,7 @@ public class TestDescriptorCreatorValidatorTests
         var processDescriptorMapper = new ProcessDescriptorMapper(osSanitise);
         var moduleDescriptorMapper = new ModuleDescriptorMapper(osSanitise);
         var testDescriptorMapper = new TestDescriptorMapper(osSanitise);
+        var composerDescriptorMapper = new ComposerDescriptorMapper(osSanitise);
 
         var descriptor = new TestDescriptor
         {
@@ -48,7 +49,7 @@ public class TestDescriptorCreatorValidatorTests
 
         jsonConverter.Setup(x => x.Deserialize<ProjectContentsStorage>(It.IsAny<string>())).Returns(projectContentsStorage);
 
-        var contentsMapper = new ReadProjectContentsMapper(processDescriptorMapper, moduleDescriptorMapper, testDescriptorMapper, osSanitise);
+        var contentsMapper = new ReadProjectContentsMapper(processDescriptorMapper, moduleDescriptorMapper, testDescriptorMapper, composerDescriptorMapper, osSanitise);
 
         var contentsProvider = new ReadProjectContents(contentsMapper, processReader.Object, fileManager.Object, jsonConverter.Object);
 
@@ -97,6 +98,7 @@ public class TestDescriptorCreatorValidatorTests
         var processDescriptorMapper = new ProcessDescriptorMapper(osSanitise);
         var moduleDescriptorMapper = new ModuleDescriptorMapper(osSanitise);
         var testDescriptorMapper = new TestDescriptorMapper(osSanitise);
+        var composerDescriptorMapper = new ComposerDescriptorMapper(osSanitise);
 
         projectContentsStorage.Processes.Add($"{name}Test");
 
@@ -114,7 +116,7 @@ public class TestDescriptorCreatorValidatorTests
 
         jsonConverter.Setup(x => x.Deserialize<ProjectContentsStorage>(It.IsAny<string>())).Returns(projectContentsStorage);
 
-        var contentsMapper = new ReadProjectContentsMapper(processDescriptorMapper, moduleDescriptorMapper, testDescriptorMapper, osSanitise);
+        var contentsMapper = new ReadProjectContentsMapper(processDescriptorMapper, moduleDescriptorMapper, testDescriptorMapper, composerDescriptorMapper, osSanitise);
 
         var contentsProvider = new ReadProjectContents(contentsMapper, processReader.Object, fileManager.Object, jsonConverter.Object);
 
@@ -165,6 +167,7 @@ public class TestDescriptorCreatorValidatorTests
         var processDescriptorMapper = new ProcessDescriptorMapper(osSanitise);
         var moduleDescriptorMapper = new ModuleDescriptorMapper(osSanitise);
         var testDescriptorMapper = new TestDescriptorMapper(osSanitise);
+        var composerDescriptorMapper = new ComposerDescriptorMapper(osSanitise);
 
         var descriptor = new TestDescriptor
         {
@@ -182,7 +185,7 @@ public class TestDescriptorCreatorValidatorTests
 
         jsonConverter.Setup(x => x.Deserialize<ProjectContentsStorage>(It.IsAny<string>())).Returns(projectContentsStorage);
 
-        var contentsMapper = new ReadProjectContentsMapper(processDescriptorMapper, moduleDescriptorMapper, testDescriptorMapper, osSanitise);
+        var contentsMapper = new ReadProjectContentsMapper(processDescriptorMapper, moduleDescriptorMapper, testDescriptorMapper, composerDescriptorMapper, osSanitise);
 
         var contentsProvider = new ReadProjectContents(contentsMapper, processReader.Object, fileManager.Object, jsonConverter.Object);
 
@@ -235,6 +238,7 @@ public class TestDescriptorCreatorValidatorTests
         var processDescriptorMapper = new ProcessDescriptorMapper(osSanitise);
         var moduleDescriptorMapper = new ModuleDescriptorMapper(osSanitise);
         var testDescriptorMapper = new TestDescriptorMapper(osSanitise);
+        var composerDescriptorMapper = new ComposerDescriptorMapper(osSanitise);
 
         projectContentsStorage.Processes.Add(name);
 
@@ -252,7 +256,7 @@ public class TestDescriptorCreatorValidatorTests
 
         jsonConverter.Setup(x => x.Deserialize<ProjectContentsStorage>(It.IsAny<string>())).Returns(projectContentsStorage);
 
-        var contentsMapper = new ReadProjectContentsMapper(processDescriptorMapper, moduleDescriptorMapper, testDescriptorMapper, osSanitise);
+        var contentsMapper = new ReadProjectContentsMapper(processDescriptorMapper, moduleDescriptorMapper, testDescriptorMapper, composerDescriptorMapper, osSanitise);
 
         var contentsProvider = new ReadProjectContents(contentsMapper, processReader.Object, fileManager.Object, jsonConverter.Object);
 

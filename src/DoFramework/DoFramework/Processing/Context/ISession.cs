@@ -21,4 +21,8 @@ public interface ISession
     /// Gets or sets the list of process reports.
     /// </summary>
     List<ProcessReport> ProcessReports { get; set; }
+
+    string? ComposedBy { get; set; }
+
+    bool Composed { get; }
 }

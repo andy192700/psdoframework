@@ -3,6 +3,7 @@ using namespace DoFramework.Services;
 using namespace DoFramework.Processing;
 using namespace DoFramework.Validators;
 using namespace System.Collections.Generic;
+using module "..\..\..\Processing\ProcessBuilder.psm1";
 
 <#
 .SYNOPSIS
@@ -28,19 +29,10 @@ class RunProcess : CLIFunction[DescriptorManagementDictionaryValidator, [IContex
         [ServiceContainerExtensions]::AddParameters($serviceContainer, $params);
         [ServiceContainerExtensions]::CheckEnvironment($serviceContainer);
         [ServiceContainerExtensions]::ConsumeEnvFiles($serviceContainer);
+        [ServiceContainerExtensions]::AddProcessingServices($serviceContainer, [ProcessBuilder]);
         
-        [IProcessingRequest] $request = [ProcessingRequest]::new($params["name"], $params);
-    
-        $serviceContainer.GetService[IProcessDispatcher]().Dispatch($request);
+        [IEntryPoint] $entryPoint = $serviceContainer.GetService[IEntryPoint]();
 
-        [IContext] $context = $serviceContainer.GetService[IContext]();
-
-        $context.Session.CurrentProcessName = [string]::Empty;
-
-        [CLIFunctionParameters] $cliParams = $serviceContainer.GetService([CLIFunctionParameters]);
-
-        [IContext] $output = if ($cliParams.ParseSwitch("doOutput")) { $context } else { $null };
-
-        return $output;
+        return $entryPoint.Enter();
     }
 }

@@ -6,16 +6,6 @@
 public interface IServiceContainer
 {
     /// <summary>
-    /// Gets the dictionary of registered service types.
-    /// </summary>
-    Dictionary<Type, Type> Services { get; }
-
-    /// <summary>
-    /// Gets the dictionary of service instances.
-    /// </summary>
-    Dictionary<Type, object> Instances { get; }
-
-    /// <summary>
     /// Registers a service with the specified type.
     /// </summary>
     /// <param name="type">The type of the service to register.</param>
@@ -63,10 +53,4 @@ public interface IServiceContainer
     /// <typeparam name="TBaseType">The base type of the services to retrieve.</typeparam>
     /// <returns>A list of services of the specified base type.</returns>
     List<TBaseType> GetServicesByType<TBaseType>() where TBaseType : class;
-
-    /// <summary>
-    /// Configures an Object, registering it to this container.
-    /// </summary>
-    /// <typeparam name="TObject">The type to be registered and populated.</typeparam>
-    void Configure(Type type);
 }

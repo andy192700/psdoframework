@@ -1,5 +1,3 @@
-using DoFramework.Processing;
-
 namespace DoFramework.Services;
 
 /// <summary>
@@ -7,12 +5,15 @@ namespace DoFramework.Services;
 /// </summary>
 public class ServiceContainer : IServiceContainer
 {
+    /// <summary>
+    /// This container's registered services.
+    /// </summary>
+    private Dictionary<Type, Type> Services { get; } = [];
 
-    /// <inheritdoc/>
-    public Dictionary<Type, Type> Services { get; } = [];
-
-    /// <inheritdoc/>
-    public Dictionary<Type, object> Instances { get; } = [];
+    /// <summary>
+    /// This container's service instances, derived from the Services.
+    /// </summary>
+    private Dictionary<Type, object> Instances { get; } = [];
 
     private readonly IObjectBuilder _builder;
 
@@ -26,9 +27,9 @@ public class ServiceContainer : IServiceContainer
     {
         _builder = objectBuilder;
 
-        RegisterService<IServiceContainer, ServiceContainer>();
+        RegisterService<IReadOnlyServiceContainer, ReadOnlyServiceContainer>();
 
-        Instances[typeof(IServiceContainer)] = this;
+        Instances[typeof(IReadOnlyServiceContainer)] = new ReadOnlyServiceContainer(this);
     }
 
     /// <inheritdoc/>
@@ -105,28 +106,6 @@ public class ServiceContainer : IServiceContainer
         }
 
         return Instances[type];
-    }
-
-    /// <inheritdoc/>
-    public void Configure(Type type)
-    {
-        RegisterService(type);
-
-        var obj = GetService(type);
-
-        var properties = type.GetProperties();
-
-        var context = GetService<IContext>();
-
-        foreach (var property in properties)
-        {
-            var value = context.Get($"{type.Name}.{property.Name}");
-
-            if (value != null)
-            {
-                property.SetValue(obj, Convert.ChangeType(value, property.PropertyType));
-            }
-        }
     }
 
     private Type ResolveService(Type type)

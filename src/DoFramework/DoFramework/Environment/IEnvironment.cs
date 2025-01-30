@@ -24,4 +24,9 @@ public interface IEnvironment
     /// Gets or sets the modules directory within the environment.
     /// </summary>
     string ModuleDir { get; set; }
+
+    /// <summary>
+    /// Gets or sets the composers directory within the environment.
+    /// </summary>
+    string ComposersDir { get; set; }
 }

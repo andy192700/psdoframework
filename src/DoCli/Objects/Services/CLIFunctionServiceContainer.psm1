@@ -5,6 +5,7 @@ using module "..\CLI\CLIFunctions\Management\Modules\RemoveModule.psm1";
 using module "..\CLI\CLIFunctions\Management\Tests\AddTest.psm1";
 using module "..\CLI\CLIFunctions\Management\Tests\RemoveTest.psm1";
 using module "..\CLI\CLIFunctions\Management\CreateProject.psm1";
+using module "..\CLI\CLIFunctions\Invocation\Compose.psm1";
 using module "..\CLI\CLIFunctions\Invocation\RunProcess.psm1";
 using module "..\CLI\CLIFunctions\Invocation\RunTests.psm1";
 using module "..\CLI\CLIFunctions\Util\ReadArgs.psm1";
@@ -50,6 +51,7 @@ class CLIFunctionServiceContainer {
         $container.RegisterService[ILogger, Logger]();
         $container.RegisterService[IValidationErrorWriter, ValidationErrorWriter]();
         $container.RegisterService[CLIArgValidator]();
+        $container.RegisterService[Compose]();
         $container.RegisterService[RunProcess]();
         $container.RegisterService[ArgMapper]();
         $container.RegisterService[AddProcess]();

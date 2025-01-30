@@ -21,6 +21,7 @@ public class ReadProjectContentsMapperTests
         var mockProcessDescriptorMapper = new Mock<IMapper<string, ProcessDescriptor>>();
         var mockModuleDescriptorMapper = new Mock<IMapper<string, ModuleDescriptor>>();
         var mockTestDescriptorMapper = new Mock<IMapper<string, TestDescriptor>>();
+        var mockComposerDescriptorMapper = new Mock<IMapper<string, ComposerDescriptor>>();
 
         var osSanitise = new Mock<IOSSanitise>();
 
@@ -32,6 +33,7 @@ public class ReadProjectContentsMapperTests
             mockProcessDescriptorMapper.Object,
             mockModuleDescriptorMapper.Object,
             mockTestDescriptorMapper.Object,
+            mockComposerDescriptorMapper.Object,
             osSanitise.Object);
 
         // Act

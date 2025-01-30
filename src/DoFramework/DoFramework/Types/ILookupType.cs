@@ -3,7 +3,7 @@
 /// <summary>
 /// Defines a lookup for process types by name.
 /// </summary>
-public interface ILookupProcessType
+public interface ILookupType<TBaseType> where TBaseType : class
 {
     /// <summary>
     /// Looks up the type associated with the specified process name.

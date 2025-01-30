@@ -12,7 +12,7 @@ public class LookupProcessTypeTests
     [Theory]
     [InlineAutoMoqData]
     public void TypeDoesNotExist(
-        [Frozen] Mock<IValidator<Type>> validator, 
+        [Frozen] Mock<TypeValidator<IProcess>> validator, 
         [Frozen] Mock<IValidationErrorWriter> validationErrorWriter,
         string typeName)
     {
@@ -29,7 +29,7 @@ public class LookupProcessTypeTests
     [Theory]
     [InlineAutoMoqData]
     public void TypeDoesExistButNotValid(
-        [Frozen] Mock<IValidator<Type>> validator,
+        [Frozen] Mock<TypeValidator<IProcess>> validator,
         [Frozen] Mock<IValidationErrorWriter> validationErrorWriter,
         List<string> errors)
     {
@@ -52,7 +52,7 @@ public class LookupProcessTypeTests
     [Theory]
     [InlineAutoMoqData]
     public void TypeIsValid(
-        [Frozen] Mock<IValidator<Type>> validator,
+        [Frozen] Mock<TypeValidator<IProcess>> validator,
         [Frozen] Mock<IValidationErrorWriter> validationErrorWriter)
     {
         // Arrange

@@ -46,16 +46,11 @@ public class ProcessRunnerTests
 
         executor.Setup(x => x.Execute(It.IsAny<ProcessDescriptor>())).Returns(report);
 
-        var computeHierarchyPrefix = new Mock<IComputeHierarchyPrefix>();
-
-        computeHierarchyPrefix.Setup(x => x.Compute()).Returns(prefix);
-
         var sut = new ProcessRunner(
             context.Object,
             processResolver.Object,
             executor.Object,
-            logger.Object,
-            computeHierarchyPrefix.Object);
+            logger.Object);
 
         // Act
         sut.Run(name);
@@ -97,16 +92,11 @@ public class ProcessRunnerTests
 
         processResolver.Setup(x => x.Resolve(It.IsAny<string>())).Returns(resolutionResult);
 
-        var computeHierarchyPrefix = new Mock<IComputeHierarchyPrefix>();
-
-        computeHierarchyPrefix.Setup(x => x.Compute()).Returns(prefix);
-
         var sut = new ProcessRunner(
             context.Object,
             processResolver.Object,
             executor.Object,
-            logger.Object,
-            computeHierarchyPrefix.Object);
+            logger.Object);
 
         // Act
         sut.Run(name);

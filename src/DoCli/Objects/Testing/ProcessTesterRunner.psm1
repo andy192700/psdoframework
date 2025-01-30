@@ -2,6 +2,7 @@ using namespace DoFramework.Testing;
 using namespace DoFramework.Domain;
 using namespace DoFramework.Data;
 using namespace DoFramework.Logging;
+using namespace DoFramework.Processing;
 using namespace DoFramework.Environment;
 using namespace DoFramework.Types;
 using namespace DoFramework.Validators;
@@ -31,7 +32,7 @@ class ProcessTesterRunner : ITestRunner[ProcessDescriptor] {
     [IResolver[ProcessDescriptor]] $ProcessResolver;
     [IDataCollectionProvider[TestDescriptor, string]] $TestProvider;
     [IEnvironment] $Environment;
-    [ILookupProcessType] $LookupType;
+    [ILookupType[IProcess]] $LookupType;
     [ILogger] $Logger;
     [PesterConfig] $PesterConfiguration;
     [IPesterRunner] $PesterRunner;
@@ -40,7 +41,7 @@ class ProcessTesterRunner : ITestRunner[ProcessDescriptor] {
         [IDataCollectionProvider[TestDescriptor, string]] $testProvider,
         [IResolver[ProcessDescriptor]] $processResolver, 
         [IEnvironment] $environment, 
-        [ILookupProcessType] $lookupType,
+        [ILookupType[IProcess]] $lookupType,
         [ILogger] $logger,
         [PesterConfig] $pesterConfiguration,
         [IPesterRunner] $pesterRunner) {

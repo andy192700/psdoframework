@@ -18,10 +18,7 @@ public class ServiceContainerTests
         // Assert
         result.Should().NotBeNull();
         result.GetType().Should().BeAssignableTo(typeof(IServiceContainer));
-
-        sut.Services.Should().HaveCount(1);
-
-        sut.Instances.Should().HaveCount(1);
+        result.GetService<IReadOnlyServiceContainer>().Should().NotBeNull();
     }
 
     [Theory]
@@ -162,11 +159,8 @@ public class ServiceContainerTests
         sut.RegisterService<ExampleService2>();
 
         //Assert
-        sut.Instances.Should().HaveCount(1);
-        sut.Services.Should().HaveCount(3);
         sut.GetService<ExampleService>().Should().NotBeNull();
         sut.GetService<ExampleService2>().Should().NotBeNull();
-        sut.Instances.Should().HaveCount(3);
     }
 
     [Fact]
@@ -179,13 +173,9 @@ public class ServiceContainerTests
         sut.RegisterService<ExampleInterface<string>, ExampleService2>();
 
         //Assert
-        sut.Instances.Should().HaveCount(1);
-        sut.Services.Should().HaveCount(3);
-
         var services = sut.GetServicesByType<ExampleInterface>();
         
         services.Should().HaveCount(2);
-        sut.Instances.Should().HaveCount(3);
 
         services.Any(x => x.GetType() == typeof(ExampleService)).Should().BeTrue();
         services.Any(x => x.GetType() == typeof(ExampleService2)).Should().BeTrue();

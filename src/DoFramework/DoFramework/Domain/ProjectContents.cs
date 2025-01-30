@@ -34,4 +34,9 @@ public class ProjectContents
     /// Gets or sets the list of module descriptors associated with the project.
     /// </summary>
     public List<ModuleDescriptor> Modules { get; set; } = [];
+
+    /// <summary>
+    /// Gets or sets the list of composer descriptors associated with the project.
+    /// </summary>
+    public List<ComposerDescriptor> Composers { get; set; } = [];
 }
