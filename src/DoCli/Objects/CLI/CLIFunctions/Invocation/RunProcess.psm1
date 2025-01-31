@@ -25,10 +25,10 @@ class RunProcess : CLIFunction[DescriptorManagementDictionaryValidator, [IContex
     #>
     RunProcess() : base("Run-Process") {}
 
-    [IContext] Invoke([Dictionary[string, object]] $params, [IServiceContainer] $serviceContainer) {        
+    [IContext] Invoke([Dictionary[string, object]] $params, [IServiceContainer] $serviceContainer) {      
+        [ServiceContainerExtensions]::CheckEnvironment($serviceContainer); 
+        [ServiceContainerExtensions]::ConsumeEnvFiles($serviceContainer);    
         [ServiceContainerExtensions]::AddParameters($serviceContainer, $params);
-        [ServiceContainerExtensions]::CheckEnvironment($serviceContainer);
-        [ServiceContainerExtensions]::ConsumeEnvFiles($serviceContainer);
         [ServiceContainerExtensions]::AddProcessingServices($serviceContainer, [ProcessBuilder]);
         
         [IEntryPoint] $entryPoint = $serviceContainer.GetService[IEntryPoint]();

@@ -9,10 +9,10 @@ using module "..\..\..\Processing\ProcessBuilder.psm1";
 class Compose : CLIFunction[DescriptorManagementDictionaryValidator, [IContext]] {
     Compose() : base("Compose") {}
 
-    [IContext] Invoke([Dictionary[string, object]] $params, [IServiceContainer] $serviceContainer) {        
+    [IContext] Invoke([Dictionary[string, object]] $params, [IServiceContainer] $serviceContainer) {   
+        [ServiceContainerExtensions]::CheckEnvironment($serviceContainer); 
+        [ServiceContainerExtensions]::ConsumeEnvFiles($serviceContainer);    
         [ServiceContainerExtensions]::AddParameters($serviceContainer, $params);
-        [ServiceContainerExtensions]::CheckEnvironment($serviceContainer);
-        [ServiceContainerExtensions]::ConsumeEnvFiles($serviceContainer);
         [ServiceContainerExtensions]::AddComposerServices($serviceContainer, [ComposerBuilder]);
 
         [IComposerOrchestrator] $orchestrator = $serviceContainer.GetService([IComposerOrchestrator]);

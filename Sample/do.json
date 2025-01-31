@@ -5,18 +5,17 @@
   "Processes": [
     "Simple\\SimpleProcess.ps1",
     "Advanced\\AdvancedProcess.ps1",
-    "Advanced\\Registrations.ps1",
     "Advanced\\CreateData.ps1",
     "Advanced\\CreateFile.ps1",
     "Advanced\\ReadFile.ps1",
     "Advanced\\DeleteFile.ps1",
     "Simple\\DoublesANumber.ps1",
-    "Simple\\FailingProcess.ps1"
+    "Simple\\FailingProcess.ps1",
+    "Advanced\\ConfigurationSample.ps1"
   ],
   "Tests": {
     "ProcessTests": [
       "Processes\\Advanced\\AdvancedProcessTests.ps1",
-      "Processes\\Advanced\\RegistrationsTests.ps1",
       "Processes\\Advanced\\CreateDataTests.ps1",
       "Processes\\Advanced\\CreateFileTests.ps1",
       "Processes\\Advanced\\ReadFileTests.ps1",
@@ -44,6 +43,7 @@
     "ConfigurableObject.psm1"
   ],
   "Composers": [
-    "MrComposer.ps1"
+    "AdvancedComposer.ps1",
+    "ConfigurationComposer.ps1"
   ]
 }

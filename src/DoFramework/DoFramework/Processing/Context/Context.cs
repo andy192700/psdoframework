@@ -65,4 +65,9 @@ public class Context(ISession session) : IContext
 
         return false;
     }
+
+    public IContextVerifier Requires()
+    {
+        return new ContextVerifier(this);
+    }
 }

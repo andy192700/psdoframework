@@ -4,8 +4,6 @@ using DoFramework.Environment;
 using DoFramework.FileSystem;
 using DoFramework.Logging;
 using DoFramework.Services;
-using DoFramework.Types;
-using DoFramework.Validators;
 
 namespace DoFramework.Processing;
 
@@ -16,19 +14,22 @@ public class ComposerOrchestrator : IComposerOrchestrator
     private readonly ILogger _logger;
     private readonly IComposerBuilder _composerBuilder;
     private readonly IResolver<ComposerDescriptor> _composerResolver;
+    private readonly ISession _session;
     
     public ComposerOrchestrator(
         IEnvironment environment,
         ISetProcessLocation setProcessLocation,
         ILogger logger,
         IComposerBuilder composerBuilder,
-        IResolver<ComposerDescriptor> composerResolver)
+        IResolver<ComposerDescriptor> composerResolver,
+        ISession session)
     {
         _environment = environment;
         _setProcessLocation = setProcessLocation;
         _logger = logger;
         _composerBuilder = composerBuilder;
         _composerResolver = composerResolver;
+        _session = session;
     }
 
     public bool Orchestrate(string composerName, IServiceContainer serviceContainer)
@@ -48,7 +49,9 @@ public class ComposerOrchestrator : IComposerOrchestrator
 
             var composer = _composerBuilder.Build(descriptor.Descriptor!);
 
-            composer.Compose(serviceContainer);
+            composer.Compose(new ComposerWorkBench(serviceContainer));
+
+            _session.ComposedBy = composerName;
 
             success = true;
         }

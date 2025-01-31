@@ -22,11 +22,11 @@ class CreateFile : Process {
     }
 
     [bool] Validate() {
-        return $this.Context.Session.ProcessReports.Count -eq 3 `
-            -and $this.Context.Session.ProcessReports[0].Descriptor.Name -eq "Registrations" `
-            -and $this.Context.Session.ProcessReports[1].Descriptor.Name -eq "DeleteFile" `
-            -and $this.Context.Session.ProcessReports[2].Descriptor.Name -eq "CreateData" `
-            -and $this.Context.KeyExists("PersonsFilePath");
+        return $this.Context.Requires().
+            ConfirmKey("PersonsFilePath").
+            ProcessSucceeded("DeleteFile").
+            ProcessSucceeded("CreateData").
+            Verify();
     }
 
     [void] Run() {

@@ -45,4 +45,6 @@ public interface IContext
     /// <param name="key">The name of the key to parse.</param>
     /// <returns>THe parsed switch.</returns>
     public bool ParseSwitch(string key);
+
+    public IContextVerifier Requires();
 }

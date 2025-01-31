@@ -32,7 +32,7 @@ public static class ServiceContainerExtensions
     }
 
     /// <summary>
-    /// Adds application parameters to the service container.
+    /// Adds application parameters to the service container, writing them to the <see cref="IContext"/>.
     /// </summary>
     /// <param name="container">The service container.</param>
     /// <param name="applicationParams">The application parameters to add.</param>
@@ -44,6 +44,8 @@ public static class ServiceContainerExtensions
         container.GetService<CLIFunctionParameters>().Parameters = applicationParams;
 
         container.GetService<ILogger>().Parameters = container.GetService<CLIFunctionParameters>();
+
+        container.GetService<IContextWriter>().Write(applicationParams);
 
         return container;
     }
@@ -68,7 +70,6 @@ public static class ServiceContainerExtensions
         container.RegisterService<IProcessExecutor, ProcessExecutor>();
         container.RegisterService<IProcessRunner, ProcessRunner>();
         container.RegisterService<IEntryPoint, EntryPoint>();
-        container.RegisterService<IProcessDispatcher, ProcessDispatcher>();
         container.RegisterService<IFailedReportChecker, FailedReportChecker>();
         container.RegisterService<ILookupType<IProcess>, LookupProcessType>();
         container.RegisterService<IValidator<IProcessingRequest>, ProcessingRequestValidator>();
@@ -85,42 +86,6 @@ public static class ServiceContainerExtensions
         container.RegisterService<IProcessRegistry, ProcessRegistry>();
         container.RegisterService<IComposerOrchestrator, ComposerOrchestrator>();
         container.RegisterService(typeof(IComposerBuilder), composerType);
-
-        return container;
-    }
-
-    /// <summary>
-    /// Configures an Object, registering it to the <see cref="IServiceContainer"/>.
-    /// </summary>
-    /// <typeparam name="TObject">The type to be registered and populated.</typeparam>
-    public static IServiceContainer Configure(this IServiceContainer container, Type type)
-    {
-        container.RegisterService(type);
-
-        var obj = container.GetService(type);
-
-        var properties = type.GetProperties();
-
-        var context = container.GetService<IContext>();
-
-        foreach (var property in properties)
-        {
-            var value = context.Get($"{type.Name}.{property.Name}");
-
-            if (value != null)
-            {
-                property.SetValue(obj, Convert.ChangeType(value, property.PropertyType));
-            }
-        }
-
-        return container;
-    }
-
-    public static IServiceContainer RegisterProcess(this IServiceContainer container, string processName)
-    {
-        var registry = container.GetService<IProcessRegistry>();
-
-        registry.RegisterProcess(processName);
 
         return container;
     }
