@@ -28,10 +28,12 @@ public class SaveProjectContentsMapperTests
 
         var processDescriptors = new List<ProcessDescriptor>();
         var moduleDescriptors = new List<ModuleDescriptor>();
+        var composerDescriptors = new List<ComposerDescriptor>();
         var testDescriptors = new List<TestDescriptor>();
 
         for (var i = 0; i < processCount; i++) projectContents.Processes.Add(new ProcessDescriptor());
         for (var i = 0; i < moduleCount; i++) projectContents.Modules.Add(new ModuleDescriptor());
+        for (var i = 0; i < moduleCount; i++) projectContents.Composers.Add(new ComposerDescriptor());
 
         for (var i = 0; i < processTestCount; i++)
         {
@@ -74,6 +76,8 @@ public class SaveProjectContentsMapperTests
         result.Processes.Should().HaveCount(projectContents.Processes.Count);
 
         result.Modules.Should().HaveCount(projectContents.Modules.Count);
+
+        result.Composers.Should().HaveCount(projectContents.Composers.Count);
 
         result.Tests.ProcessTests.Should().HaveCount(projectContents.Tests.Count(x => x.TestType == TestType.Process));
 
