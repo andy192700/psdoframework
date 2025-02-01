@@ -3,19 +3,13 @@ using module "..\..\Modules\ConfigurableObject.psm1";
 
 class ConfigurationSample : Process {
     [IContext] $Context;
-    [MyConfig] $Config1;
-    [MySecondConfig] $Config2;
-    [MyThirdConfig] $Config3;
+    [MyConfigurationService] $config;
 
     ConfigurationSample(
         [IContext] $context,
-        [MyConfig] $config1,
-        [MySecondConfig] $config2,
-        [MyThirdConfig] $config3) {
+        [MyConfigurationService] $config) {
         $this.Context = $context;
-        $this.Config1 = $config1;
-        $this.Config2 = $config2;
-        $this.Config3 = $config3;
+        $this.Config = $config;
     }
     
     [bool] Validate() {
@@ -25,8 +19,8 @@ class ConfigurationSample : Process {
     }
 
     [void] Run() {
-        Write-Host "1: $($this.Config1.MyInt) $($this.Config1.MyString)";
-        Write-Host "2: $($this.Config2.MyDouble) $($this.Config2.MyBool)";
-        Write-Host "3: $($this.Config3.MyShort) $($this.Config3.MyFloat)";
+        Write-Host "1: $($this.Config.Config1.MyInt) $($this.Config.Config1.MyString)";
+        Write-Host "2: $($this.Config.Config2.MyDouble) $($this.Config.Config2.MyBool)";
+        Write-Host "3: $($this.Config.Config3.MyShort) $($this.Config.Config3.MyFloat)";
     }
 }

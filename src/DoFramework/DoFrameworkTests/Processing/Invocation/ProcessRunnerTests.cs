@@ -16,8 +16,7 @@ public class ProcessRunnerTests
         [Frozen] Mock<IContext> context,
         [Frozen] Mock<IProcessExecutor> executor,
         string path,
-        string name,
-        string prefix)
+        string name)
     {
         // Arrange
         context.Setup(x => x.Session).Returns(new Session
@@ -74,8 +73,7 @@ public class ProcessRunnerTests
         [Frozen] Mock<IContext> context,
         [Frozen] Mock<IProcessExecutor> executor,
         string path,
-        string name,
-        string prefix)
+        string name)
     {
         // Arrange
         context.Setup(x => x.Session).Returns(new Session
