@@ -12,6 +12,8 @@ public class ComposerWorkBench : IComposerWorkBench
 
     private IRepeater<Type> _serviceRepeater => new ServiceRegistrationRepeater(_container);
 
+    private IRepeater<Type, Type> _implServiceRepeater => new ImplementationServiceRepeater(_container);
+
     public ComposerWorkBench(IServiceContainer container)
     {
         _container = container;
@@ -30,6 +32,11 @@ public class ComposerWorkBench : IComposerWorkBench
     public IRepeater<Type> RegisterService(Type serviceType)
     {
         return _serviceRepeater.And(serviceType);
+    }
+
+    public IRepeater<Type, Type> RegisterService(Type serviceType, Type implementationType)
+    {
+        return _implServiceRepeater.And(serviceType, implementationType);
     }
 
     public object GetService(Type serviceType)

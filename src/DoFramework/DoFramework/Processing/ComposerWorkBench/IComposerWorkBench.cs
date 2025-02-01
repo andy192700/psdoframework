@@ -1,10 +1,10 @@
-﻿using DoFramework.Services;
-
-namespace DoFramework.Processing;
+﻿namespace DoFramework.Processing;
 
 public interface IComposerWorkBench
 {
     IRepeater<Type> RegisterService(Type serviceType);
+
+    IRepeater<Type, Type> RegisterService(Type serviceType, Type implementationType);
 
     IRepeater<Type> Configure(Type  configType);
 
