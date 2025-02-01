@@ -6,9 +6,9 @@ namespace DoFrameworkTests.Validators;
 
 public class ProcessTypeValidatorTests
 {
-    private string TypeError = $"Process classes must derive from the {typeof(Process).FullName} class.";
+    private string TypeError { get; set; } = $"{nameof(Process)} classes must derive from the {typeof(IProcess).FullName} class.";
 
-    private const string MultipleConstructorError = "Process classes must not have more than one constructor, only one constructor is allowed.";
+    private string MultipleConstructorError { get; set; } = $"{nameof(Process)} classes must not have more than one constructor, only one constructor is allowed.";
 
     [Theory]
     [InlineAutoMoqData]

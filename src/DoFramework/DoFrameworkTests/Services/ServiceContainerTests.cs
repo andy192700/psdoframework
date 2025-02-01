@@ -13,11 +13,11 @@ public class ServiceContainerTests
         var sut = new ServiceContainer();
 
         // Act
-        var result = sut.GetService<IServiceContainer>();
+        var result = sut.GetService<IReadOnlyServiceContainer>();
 
         // Assert
         result.Should().NotBeNull();
-        result.GetType().Should().BeAssignableTo(typeof(IServiceContainer));
+        result.GetType().Should().BeAssignableTo(typeof(IReadOnlyServiceContainer));
         result.GetService<IReadOnlyServiceContainer>().Should().NotBeNull();
     }
 

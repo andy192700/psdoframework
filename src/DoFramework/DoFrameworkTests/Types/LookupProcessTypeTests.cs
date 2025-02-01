@@ -4,6 +4,7 @@ using DoFramework.Types;
 using DoFramework.Validators;
 using FluentAssertions;
 using Moq;
+using System.Xml.Linq;
 
 namespace DoFrameworkTests.Types;
 
@@ -23,7 +24,7 @@ public class LookupProcessTypeTests
         var func = () => sut.Lookup(typeName);
 
         // Assert
-        func.Should().Throw<Exception>().WithMessage($"Could not find the process class {typeName}");
+        func.Should().Throw<Exception>().WithMessage($"Could not find the {typeof(IProcess).Name} class {typeName}");
     }
 
     [Theory]
@@ -44,7 +45,8 @@ public class LookupProcessTypeTests
         var func = () => sut.Lookup(typeof(ExampleProcess).FullName!);
 
         // Assert
-        func.Should().Throw<Exception>().WithMessage($"Process Type is invalid {typeof(ExampleProcess).FullName!}");
+        
+        func.Should().Throw<Exception>().WithMessage($"{typeof(IProcess).Name} Type is invalid {typeof(ExampleProcess).FullName!}");
 
         validationErrorWriter.Verify(x => x.Write(validationResult), Times.Once());
     }

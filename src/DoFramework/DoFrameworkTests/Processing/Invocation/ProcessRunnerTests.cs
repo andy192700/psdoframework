@@ -60,7 +60,7 @@ public class ProcessRunnerTests
 
         logger.Verify(x => x.LogFatal(It.IsAny<string>()), Times.Never);
 
-        report.Name.Should().Be($"{prefix}{name}");
+        report.Name.Should().Be(name);
 
         context.Object.Session.ProcessReports.Should().Contain(report);
         context.Object.Session.ProcessReports.Should().HaveCount(1);
@@ -108,7 +108,7 @@ public class ProcessRunnerTests
 
         logger.Verify(x => x.LogFatal($"Process not found: {name}"), Times.Once);
 
-        report.Name.Should().Be($"{prefix}{name}");
+        report.Name.Should().Be(name);
 
         context.Object.Session.ProcessReports.Should().HaveCount(1);
         context.Object.Session.ProcessCount.Should().Be(1);

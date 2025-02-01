@@ -53,6 +53,9 @@ public class ServiceContainerExtensionsTests
         // Arrange
         var sut = new ServiceContainer();
 
+        sut.RegisterService<ISession, Session>();
+        sut.RegisterService<IContext, Context>();
+        sut.RegisterService<IContextWriter, ContextWriter>();
         sut.RegisterService<IConsoleWrapper, ConsoleWrapper>();
         sut.RegisterService<ILogger, Logger>();
 
@@ -61,7 +64,6 @@ public class ServiceContainerExtensionsTests
 
         // Assert
         sut.GetService<CLIFunctionParameters>().Should().NotBeNull();
-
         sut.GetService<ILogger>().Parameters!.Parameters.Should().BeEquivalentTo(appParams);
     }
 
