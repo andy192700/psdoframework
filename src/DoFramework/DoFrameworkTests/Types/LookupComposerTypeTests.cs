@@ -4,32 +4,33 @@ using DoFramework.Types;
 using DoFramework.Validators;
 using FluentAssertions;
 using Moq;
+using System.Xml.Linq;
 
 namespace DoFrameworkTests.Types;
 
-public class LookupComposerTypeTests
+public class LookupProcessTypeTests
 {
     [Theory]
     [InlineAutoMoqData]
     public void TypeDoesNotExist(
-        [Frozen] Mock<TypeValidator<IComposer>> validator, 
+        [Frozen] Mock<TypeValidator<IProcess>> validator, 
         [Frozen] Mock<IValidationErrorWriter> validationErrorWriter,
         string typeName)
     {
         // Arrange
-        var sut = new LookupComposerType(validator.Object, validationErrorWriter.Object);
+        var sut = new LookupProcessType(validator.Object, validationErrorWriter.Object);
 
         // Act
         var func = () => sut.Lookup(typeName);
 
         // Assert
-        func.Should().Throw<Exception>().WithMessage($"Could not find the {typeof(IComposer).Name} class {typeName}");
+        func.Should().Throw<Exception>().WithMessage($"Could not find the {typeof(IProcess).Name} class {typeName}");
     }
 
     [Theory]
     [InlineAutoMoqData]
     public void TypeDoesExistButNotValid(
-        [Frozen] Mock<TypeValidator<IComposer>> validator,
+        [Frozen] Mock<TypeValidator<IProcess>> validator,
         [Frozen] Mock<IValidationErrorWriter> validationErrorWriter,
         List<string> errors)
     {
@@ -38,14 +39,14 @@ public class LookupComposerTypeTests
 
         validator.Setup(x => x.Validate(It.IsAny<Type>())).Returns(validationResult);
 
-        var sut = new LookupComposerType(validator.Object, validationErrorWriter.Object);
+        var sut = new LookupProcessType(validator.Object, validationErrorWriter.Object);
 
         // Act
-        var func = () => sut.Lookup(typeof(ExampleComposer).FullName!);
+        var func = () => sut.Lookup(typeof(ExampleProcess).FullName!);
 
         // Assert
         
-        func.Should().Throw<Exception>().WithMessage($"{typeof(IComposer).Name} Type is invalid {typeof(ExampleComposer).FullName!}");
+        func.Should().Throw<Exception>().WithMessage($"{typeof(IProcess).Name} Type is invalid {typeof(ExampleProcess).FullName!}");
 
         validationErrorWriter.Verify(x => x.Write(validationResult), Times.Once());
     }
@@ -53,26 +54,31 @@ public class LookupComposerTypeTests
     [Theory]
     [InlineAutoMoqData]
     public void TypeIsValid(
-        [Frozen] Mock<TypeValidator<IComposer>> validator,
+        [Frozen] Mock<TypeValidator<IProcess>> validator,
         [Frozen] Mock<IValidationErrorWriter> validationErrorWriter)
     {
         // Arrange
         validator.Setup(x => x.Validate(It.IsAny<Type>())).Returns(new ValidationResult([]));
 
-        var sut = new LookupComposerType(validator.Object, validationErrorWriter.Object);
+        var sut = new LookupProcessType(validator.Object, validationErrorWriter.Object);
 
         // Act
-        var result = sut.Lookup(typeof(ExampleComposer).FullName!);
+        var result = sut.Lookup(typeof(ExampleProcess).FullName!);
 
         // Assert
         result.Should().NotBeNull();
-        result.Should().Be(typeof(ExampleComposer));
+        result.Should().Be(typeof(ExampleProcess));
     }
 }
 
-public class ExampleComposer : IComposer
+public class ExampleProcess : IProcess
 {
-    public void Compose(IComposerWorkBench workBench)
+    public void Run()
+    {
+        throw new NotImplementedException();
+    }
+
+    public bool Validate()
     {
         throw new NotImplementedException();
     }

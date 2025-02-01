@@ -19,6 +19,14 @@ public class SampleProces : Process
     }
 }
 
+public class SampleComposer : IComposer
+{
+    public void Compose(IComposerWorkBench workBench)
+    {
+        throw new NotImplementedException();
+    }
+}
+
 public class ProcessMultipleConstructors : Process
 {
     public ProcessMultipleConstructors() { }
@@ -26,6 +34,17 @@ public class ProcessMultipleConstructors : Process
     public ProcessMultipleConstructors(string name) { }
 
     public override void Run()
+    {
+        throw new NotImplementedException();
+    }
+}
+
+public class ComposerMultipleConstructors : IComposer
+{ 
+    public ComposerMultipleConstructors() { }
+    public ComposerMultipleConstructors(string tsst) { }
+
+    public void Compose(IComposerWorkBench workBench)
     {
         throw new NotImplementedException();
     }
