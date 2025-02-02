@@ -64,6 +64,12 @@ public static class ServiceContainerExtensions
         return container;
     }
 
+    /// <summary>
+    /// Adds processing services to the specified service container.
+    /// </summary>
+    /// <param name="container">The service container to which the services will be added.</param>
+    /// <param name="processBuilderType">The type of the process builder to be registered.</param>
+    /// <returns>The updated service container.</returns>
     public static IServiceContainer AddProcessingServices(this IServiceContainer container, Type processBuilderType)
     {
         container.RegisterService<IProcessInstanceRunner, ProcessInstanceRunner>();
@@ -79,6 +85,12 @@ public static class ServiceContainerExtensions
         return container;
     }
 
+    /// <summary>
+    /// Adds composer services to the specified service container.
+    /// </summary>
+    /// <param name="container">The service container to which the services will be added.</param>
+    /// <param name="composerType">The type of the composer to be registered.</param>
+    /// <returns>The updated service container.</returns>
     public static IServiceContainer AddComposerServices(this IServiceContainer container, Type composerType)
     {
         container.RegisterService<ILookupType<IComposer>, LookupComposerType>();
@@ -89,4 +101,5 @@ public static class ServiceContainerExtensions
 
         return container;
     }
+
 }

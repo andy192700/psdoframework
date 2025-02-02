@@ -3,6 +3,9 @@ using DoFramework.FileSystem;
 
 namespace DoFramework.Mappers;
 
+/// <summary>
+/// Class for mapping a string to a composer descriptor.
+/// </summary>
 public class ComposerDescriptorMapper : DescriptorMapper<ComposerDescriptor>
 {
     public ComposerDescriptorMapper(IOSSanitise osSanitise) : base(osSanitise) { }

@@ -7,6 +7,9 @@ using DoFramework.Services;
 
 namespace DoFramework.Processing;
 
+/// <summary>
+/// Represents a composer orchestrator that handles the orchestration of composers.
+/// </summary>
 public class ComposerOrchestrator : IComposerOrchestrator
 {
     private readonly IEnvironment _environment;
@@ -15,7 +18,16 @@ public class ComposerOrchestrator : IComposerOrchestrator
     private readonly IComposerBuilder _composerBuilder;
     private readonly IResolver<ComposerDescriptor> _composerResolver;
     private readonly ISession _session;
-    
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="ComposerOrchestrator"/> class.
+    /// </summary>
+    /// <param name="environment">The environment.</param>
+    /// <param name="setProcessLocation">The process location setter.</param>
+    /// <param name="logger">The logger.</param>
+    /// <param name="composerBuilder">The composer builder.</param>
+    /// <param name="composerResolver">The composer resolver.</param>
+    /// <param name="session">The session.</param>
     public ComposerOrchestrator(
         IEnvironment environment,
         ISetProcessLocation setProcessLocation,
@@ -32,6 +44,7 @@ public class ComposerOrchestrator : IComposerOrchestrator
         _session = session;
     }
 
+    /// <inheritdoc/>
     public bool Orchestrate(string composerName, IServiceContainer serviceContainer)
     {
         var success = false;
