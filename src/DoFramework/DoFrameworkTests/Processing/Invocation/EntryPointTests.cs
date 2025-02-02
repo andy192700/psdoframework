@@ -185,4 +185,9 @@ public class TestContext : IContext
     {
         throw new NotImplementedException();
     }
+
+    public void SetComposedBy(string composedBy)
+    {
+        throw new NotImplementedException();
+    }
 }

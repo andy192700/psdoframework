@@ -17,7 +17,7 @@ public class ComposerOrchestrator : IComposerOrchestrator
     private readonly ILogger _logger;
     private readonly IComposerBuilder _composerBuilder;
     private readonly IResolver<ComposerDescriptor> _composerResolver;
-    private readonly ISession _session;
+    private readonly IContext _context;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="ComposerOrchestrator"/> class.
@@ -34,14 +34,14 @@ public class ComposerOrchestrator : IComposerOrchestrator
         ILogger logger,
         IComposerBuilder composerBuilder,
         IResolver<ComposerDescriptor> composerResolver,
-        ISession session)
+        IContext context)
     {
         _environment = environment;
         _setProcessLocation = setProcessLocation;
         _logger = logger;
         _composerBuilder = composerBuilder;
         _composerResolver = composerResolver;
-        _session = session;
+        _context = context;
     }
 
     /// <inheritdoc/>
@@ -64,7 +64,7 @@ public class ComposerOrchestrator : IComposerOrchestrator
 
             composer.Compose(new ComposerWorkBench(serviceContainer));
 
-            _session.ComposedBy = composerName;
+            _context.SetComposedBy(composerName);
 
             success = true;
         }

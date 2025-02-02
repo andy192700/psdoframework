@@ -23,7 +23,7 @@ public class ComposerOrchestratorTests
         ComposerDescriptor composerDescriptor)
     {
         // Arrange
-        var session = new Mock<ISession>();
+        var context = new Mock<IContext>();
         var resolver = new Mock<IResolver<ComposerDescriptor>>();
         var builder = new Mock<IComposerBuilder>();
         var logger = new Mock<ILogger>();
@@ -45,7 +45,7 @@ public class ComposerOrchestratorTests
             logger.Object,
             builder.Object,
             resolver.Object,
-            session.Object);
+            context.Object);
 
         // Act
         var result = sut.Orchestrate(composerName, container);
@@ -68,7 +68,7 @@ public class ComposerOrchestratorTests
         ComposerDescriptor composerDescriptor)
     {
         // Arrange
-        var session = new Mock<ISession>();
+        var context = new Mock<IContext>();
         var resolver = new Mock<IResolver<ComposerDescriptor>>();
         var builder = new Mock<IComposerBuilder>();
         var logger = new Mock<ILogger>();
@@ -85,7 +85,7 @@ public class ComposerOrchestratorTests
             logger.Object,
             builder.Object,
             resolver.Object,
-            session.Object);
+            context.Object);
 
         // Act
         var result = sut.Orchestrate(composerName, container);
@@ -111,7 +111,7 @@ public class ComposerOrchestratorTests
     {
         // Arrange
         var composer = new Mock<IComposer>();
-        var session = new Mock<ISession>();
+        var context = new Mock<IContext>();
         var resolver = new Mock<IResolver<ComposerDescriptor>>();
         var builder = new Mock<IComposerBuilder>();
         var logger = new Mock<ILogger>();
@@ -135,7 +135,7 @@ public class ComposerOrchestratorTests
             logger.Object,
             builder.Object,
             resolver.Object,
-            session.Object);
+            context.Object);
 
         // Act
         var result = sut.Orchestrate(composerName, container);
@@ -149,7 +149,7 @@ public class ComposerOrchestratorTests
 
         composer.Verify(x => x.Compose(It.IsAny<IComposerWorkBench>()), Times.Once);
 
-        session.VerifySet(x => x.ComposedBy = composerName, Times.Once);
+        context.Verify(x => x.SetComposedBy(composerName), Times.Once);
 
         setLocation.Verify(x => x.Set(It.IsAny<string>()), Times.Once);
     }
