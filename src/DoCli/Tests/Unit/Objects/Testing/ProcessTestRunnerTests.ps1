@@ -4,6 +4,7 @@ using namespace DoFramework.Data;
 using namespace DoFramework.Environment;
 using namespace DoFramework.FileSystem;
 using namespace DoFramework.Logging;
+using namespace DoFramework.Processing;
 using namespace DoFramework.Testing;
 using namespace DoFramework.Types;
 using namespace System.Collections.Generic;
@@ -22,7 +23,7 @@ Describe 'ProcessTestRunnerTests' {
 
         [ProxyResult] $script:mockResolver = doing mock -type ([IResolver[ProcessDescriptor]]);
 
-        [ProxyResult] $script:mockTypeLookup = doing mock -type ([ILookupProcessType]);
+        [ProxyResult] $script:mockTypeLookup = doing mock -type ([ILookupType[IProcess]]);
 
         [CLIFunctionParameters] $params = [CLIFunctionParameters]::new();
 

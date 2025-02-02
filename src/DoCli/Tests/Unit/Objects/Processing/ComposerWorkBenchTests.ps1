@@ -1,7 +1,7 @@
 using namespace DoFramework.Processing;
 using namespace DoFramework.Services;
 
-Describe 'ServiceContainerTests' {
+Describe 'ConfigurationRepeaterTests' {
 
     BeforeEach {
         class ExampleType {
@@ -17,7 +17,7 @@ Describe 'ServiceContainerTests' {
             [string] $myString;
         }
 
-        [ServiceContainer] $script:sut = [ServiceContainer]::new()
+        [IComposerWorkBench] $script:sut = [ComposerWorkBench]::new([ServiceContainer]::new());
         
         $script:sut.RegisterService([ISession], [Session]);
         $script:sut.RegisterService([IContext], [Context]);        

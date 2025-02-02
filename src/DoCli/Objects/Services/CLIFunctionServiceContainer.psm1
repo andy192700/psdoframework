@@ -12,7 +12,7 @@ using module "..\CLI\CLIFunctions\Invocation\RunProcess.psm1";
 using module "..\CLI\CLIFunctions\Invocation\RunTests.psm1";
 using module "..\CLI\CLIFunctions\Util\ReadArgs.psm1";
 using module "..\CLI\CLIFunctions\Util\GetMethodInfo.psm1";
-using module "..\CLI\CLIFunctions\Util\CreateProxy.psm1";
+using module "..\CLI\CLIFunctions\Util\CreateMock.psm1";
 using module "..\Environment\ReadProcessLocation.psm1";
 
 using namespace DoFramework.CLI;
@@ -68,7 +68,7 @@ class CLIFunctionServiceContainer {
         $container.RegisterService[RunTests]();
         $container.RegisterService[ReadArgs]();
         $container.RegisterService[GetMethodInfo]();
-        $container.RegisterService[CreateProxy]();
+        $container.RegisterService[CreateMock]();
 
         return $container;
     }
