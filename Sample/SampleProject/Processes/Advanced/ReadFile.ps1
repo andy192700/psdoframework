@@ -26,8 +26,6 @@ class ReadFile : Process {
     [bool] Validate() {
         return $this.Context.Requires().
             ConfirmKey("PersonsFilePath").
-            ProcessSucceeded("DeleteFile").
-            ProcessSucceeded("CreateData").
             ProcessSucceeded("CreateFile").
             Verify();
     }

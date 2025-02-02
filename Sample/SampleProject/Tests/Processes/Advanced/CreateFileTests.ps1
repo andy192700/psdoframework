@@ -43,17 +43,11 @@ Describe 'CreateFileTests' {
                 $script:mockCreatePersonsFile.Instance,
                 $script:mockLogger.Instance,
                 $script:context);
-                
             
             [ProcessReport] $p1 = [ProcessReport]::new();
-            $p1.Name = "DeleteFile";
+            $p1.Name = "CreateData";
             $p1.ProcessResult = [ProcessResult]::Completed;
             $script:context.Session.ProcessReports.Add($p1);
-            
-            [ProcessReport] $p2 = [ProcessReport]::new();
-            $p2.Name = "CreateData";
-            $p2.ProcessResult = [ProcessResult]::Completed;
-            $script:context.Session.ProcessReports.Add($p2);
 
             $script:context.AddOrUpdate("PersonsFilePath", "sample value");
 
