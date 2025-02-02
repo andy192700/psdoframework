@@ -5,10 +5,7 @@
   "Processes": [
     "TestProcess1.ps1",
     "TestProcess2.ps1",
-    "TestOrchestrator.ps1",
     "TestProcess3.ps1",
-    "ServiceContainerProcess1.ps1",
-    "ServiceContainerProcess2.ps1",
     "ProcessName.ps1"
   ],
   "Tests": {

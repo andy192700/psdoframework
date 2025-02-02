@@ -5,6 +5,8 @@ using namespace DoFramework.Testing;
 using namespace DoFramework.Domain;
 using namespace DoFramework.Logging;
 using namespace System.Collections.Generic;
+using module "..\..\..\Processing\ComposerBuilder.psm1";
+using module "..\..\..\Processing\ProcessBuilder.psm1";
 
 <#
 .SYNOPSIS
@@ -29,6 +31,8 @@ class RunTests : CLIFunction[TestRunnerDictionaryValidator] {
     [void] InvokeInternal([Dictionary[string, object]] $params, [IServiceContainer] $serviceContainer) {        
         [ServiceContainerExtensions]::AddParameters($serviceContainer, $params);
         [ServiceContainerExtensions]::CheckEnvironment($serviceContainer);
+        [ServiceContainerExtensions]::AddComposerServices($serviceContainer, [ComposerBuilder]);
+        [ServiceContainerExtensions]::AddProcessingServices($serviceContainer, [ProcessBuilder]);
     
         [ILogger] $logger = $serviceContainer.GetService[ILogger]();
         
@@ -54,7 +58,7 @@ class RunTests : CLIFunction[TestRunnerDictionaryValidator] {
         }
         
         if ($runComposerTests -or $runAllTests) {
-            [ITestRunner[ModuleDescriptor]] $composerTestRunner = $serviceContainer.GetService[ITestRunner[ComposerDescriptor]]();
+            [ITestRunner[ComposerDescriptor]] $composerTestRunner = $serviceContainer.GetService[ITestRunner[ComposerDescriptor]]();
 
             $composerTestRunner.Test($params["filter"]);
         }
