@@ -4,7 +4,7 @@ using namespace DoFramework.Testing;
 
 Describe 'AdvancedProcessTests' {
     BeforeEach {
-        [IContext] $script:context = [Context]::new([Session]::new())
+        [IContext] $script:context = [Context]::new([Session]::new());
     }
 
     Context 'AdvancedProcessTests' {

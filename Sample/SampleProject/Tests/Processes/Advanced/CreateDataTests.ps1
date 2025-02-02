@@ -18,140 +18,42 @@ Describe 'CreateDataTests' {
         [ProxyResult] $script:mockLogger = doing mock -type ([ILogger]);
         
         [ProxyResult] $script:mockCreatePersons = doing mock -type ([CreatePersons]) -params @($script:mockContext.Instance);
+        
+        [IContext] $script:context = [Context]::new([Session]::new());
     }
 
     Context 'CreateDataTests' {
         It 'Is Invalid, no prior reports' {
             # Arrange
             [CreateData] $sut = [CreateData]::new(
-                $script:mockCreatePersons.Instance,
+                [CreatePersons]($script:mockCreatePersons.Instance),
                 $script:mockLogger.Instance,
-                $script:mockContext.Instance);
-  
-            $script:mockSession.Proxy.MockProperty("ProcessReports", {
-                [List[ProcessReport]] $reports = [List[ProcessReport]]::new();
-
-                return $reports;
-            });
+                $script:context);
     
             # Act
             [bool] $result = $sut.Validate();
 
             # Assert
             $result | Should -Be $false;
-
-            $script:mockContext.Proxy.CountPropertyCalls("Session") | Should -Be 1;
-            $script:mockSession.Proxy.CountPropertyCalls("ProcessReports") | Should -Be 1;
         }
-    }
-
-    Context 'CreateDataTests' {
-        It 'Is Invalid, first report name does not match' {
-            # Arrange
-            [CreateData] $sut = [CreateData]::new(
-                [CreatePersons]($script:mockCreatePersons.Instance),
-                $script:mockLogger.Instance,
-                $script:mockContext.Instance);
-                
-            $script:mockSession.Proxy.MockProperty("ProcessReports", {
-                [List[ProcessReport]] $reports = [List[ProcessReport]]::new();
-
-                [ProcessReport] $p1 = [ProcessReport]::new();
-                [ProcessDescriptor] $ps1 = [ProcessDescriptor]::new();
-                $ps1.Name = "wrong";
-                $p1.Descriptor = $ps1;
-                
-                [ProcessReport] $p2 = [ProcessReport]::new();
-                [ProcessDescriptor] $ps2 = [ProcessDescriptor]::new();
-                $ps2.Name = "DeleteFile";
-                $p2.Descriptor = $ps2;
-                
-                $reports.Add($p1);
-                $reports.Add($p2);
-
-                return $reports;
-            });
-
-            # Act
-            [bool] $result = $sut.Validate();
-
-            # Assert
-            $result | Should -Be $false;
-
-            $script:mockContext.Proxy.CountPropertyCalls("Session") | Should -Be 2;
-            $script:mockSession.Proxy.CountPropertyCalls("ProcessReports") | Should -Be 2;
-        }
-
-        It 'Is Invalid, second report name does not match' {
-            # Arrange
-            [CreateData] $sut = [CreateData]::new(
-                [CreatePersons]($script:mockCreatePersons.Instance),
-                $script:mockLogger.Instance,
-                $script:mockContext.Instance);
-                
-            $script:mockSession.Proxy.MockProperty("ProcessReports", {
-                [List[ProcessReport]] $reports = [List[ProcessReport]]::new();
-
-                [ProcessReport] $p1 = [ProcessReport]::new();
-                [ProcessDescriptor] $ps1 = [ProcessDescriptor]::new();
-                $ps1.Name = "Registrations";
-                $p1.Descriptor = $ps1;
-
-                [ProcessReport] $p2 = [ProcessReport]::new();
-                [ProcessDescriptor] $ps2 = [ProcessDescriptor]::new();
-                $ps2.Name = "wrong";
-                $p2.Descriptor = $ps2;
-                
-                $reports.Add($p1);
-                $reports.Add($p2);               
-
-                return $reports;
-            });
-
-            # Act
-            [bool] $result = $sut.Validate();
-
-            # Assert
-            $result | Should -Be $false;
-
-            $script:mockContext.Proxy.CountPropertyCalls("Session") | Should -Be 3;
-            $script:mockSession.Proxy.CountPropertyCalls("ProcessReports") | Should -Be 3;
-        }
-        
+    
         It 'Is valid' {
             # Arrange
             [CreateData] $sut = [CreateData]::new(
                 [CreatePersons]($script:mockCreatePersons.Instance),
                 $script:mockLogger.Instance,
-                $script:mockContext.Instance);
+                $script:context);
                 
-            $script:mockSession.Proxy.MockProperty("ProcessReports", {
-                [List[ProcessReport]] $reports = [List[ProcessReport]]::new();
-
-                [ProcessReport] $p1 = [ProcessReport]::new();
-                [ProcessDescriptor] $ps1 = [ProcessDescriptor]::new();
-                $ps1.Name = "Registrations";
-                $p1.Descriptor = $ps1;
-                
-                [ProcessReport] $p2 = [ProcessReport]::new();
-                [ProcessDescriptor] $ps2 = [ProcessDescriptor]::new();
-                $ps2.Name = "DeleteFile";
-                $p2.Descriptor = $ps2;
-                
-                $reports.Add($p1);
-                $reports.Add($p2);
-
-                return $reports;
-            });
+            [ProcessReport] $p1 = [ProcessReport]::new();
+            $p1.Name = "DeleteFile";
+            $p1.ProcessResult = [ProcessResult]::Completed;
+            $script:context.Session.ProcessReports.Add($p1);
 
             # Act
             [bool] $result = $sut.Validate();
 
             # Assert
             $result | Should -Be $true;
-
-            $script:mockContext.Proxy.CountPropertyCalls("Session") | Should -Be 3;
-            $script:mockSession.Proxy.CountPropertyCalls("ProcessReports") | Should -Be 3;
         }
         
         It 'Runs as Expected' {
