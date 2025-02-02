@@ -23,7 +23,7 @@ class RunProcess : CLIFunction[DescriptorManagementDictionaryValidator, [IContex
     Constructor for the RunProcess class, which sets up the base name 
     for the command as "Run-Process".
     #>
-    RunProcess() : base("Run-Process") {}
+    RunProcess() : base("Run") {}
 
     [IContext] Invoke([Dictionary[string, object]] $params, [IServiceContainer] $serviceContainer) {      
         [ServiceContainerExtensions]::CheckEnvironment($serviceContainer); 

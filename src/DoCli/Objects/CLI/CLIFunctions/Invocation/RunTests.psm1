@@ -24,7 +24,7 @@ class RunTests : CLIFunction[TestRunnerDictionaryValidator] {
     Constructor for the RunTests class, which sets up the base name 
     for the command as "Run-Tests".
     #>
-    RunTests() : base("Run-Tests") {}
+    RunTests() : base("Test") {}
 
     [void] InvokeInternal([Dictionary[string, object]] $params, [IServiceContainer] $serviceContainer) {        
         [ServiceContainerExtensions]::AddParameters($serviceContainer, $params);
