@@ -150,5 +150,7 @@ public class ComposerOrchestratorTests
         composer.Verify(x => x.Compose(It.IsAny<IComposerWorkBench>()), Times.Once);
 
         session.VerifySet(x => x.ComposedBy = composerName, Times.Once);
+
+        setLocation.Verify(x => x.Set(It.IsAny<string>()), Times.Once);
     }
 }
