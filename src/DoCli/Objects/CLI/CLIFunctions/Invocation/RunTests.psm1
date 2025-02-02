@@ -38,7 +38,8 @@ class RunTests : CLIFunction[TestRunnerDictionaryValidator] {
 
         [bool] $runProcessTests = $cliParams.ParseSwitch("forProcesses");
         [bool] $runModulesTests = $cliParams.ParseSwitch("forModules");
-        [bool] $runAllTests = -not $runProcessTests -and -not $runModulesTests;
+        [bool] $runComposerTests = $cliParams.ParseSwitch("forComposers");
+        [bool] $runAllTests = -not $runProcessTests -and -not $runModulesTests -and -not $runComposerTests;
 
         if ($runProcessTests -or $runAllTests) {
             [ITestRunner[ProcessDescriptor]] $processTestRunner = $serviceContainer.GetService[ITestRunner[ProcessDescriptor]]();
@@ -50,6 +51,12 @@ class RunTests : CLIFunction[TestRunnerDictionaryValidator] {
             [ITestRunner[ModuleDescriptor]] $moduleTestRunner = $serviceContainer.GetService[ITestRunner[ModuleDescriptor]]();
 
             $moduleTestRunner.Test($params["filter"]);
+        }
+        
+        if ($runComposerTests -or $runAllTests) {
+            [ITestRunner[ModuleDescriptor]] $composerTestRunner = $serviceContainer.GetService[ITestRunner[ComposerDescriptor]]();
+
+            $composerTestRunner.Test($params["filter"]);
         }
     }
 }

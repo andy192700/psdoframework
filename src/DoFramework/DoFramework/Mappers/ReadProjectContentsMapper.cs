@@ -70,6 +70,15 @@ public class ReadProjectContentsMapper : IMapper<ProjectContentsStorage, Project
             contents.Tests.Add(descriptor);
         }
 
+        foreach (var test in source.Tests.ComposerTests)
+        {
+            var descriptor = _testDescriptorMapper.Map(_osSanitise.Sanitise(test));
+
+            descriptor.TestType = TestType.Composer;
+
+            contents.Tests.Add(descriptor);
+        }
+
         foreach (var module in source.Modules)
         {
             contents.Modules.Add(_moduleDescriptorMapper.Map(_osSanitise.Sanitise(module)));

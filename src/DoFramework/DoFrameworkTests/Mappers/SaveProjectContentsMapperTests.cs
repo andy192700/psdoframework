@@ -14,7 +14,7 @@ public class SaveProjectContentsMapperTests
         int moduleCount,
         int processTestCount,
         int moduleTestCount,
-        int classTestCount,
+        int composerTestCount,
         string psVersion,
         string version,
         string name
@@ -51,11 +51,11 @@ public class SaveProjectContentsMapperTests
             });
         }
 
-        for (var i = 0; i < classTestCount; i++)
+        for (var i = 0; i < composerTestCount; i++)
         {
             projectContents.Tests.Add(new TestDescriptor
             {
-                TestType = TestType.Process
+                TestType = TestType.Composer
             });
         }
 
@@ -82,5 +82,7 @@ public class SaveProjectContentsMapperTests
         result.Tests.ProcessTests.Should().HaveCount(projectContents.Tests.Count(x => x.TestType == TestType.Process));
 
         result.Tests.ModuleTests.Should().HaveCount(projectContents.Tests.Count(x => x.TestType == TestType.Module));
+
+        result.Tests.ComposerTests.Should().HaveCount(projectContents.Tests.Count(x => x.TestType == TestType.Composer));
     }
 }

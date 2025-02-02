@@ -4,6 +4,7 @@ using module "..\Processing\ProcessBuilder.psm1";
 using module "..\Processing\DisplayReports.psm1";
 using module "..\Testing\ModuleTestRunner.psm1";
 using module "..\Testing\ProcessTesterRunner.psm1";
+using module "..\Testing\ComposerTesterRunner.psm1";
 using module "..\Testing\PesterConfig.psm1";
 using module "..\Testing\PesterRunner.psm1";
 using module "..\Testing\ProxyClassTypeDefinitionBuilder.psm1";
@@ -87,6 +88,7 @@ class ApplicationServiceContainer {
         $container.RegisterService[IConsumeEnvFiles, ConsumeEnvFiles]();
         $container.RegisterService[ITestRunner[ModuleDescriptor], ModuleTestRunner]();
         $container.RegisterService[ITestRunner[ProcessDescriptor], ProcessTesterRunner]();
+        $container.RegisterService[ITestRunner[ComposerDescriptor], ComposerTesterRunner]();
         $container.RegisterService[IResolver[ProcessDescriptor], ProcessResolver]();
         $container.RegisterService[IResolver[ModuleDescriptor], ModuleResolver]();
         $container.RegisterService[IResolver[ComposerDescriptor], ComposerResolver]();
@@ -95,6 +97,7 @@ class ApplicationServiceContainer {
         $container.RegisterService[IPesterRunner, PesterRunner]();
         $container.RegisterService[IDescriptorFileCreator[ProcessDescriptor], ProcessDescriptorFileCreator]();
         $container.RegisterService[IDescriptorFileCreator[ModuleDescriptor], ModuleDescriptorFileCreator]();
+        $container.RegisterService[IDescriptorFileCreator[ComposerDescriptor], ComposerDescriptorFileCreator]();
         $container.RegisterService[IDescriptorFileCreator[TestDescriptor], TestDescriptorFileCreator]();
         $container.RegisterService[IOSSanitise, OSSanitise]();
         $container.RegisterService[ProxyTypeValidator]();

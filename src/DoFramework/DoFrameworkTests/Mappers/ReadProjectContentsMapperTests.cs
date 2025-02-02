@@ -56,6 +56,7 @@ public class ReadProjectContentsMapperTests
 
         result.Tests.Should().HaveCount(
                projectContentsStorage.Tests.ModuleTests.Count
-             + projectContentsStorage.Tests.ProcessTests.Count);
+             + projectContentsStorage.Tests.ProcessTests.Count
+             + projectContentsStorage.Tests.ComposerTests.Count);
     }
 }

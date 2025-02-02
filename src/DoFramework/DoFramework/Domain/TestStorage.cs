@@ -14,4 +14,9 @@ public class TestStorage
     /// Gets or sets the list of module tests associated with the storage.
     /// </summary>
     public List<string> ModuleTests { get; set; } = [];
+
+    /// <summary>
+    /// Gets or sets the list of composer tests associated with the storage.
+    /// </summary>
+    public List<string> ComposerTests { get; set; } = [];
 }

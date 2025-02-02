@@ -41,6 +41,11 @@ public class SaveProjectContentsMapper : IMapper<ProjectContents, ProjectContent
                         contentsToSave.Tests.ModuleTests.Add(test.Path!);
                         break;
                     }
+                case (TestType.Composer):
+                    {
+                        contentsToSave.Tests.ComposerTests.Add(test.Path!);
+                        break;
+                    }
             }
         }
 

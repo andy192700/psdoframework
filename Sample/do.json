@@ -31,7 +31,8 @@
       "Modules\\ReadPersonsFileTests.ps1",
       "Modules\\CreatePersonsTests.ps1",
       "Modules\\ModuleWithFunctionsTests.ps1"
-    ]
+    ],
+    "ComposerTests": []
   },
   "Modules": [
     "Models\\Person.psm1",

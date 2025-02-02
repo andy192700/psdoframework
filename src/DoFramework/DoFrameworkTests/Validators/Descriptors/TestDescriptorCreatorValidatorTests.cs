@@ -218,7 +218,8 @@ public class TestDescriptorCreatorValidatorTests
         var sb = new StringBuilder();
         sb.AppendLine("Please specify a type of test to define.");
         sb.AppendLine("-forProcess for Process tests.");
-        sb.AppendLine("-forModule for module tests.");
+        sb.AppendLine("-forModule for Module tests.");
+        sb.AppendLine("-forComposer for Composer tests.");
 
         result.Errors[0].Should().Be(sb.ToString());
     }
@@ -245,7 +246,7 @@ public class TestDescriptorCreatorValidatorTests
         var descriptor = new TestDescriptor
         {
             Name = $"{name}Tests",
-            TestType = TestType.Process
+            TestType = TestType.Composer
         };
 
         descriptor.Path = $"{path}{DoFramework.Environment.Environment.Separator}{descriptor.Name}{descriptor.Extension}";
@@ -275,7 +276,8 @@ public class TestDescriptorCreatorValidatorTests
             Parameters = new Dictionary<string, object>
             {
                 { "forProcess", true },
-                { "forModule", true }
+                { "forModule", true },
+                { "forComposer", true }
             }
         };
 
@@ -294,7 +296,8 @@ public class TestDescriptorCreatorValidatorTests
         var sb = new StringBuilder();
         sb.AppendLine("Multiple test types requested, only ONE can be selected.");
         sb.AppendLine("-forProcess for Process tests.");
-        sb.AppendLine("-forModule for module tests.");
+        sb.AppendLine("-forModule for Module tests.");
+        sb.AppendLine("-forComposer for Composer tests.");
 
         result.Errors[0].Should().Be(sb.ToString());
     }
