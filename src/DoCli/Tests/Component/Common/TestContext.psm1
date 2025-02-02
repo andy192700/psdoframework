@@ -23,6 +23,8 @@ class TestContext {
         $this.TestOutputFiles.Add("$($this.ComponentTestsPath)$($this.Sep)ModuleTestResults.xml");
         $this.TestOutputFiles.Add("$($this.ComponentTestsPath)$($this.Sep)ProcessTestCoverage.xml");
         $this.TestOutputFiles.Add("$($this.ComponentTestsPath)$($this.Sep)ProcessTestResults.xml");
+        $this.TestOutputFiles.Add("$($this.ComponentTestsPath)$($this.Sep)ComposerTestCoverage.xml");
+        $this.TestOutputFiles.Add("$($this.ComponentTestsPath)$($this.Sep)ComposerTestResults.xml");
     }
 
     [void] SetCurrentPathToTestProject() {
@@ -55,6 +57,18 @@ class TestContext {
         return "$($this.ComponentTestsPath)$($this.Sep)Do$($this.Sep)Tests$($this.Sep)Modules$($this.Sep)$($testName).ps1";
     }
 
+    [string] ComputeComposerPath([string] $composerName) {
+        return "$($this.ComponentTestsPath)$($this.Sep)Do$($this.Sep)Composers$($this.Sep)$($composerName).ps1";
+    }
+
+    [string] ComputeLocalComposerTestPath([string] $testName) {
+        return "Composers$($this.Sep)$testName.ps1";
+    }
+
+    [string] ComputeComposerTestPath([string] $testName) {
+        return "$($this.ComponentTestsPath)$($this.Sep)Do$($this.Sep)Tests$($this.Sep)Composers$($this.Sep)$($testName).ps1";
+    }
+
     [string] ComputeProcessPath([string] $processName) {
         return "$($this.ComponentTestsPath)$($this.Sep)Do$($this.Sep)Processes$($this.Sep)$($processName).ps1";
     }
@@ -78,6 +92,20 @@ class TestContext {
     [bool] ModuleTestOutputsExist() {
         foreach ($file in $this.TestOutputFiles) {
             if ($file -like "*Module*") {
+                [bool] $exists = (Test-Path $file);
+                
+                if (!$exists) {
+                    return $false;
+                }
+            }
+        }
+
+        return $true;
+    }
+
+    [bool] ComposerTestOutputsExist() {
+        foreach ($file in $this.TestOutputFiles) {
+            if ($file -like "*Composer*") {
                 [bool] $exists = (Test-Path $file);
                 
                 if (!$exists) {
