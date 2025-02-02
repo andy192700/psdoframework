@@ -22,7 +22,7 @@ class RunTests : CLIFunction[TestRunnerDictionaryValidator] {
 
     .DESCRIPTION
     Constructor for the RunTests class, which sets up the base name 
-    for the command as "Run-Tests".
+    for the command as "Test".
     #>
     RunTests() : base("Test") {}
 

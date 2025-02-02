@@ -12,17 +12,17 @@ using module "..\..\..\..\Objects\Testing\ProcessTesterRunner.psm1";
 
 Describe 'ProcessTestRunnerTests' {
     BeforeEach {
-        [ProxyResult] $mockEnv = doing create-proxy -type ([IEnvironment]);
+        [ProxyResult] $mockEnv = doing mock -type ([IEnvironment]);
 
-        [ProxyResult] $script:mockLogger = doing create-proxy -type ([ILogger]);
+        [ProxyResult] $script:mockLogger = doing mock -type ([ILogger]);
 
-        [ProxyResult] $script:mockProvider = doing create-proxy -type ([IDataCollectionProvider[TestDescriptor, string]]);
+        [ProxyResult] $script:mockProvider = doing mock -type ([IDataCollectionProvider[TestDescriptor, string]]);
         
-        [ProxyResult] $script:pesterRunner = doing create-proxy -type ([IPesterRunner]);
+        [ProxyResult] $script:pesterRunner = doing mock -type ([IPesterRunner]);
 
-        [ProxyResult] $script:mockResolver = doing create-proxy -type ([IResolver[ProcessDescriptor]]);
+        [ProxyResult] $script:mockResolver = doing mock -type ([IResolver[ProcessDescriptor]]);
 
-        [ProxyResult] $script:mockTypeLookup = doing create-proxy -type ([ILookupProcessType]);
+        [ProxyResult] $script:mockTypeLookup = doing mock -type ([ILookupProcessType]);
 
         [CLIFunctionParameters] $params = [CLIFunctionParameters]::new();
 
@@ -54,11 +54,11 @@ Describe 'ProcessTestRunnerTests' {
         $sut.Test($processName);
 
         # Assert
-        $mockProvider.Proxy.CountCalls("Provide", (doing read-args -parameter $processName)) | Should -Be 1;
+        $mockProvider.Proxy.CountCalls("Provide", (doing args -parameter $processName)) | Should -Be 1;
 
         $mockLogger.Proxy.CountCalls("LogInfo") | Should -Be 1;   
 
-        $mockLogger.Proxy.CountCalls("LogInfo", (doing read-args -message "Found 0 candidate process test files.")) | Should -Be 1;
+        $mockLogger.Proxy.CountCalls("LogInfo", (doing args -message "Found 0 candidate process test files.")) | Should -Be 1;
 
         $pesterRunner.Proxy.CountCalls("Run") | Should -Be 0;  
     }
@@ -107,13 +107,13 @@ Describe 'ProcessTestRunnerTests' {
         $func | Should -Throw;
 
         # Assert
-        $mockProvider.Proxy.CountCalls("Provide", (doing read-args -parameter $processName)) | Should -Be 1;
+        $mockProvider.Proxy.CountCalls("Provide", (doing args -parameter $processName)) | Should -Be 1;
 
-        $mockLogger.Proxy.CountCalls("LogFatal", (doing read-args -message "Process $($processName) does not exist")) | Should -Be 1;  
+        $mockLogger.Proxy.CountCalls("LogFatal", (doing args -message "Process $($processName) does not exist")) | Should -Be 1;  
 
         $mockLogger.Proxy.CountCalls("LogInfo") | Should -Be 1;   
 
-        $mockLogger.Proxy.CountCalls("LogInfo", (doing read-args -message "Found 2 candidate process test files.")) | Should -Be 1;
+        $mockLogger.Proxy.CountCalls("LogInfo", (doing args -message "Found 2 candidate process test files.")) | Should -Be 1;
 
         $pesterRunner.Proxy.CountCalls("Run") | Should -Be 0; 
     }
@@ -151,7 +151,7 @@ Describe 'ProcessTestRunnerTests' {
             return [ResolutionResult[ProcessDescriptor]]::new($true, "ProcessName", $descriptor);
         });
 
-        [ProxyResult] $mockReadProcessLocation = doing create-proxy -type ([IReadProcessLocation]);
+        [ProxyResult] $mockReadProcessLocation = doing mock -type ([IReadProcessLocation]);
 
         $mockReadProcessLocation.Proxy.MockMethod("Read", {
             [string] $currentDir = (Get-Location);
@@ -159,7 +159,7 @@ Describe 'ProcessTestRunnerTests' {
             return (Join-Path -ChildPath "$($sep)src$($sep)DoCli$($sep)Tests$($sep)Component" -Path $currentDir);
         });
 
-        [ProxyResult] $mockFileSystem = doing create-proxy -type ([IFileManager]);
+        [ProxyResult] $mockFileSystem = doing mock -type ([IFileManager]);
 
         $mockFileSystem.Proxy.MockMethod("FileExists", {
             param ([string] $path)
@@ -167,7 +167,7 @@ Describe 'ProcessTestRunnerTests' {
             return $true;
         });
         
-        [ProxyResult] $mockProjectProvider = doing create-proxy -type ([ISimpleDataProvider[ProjectContents]]);
+        [ProxyResult] $mockProjectProvider = doing mock -type ([ISimpleDataProvider[ProjectContents]]);
 
         $mockProjectProvider.Proxy.MockMethod("Provide", {
             [ProjectContents] $contents = [ProjectContents]::new();
@@ -203,17 +203,17 @@ Describe 'ProcessTestRunnerTests' {
         $sut.Test($processName);
 
         # Assert
-        $mockProvider.Proxy.CountCalls("Provide", (doing read-args -parameter $processName)) | Should -Be 1;
+        $mockProvider.Proxy.CountCalls("Provide", (doing args -parameter $processName)) | Should -Be 1;
 
         $mockLogger.Proxy.CountCalls("LogFatal") | Should -Be 0;
 
         $mockLogger.Proxy.CountCalls("LogInfo") | Should -Be 4;   
 
-        $mockLogger.Proxy.CountCalls("LogInfo", (doing read-args -message "Importing Process 'ProcessName'.")) | Should -Be 2;
+        $mockLogger.Proxy.CountCalls("LogInfo", (doing args -message "Importing Process 'ProcessName'.")) | Should -Be 2;
 
-        $mockLogger.Proxy.CountCalls("LogInfo", (doing read-args -message "Found 2 candidate process test files.")) | Should -Be 1;
+        $mockLogger.Proxy.CountCalls("LogInfo", (doing args -message "Found 2 candidate process test files.")) | Should -Be 1;
 
-        $mockLogger.Proxy.CountCalls("LogInfo", (doing read-args -message "Running 2 process test files.")) | Should -Be 1;
+        $mockLogger.Proxy.CountCalls("LogInfo", (doing args -message "Running 2 process test files.")) | Should -Be 1;
 
         $pesterRunner.Proxy.CountCalls("Run") | Should -Be 1;
         

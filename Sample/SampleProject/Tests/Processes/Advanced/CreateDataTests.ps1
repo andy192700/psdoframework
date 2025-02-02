@@ -7,17 +7,17 @@ using module "..\..\..\Modules\CreatePersons.psm1";
 
 Describe 'CreateDataTests' {
     BeforeEach {
-        [ProxyResult] $script:mockSession = doing create-proxy -type ([ISession]);
+        [ProxyResult] $script:mockSession = doing mock -type ([ISession]);
 
-        [ProxyResult] $script:mockContext = doing create-proxy -type ([IContext]);
+        [ProxyResult] $script:mockContext = doing mock -type ([IContext]);
 
         $script:mockContext.Proxy.MockProperty("Session", {
             return $script:mockSession.Instance;
         });
         
-        [ProxyResult] $script:mockLogger = doing create-proxy -type ([ILogger]);
+        [ProxyResult] $script:mockLogger = doing mock -type ([ILogger]);
         
-        [ProxyResult] $script:mockCreatePersons = doing create-proxy -type ([CreatePersons]) -params @($script:mockContext.Instance);
+        [ProxyResult] $script:mockCreatePersons = doing mock -type ([CreatePersons]) -params @($script:mockContext.Instance);
     }
 
     Context 'CreateDataTests' {
@@ -166,8 +166,8 @@ Describe 'CreateDataTests' {
 
             # Assert
             $script:mockLogger.Proxy.CountCalls("LogInfo") | Should -Be 2;
-            $script:mockLogger.Proxy.CountCalls("LogInfo", (doing read-args -message "Creating persons data...")) | Should -Be 1;
-            $script:mockLogger.Proxy.CountCalls("LogInfo", (doing read-args -message "Created persons data...")) | Should -Be 1;
+            $script:mockLogger.Proxy.CountCalls("LogInfo", (doing args -message "Creating persons data...")) | Should -Be 1;
+            $script:mockLogger.Proxy.CountCalls("LogInfo", (doing args -message "Created persons data...")) | Should -Be 1;
 
             $script:mockCreatePersons.Proxy.CountCalls("Create") | Should -Be 1;
 
@@ -180,7 +180,7 @@ Describe 'CreateDataTests' {
             [string] $processName = "CreateData";
 
             # Act
-            [IContext] $result = doing run-process -name $processName -doOutput -silent;
+            [IContext] $result = doing run -name $processName -doOutput -silent;
 
             # Assert
             $result | Should -Not -Be $null;

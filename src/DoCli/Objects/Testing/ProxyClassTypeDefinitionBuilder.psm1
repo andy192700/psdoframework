@@ -165,10 +165,10 @@ class ProxyClassTypeDefinitionBuilder {
         $sb.AppendLine("[$($this.CleanTypeName($method.ReturnType.FullName))] $($method.Name)($paramSignatureString) {");
 
         if ($method.ReturnType -eq [Void]) {
-            $sb.AppendLine("`$this.Proxy.Invoke((doing get-methodinfo -methodName $($method.Name) -type (`$this.GetType().BaseType) -parameters (doing read-args $paramDefinitionString)), @( $suppliedParamString ));");
+            $sb.AppendLine("`$this.Proxy.Invoke((doing get-methodinfo -methodName $($method.Name) -type (`$this.GetType().BaseType) -parameters (doing args $paramDefinitionString)), @( $suppliedParamString ));");
         }
         else {
-            $sb.AppendLine("return `$this.Proxy.Invoke((doing get-methodinfo -methodName $($method.Name) -type (`$this.GetType().BaseType) -parameters (doing read-args $paramDefinitionString)), @( $suppliedParamString ));");
+            $sb.AppendLine("return `$this.Proxy.Invoke((doing get-methodinfo -methodName $($method.Name) -type (`$this.GetType().BaseType) -parameters (doing args $paramDefinitionString)), @( $suppliedParamString ));");
         }
 
         $sb.AppendLine("}");

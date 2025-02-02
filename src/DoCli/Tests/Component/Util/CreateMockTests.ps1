@@ -17,7 +17,7 @@ Describe 'CreateProxyClassTests' {
 
     it 'Cannot instantiate invalid class' {
         # Arrange / Act
-        $result = doing create-proxy -type ([SealedClass]);
+        $result = doing mock -type ([SealedClass]);
 
         # Assert
         $result | Should -Be $null;
@@ -28,7 +28,7 @@ Describe 'CreateProxyClassTests' {
         [Type] $testType = [BasicClass];
 
         # Act
-        [ProxyResult] $result = doing create-proxy -type $testType;
+        [ProxyResult] $result = doing mock -type $testType;
 
         # Assert
         $result | Should -Not -Be $null;
@@ -45,7 +45,7 @@ Describe 'CreateProxyClassTests' {
         [string] $testString = "AString";
 
         # Act
-        $result = doing create-proxy -type ($testType) -params @($testString);
+        $result = doing mock -type ($testType) -params @($testString);
 
         # Assert
         $result | Should -Be $null;
@@ -58,8 +58,8 @@ Describe 'CreateProxyClassTests' {
         [int] $testInt = 3;
 
         # Act
-        [ProxyResult] $result1 = doing create-proxy -type $testType -params @($testString);
-        [ProxyResult] $result2 = doing create-proxy -type $testType -params @($testString, $testInt);
+        [ProxyResult] $result1 = doing mock -type $testType -params @($testString);
+        [ProxyResult] $result2 = doing mock -type $testType -params @($testString, $testInt);
 
         # Assert
         $result1 | Should -Not -Be $null;
@@ -94,7 +94,7 @@ Describe 'CreateProxyClassTests' {
         [string] $methodName = "StringMethod";
 
         # Act
-        [ProxyResult] $result = doing create-proxy -type $testType;
+        [ProxyResult] $result = doing mock -type $testType;
 
         $result.Proxy.MockMethod($methodName, {
             return $returnString1;
@@ -123,15 +123,15 @@ Describe 'CreateProxyClassTests' {
         $result.Instance.StringMethod($input1, $input2) | Should -Be $returnString3;
         
         $result.Proxy.CountCalls($methodName) | Should -Be 3;
-        $result.Proxy.CountCalls($methodName, (doing read-args -input1 $input1)) | Should -Be 1;        
-        $result.Proxy.CountCalls($methodName, (doing read-args -input1 $input1 -input2 $input2)) | Should -Be 1;
+        $result.Proxy.CountCalls($methodName, (doing args -input1 $input1)) | Should -Be 1;        
+        $result.Proxy.CountCalls($methodName, (doing args -input1 $input1 -input2 $input2)) | Should -Be 1;
     }
 }
 
 Describe 'CreateProxyInterfaceTests' {
 
     BeforeEach {        
-        [ProxyResult] $script:sut = doing create-proxy -type ([ISampleInterface]);
+        [ProxyResult] $script:sut = doing mock -type ([ISampleInterface]);
         
         [object] $script:testObj = [object]::new();
 
@@ -203,7 +203,7 @@ Describe 'CreateProxyInterfaceTests' {
 
             # Assert
             $sut.Proxy.CountCalls("VoidNoParams") | Should -Be 0;
-            $sut.Proxy.CountCalls("VoidWithParams", (doing read-args -someObj $testObj -someFloat $testFloat)) | Should -Be 1;
+            $sut.Proxy.CountCalls("VoidWithParams", (doing args -someObj $testObj -someFloat $testFloat)) | Should -Be 1;
         }
         
         it 'Returns double no params' {
@@ -237,7 +237,7 @@ Describe 'CreateProxyInterfaceTests' {
             $result | Should -Be $testDouble;
 
             $sut.Proxy.CountCalls("ReturnsADoubleNoParams") | Should -Be 0;
-            $sut.Proxy.CountCalls("ReturnsADoubleWithParams", (doing read-args -someObj $testObj -someFloat $testFloat)) | Should -Be 1;
+            $sut.Proxy.CountCalls("ReturnsADoubleWithParams", (doing args -someObj $testObj -someFloat $testFloat)) | Should -Be 1;
         }
         
         it 'Returns list no params' {
@@ -294,7 +294,7 @@ Describe 'CreateProxyInterfaceTests' {
             }
 
             $sut.Proxy.CountCalls("ReturnsAListNoParams") | Should -Be 0;
-            $sut.Proxy.CountCalls("ReturnsAListWithParams", (doing read-args -someObj $testObj -someFloat $testFloat)) | Should -Be 1;
+            $sut.Proxy.CountCalls("ReturnsAListWithParams", (doing args -someObj $testObj -someFloat $testFloat)) | Should -Be 1;
         }
         
         it 'Returns dictionary no params' {
@@ -334,7 +334,7 @@ Describe 'CreateProxyInterfaceTests' {
             }            
 
             $sut.Proxy.CountCalls("ReturnsADictionaryNoParams") | Should -Be 0;
-            $sut.Proxy.CountCalls("ReturnsADictionaryWithParams", (doing read-args -someInt $testInt)) | Should -Be 1;
+            $sut.Proxy.CountCalls("ReturnsADictionaryWithParams", (doing args -someInt $testInt)) | Should -Be 1;
         }
 
         it 'Returns dictionary with params' {
@@ -353,7 +353,7 @@ Describe 'CreateProxyInterfaceTests' {
             $result[0] | Should -Be $testDict[0];
 
             $sut.Proxy.CountCalls("ReturnsADictionaryNoParams") | Should -Be 0;
-            $sut.Proxy.CountCalls("ReturnsADictionaryWithParams", (doing read-args -someInt $testInt)) | Should -Be 1;
+            $sut.Proxy.CountCalls("ReturnsADictionaryWithParams", (doing args -someInt $testInt)) | Should -Be 1;
         }
 
         it 'Returns array no params' {
@@ -410,7 +410,7 @@ Describe 'CreateProxyInterfaceTests' {
             }
 
             $sut.Proxy.CountCalls("ReturnsAnArrayNoParams") | Should -Be 0;
-            $sut.Proxy.CountCalls("ReturnsAnArrayWithParams", (doing read-args -someInt $testInt)) | Should -Be 1;
+            $sut.Proxy.CountCalls("ReturnsAnArrayWithParams", (doing args -someInt $testInt)) | Should -Be 1;
         }
 
         it 'Returns empty array' {
@@ -444,7 +444,7 @@ Describe 'CreateProxyInterfaceTests' {
             $result.Count | Should -Be 0;
 
             $sut.Proxy.CountCalls("ReturnsAListNoParams") | Should -Be 0;
-            $sut.Proxy.CountCalls("ReturnsAListWithParams", (doing read-args -someObj $testObj -someFloat $testFloat)) | Should -Be 1;
+            $sut.Proxy.CountCalls("ReturnsAListWithParams", (doing args -someObj $testObj -someFloat $testFloat)) | Should -Be 1;
         }
 
         it 'Returns empty list' {
@@ -457,7 +457,7 @@ Describe 'CreateProxyInterfaceTests' {
             $result.Count | Should -Be 0;
 
             $sut.Proxy.CountCalls("ReturnsAListNoParams") | Should -Be 0;
-            $sut.Proxy.CountCalls("ReturnsAListWithParams", (doing read-args -someObj $testObj -someFloat $testFloat)) | Should -Be 10;
+            $sut.Proxy.CountCalls("ReturnsAListWithParams", (doing args -someObj $testObj -someFloat $testFloat)) | Should -Be 10;
 
             $sut.Proxy.Reset();
             
@@ -466,7 +466,7 @@ Describe 'CreateProxyInterfaceTests' {
 
         It 'Mocks Generic Interface' {
             # Arrange
-            [ProxyResult] $result = doing create-proxy -type ([IList[string]]);
+            [ProxyResult] $result = doing mock -type ([IList[string]]);
 
             # Act
             $result.Instance.Clear();

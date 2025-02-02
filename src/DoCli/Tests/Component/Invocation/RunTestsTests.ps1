@@ -18,7 +18,7 @@ Describe 'RunTestsTests' {
 
     it 'Runs Tests and no results are written out' {
         # Arrange / Act
-        doing run-tests -filter .* -silent;
+        doing test -filter .* -silent;
 
         # Assert
         [bool] $moduleOutputsExist = $script:context.ModuleTestOutputsExist();
@@ -32,7 +32,7 @@ Describe 'RunTestsTests' {
 
     it 'Runs Tests and Results are Written Out NUnitXml' {
         # Arrange / Act
-        doing run-tests -filter .* -outputFormat NUnitXml -silent;
+        doing test -filter .* -outputFormat NUnitXml -silent;
 
         # Assert
         [bool] $moduleOutputsExist = $script:context.ModuleTestOutputsExist();
@@ -56,7 +56,7 @@ Describe 'RunTestsTests' {
 
     it 'Runs Tests and Results are Written Out NUnitXml Filtered' {
         # Arrange / Act
-        doing run-tests -filter Tests -outputFormat NUnitXml -silent;
+        doing test -filter Tests -outputFormat NUnitXml -silent;
 
         # Assert
         [bool] $moduleOutputsExist = $script:context.ModuleTestOutputsExist();
@@ -80,7 +80,7 @@ Describe 'RunTestsTests' {
 
     it 'Runs Tests and Results are Written Out NUnitXml Filtered No Tests' {
         # Arrange / Act
-        doing run-tests -filter WillNotFindAny -outputFormat NUnitXml -silent;
+        doing test -filter WillNotFindAny -outputFormat NUnitXml -silent;
 
         # Assert
         [bool] $moduleOutputsExist = $script:context.ModuleTestOutputsExist();
@@ -94,7 +94,7 @@ Describe 'RunTestsTests' {
 
     it 'Runs Tests and Results are Written Out JUnitXml' {
         # Arrange / Act
-        doing run-tests -filter .* -outputFormat JUnitXml -silent;
+        doing test -filter .* -outputFormat JUnitXml -silent;
 
         # Assert
         [bool] $moduleOutputsExist = $script:context.ModuleTestOutputsExist();
@@ -117,7 +117,7 @@ Describe 'RunTestsTests' {
     } 
 
     it 'Runs Process Tests and Results are Written Out NUnitXml' {
-        doing run-tests -filter .* -outputFormat NUnitXml -forProcesses -silent;
+        doing test -filter .* -outputFormat NUnitXml -forProcesses -silent;
 
         # Assert
         [bool] $moduleOutputsExist = $script:context.ModuleTestOutputsExist();
@@ -136,7 +136,7 @@ Describe 'RunTestsTests' {
     } 
 
     it 'Runs Process Tests and Results are Written Out NUnitXml Filtered' {
-        doing run-tests -filter Tests -outputFormat NUnitXml -forProcesses -silent;
+        doing test -filter Tests -outputFormat NUnitXml -forProcesses -silent;
 
         # Assert
         [bool] $moduleOutputsExist = $script:context.ModuleTestOutputsExist();
@@ -156,7 +156,7 @@ Describe 'RunTestsTests' {
 
     it 'Runs Process Tests and Results are Written Out NUnitXml Filtered No Tests' {
         # Arrange / Act
-        doing run-tests -filter WillNotFindAny -outputFormat NUnitXml -forProcesses -silent;
+        doing test -filter WillNotFindAny -outputFormat NUnitXml -forProcesses -silent;
 
         # Assert
         [bool] $moduleOutputsExist = $script:context.ModuleTestOutputsExist();
@@ -170,7 +170,7 @@ Describe 'RunTestsTests' {
 
     it 'Runs Process Tests and Results are Written Out JUnitXml' {
         # Arrange / Act
-        doing run-tests -filter Tests -outputFormat JUnitXml -forProcesses -silent;
+        doing test -filter Tests -outputFormat JUnitXml -forProcesses -silent;
 
         # Assert
         [bool] $moduleOutputsExist = $script:context.ModuleTestOutputsExist();
@@ -189,7 +189,7 @@ Describe 'RunTestsTests' {
     } 
 
     it 'Runs Module Tests and Results are Written Out NUnitXml' {
-        doing run-tests -filter .* -outputFormat NUnitXml -forModules -silent;
+        doing test -filter .* -outputFormat NUnitXml -forModules -silent;
 
         # Assert
         [bool] $moduleOutputsExist = $script:context.ModuleTestOutputsExist();
@@ -208,7 +208,7 @@ Describe 'RunTestsTests' {
     } 
 
     it 'Runs Module Tests and Results are Written Out NUnitXml Filtered' {
-        doing run-tests -filter Tests -outputFormat NUnitXml -forModules -silent;
+        doing test -filter Tests -outputFormat NUnitXml -forModules -silent;
 
         # Assert
         [bool] $moduleOutputsExist = $script:context.ModuleTestOutputsExist();
@@ -228,7 +228,7 @@ Describe 'RunTestsTests' {
 
     it 'Runs Module Tests and Results are Written Out NUnitXml Filtered No Tests' {
         # Arrange / Act
-        doing run-tests -filter WillNotFindAny -outputFormat NUnitXml -forModules -silent;
+        doing test -filter WillNotFindAny -outputFormat NUnitXml -forModules -silent;
 
         # Assert
         [bool] $moduleOutputsExist = $script:context.ModuleTestOutputsExist();
@@ -242,7 +242,7 @@ Describe 'RunTestsTests' {
 
     it 'Runs Module Tests and Results are Written Out JUnitXml' {
         # Arrange / Act
-        doing run-tests -filter Tests -outputFormat JUnitXml -forModules -silent;
+        doing test -filter Tests -outputFormat JUnitXml -forModules -silent;
 
         # Assert
         [bool] $moduleOutputsExist = $script:context.ModuleTestOutputsExist();

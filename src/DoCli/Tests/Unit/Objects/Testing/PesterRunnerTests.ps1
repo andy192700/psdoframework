@@ -10,7 +10,7 @@ Describe 'PesterRunnerTests' {
         # Ensure native PowerShell methods are mock-able by using Invoke-Expression rather than a using module statement.
         Invoke-Expression -Command "$(Get-Content "$PSScriptRoot$($sep)..$($sep)..$($sep)..$($sep)..$($sep)Objects$($sep)Testing$($sep)PesterRunner.psm1")";
 
-        [ProxyResult] $mockEnv = doing create-proxy -type ([IEnvironment]);
+        [ProxyResult] $mockEnv = doing mock -type ([IEnvironment]);
 
         [CLIFunctionParameters] $params = [CLIFunctionParameters]::new();
 

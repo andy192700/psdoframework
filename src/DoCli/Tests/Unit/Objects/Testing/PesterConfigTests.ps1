@@ -6,7 +6,7 @@ using module "..\..\..\..\Objects\Testing\PesterConfig.psm1";
 
 Describe 'PesterConfigTests' {
     BeforeEach {
-        [ProxyResult] $script:mockEnv = doing create-proxy -type ([IEnvironment]);
+        [ProxyResult] $script:mockEnv = doing mock -type ([IEnvironment]);
 
         $mockEnv.Instance.HomeDir = "HomeDirectory";
 

@@ -13,20 +13,20 @@ using namespace DoFramework.Services;
 Class for creating proxies within the DoFramework environment.
 
 .DESCRIPTION
-The CreateProxy class is designed to create proxies for specified types within 
+The CreateMock class is designed to create proxies for specified types within 
 the DoFramework environment. It handles the setup of parameters, validation of 
 types, and creation of proxy instances.
 #>
-class CreateProxy : CLIFunction[EmptyCLIFunctionDictionaryValidator, ProxyResult] {
+class CreateMock : CLIFunction[EmptyCLIFunctionDictionaryValidator, ProxyResult] {
     <#
     .SYNOPSIS
-    Initializes a new instance of the CreateProxy class.
+    Initializes a new instance of the CreateMock class.
 
     .DESCRIPTION
-    Constructor for the CreateProxy class, which sets up the base name 
-    for the command as "Create-Proxy".
+    Constructor for the CreateMock class, which sets up the base name 
+    for the command as "Mock".
     #>
-    CreateProxy() : base("Create-Proxy") {}
+    CreateMock() : base("Mock") {}
 
     <#
     .SYNOPSIS

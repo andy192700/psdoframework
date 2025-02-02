@@ -3,7 +3,7 @@ using namespace System.Collections.Generic;
 Describe "ReadArgsTests" {
     it "Returns Empty Dictionary" {
         # Arrange/Act
-        [Dictionary[string, object]] $result = doing Read-Args;
+        [Dictionary[string, object]] $result = doing args;
 
         # Assert
         $result | Should -Not -Be $null;
@@ -21,7 +21,7 @@ Describe "ReadArgsTests" {
             $listArg.Add($i.ToString());
         }
 
-        [Dictionary[string, object]] $result = doing Read-Args -item1 $stringArg -item2 $intArg -item3 $listArg;
+        [Dictionary[string, object]] $result = doing args -item1 $stringArg -item2 $intArg -item3 $listArg;
 
         # Assert
         $result | Should -Not -Be $null;

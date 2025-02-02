@@ -7,17 +7,17 @@ using module "..\..\..\Modules\DeletePersonsFile.psm1";
 
 Describe 'DeleteFileTests' {
     BeforeEach {
-        [ProxyResult] $script:mockSession = doing create-proxy -type ([ISession]);
+        [ProxyResult] $script:mockSession = doing mock -type ([ISession]);
 
-        [ProxyResult] $script:mockContext = doing create-proxy -type ([IContext]);
+        [ProxyResult] $script:mockContext = doing mock -type ([IContext]);
 
         $script:mockContext.Proxy.MockProperty("Session", {
             return $script:mockSession.Instance;
         });
         
-        [ProxyResult] $script:mockLogger = doing create-proxy -type ([ILogger]);
+        [ProxyResult] $script:mockLogger = doing mock -type ([ILogger]);
         
-        [ProxyResult] $script:mockDeletePersonsFile = doing create-proxy -type ([DeletePersonsFile]) -params @($script:mockContext.Instance);
+        [ProxyResult] $script:mockDeletePersonsFile = doing mock -type ([DeletePersonsFile]) -params @($script:mockContext.Instance);
     }
     Context 'DeleteFileTests' {
         It 'Is Invalid, no prior reports' {
@@ -111,7 +111,7 @@ Describe 'DeleteFileTests' {
 
             $script:mockContext.Proxy.CountPropertyCalls("Session") | Should -Be 2;
             $script:mockContext.Proxy.CountCalls("KeyExists") | Should -Be 1;
-            $script:mockContext.Proxy.CountCalls("KeyExists", (doing read-args -key "PersonsFilePath")) | Should -Be 1;
+            $script:mockContext.Proxy.CountCalls("KeyExists", (doing args -key "PersonsFilePath")) | Should -Be 1;
             $script:mockSession.Proxy.CountPropertyCalls("ProcessReports") | Should -Be 2;
         }
 
@@ -151,7 +151,7 @@ Describe 'DeleteFileTests' {
 
             $script:mockContext.Proxy.CountPropertyCalls("Session") | Should -Be 2;
             $script:mockContext.Proxy.CountCalls("KeyExists") | Should -Be 1;
-            $script:mockContext.Proxy.CountCalls("KeyExists", (doing read-args -key "PersonsFilePath")) | Should -Be 1;
+            $script:mockContext.Proxy.CountCalls("KeyExists", (doing args -key "PersonsFilePath")) | Should -Be 1;
             $script:mockSession.Proxy.CountPropertyCalls("ProcessReports") | Should -Be 2;
         }
         
@@ -167,8 +167,8 @@ Describe 'DeleteFileTests' {
 
             # Assert
             $script:mockLogger.Proxy.CountCalls("LogInfo") | Should -Be 2;
-            $script:mockLogger.Proxy.CountCalls("LogInfo", (doing read-args -message "Deleting persons file...")) | Should -Be 1;
-            $script:mockLogger.Proxy.CountCalls("LogInfo", (doing read-args -message "Deleted persons file...")) | Should -Be 1;
+            $script:mockLogger.Proxy.CountCalls("LogInfo", (doing args -message "Deleting persons file...")) | Should -Be 1;
+            $script:mockLogger.Proxy.CountCalls("LogInfo", (doing args -message "Deleted persons file...")) | Should -Be 1;
 
             $script:mockDeletePersonsFile.Proxy.CountCalls("Delete") | Should -Be 1;
 
@@ -182,7 +182,7 @@ Describe 'DeleteFileTests' {
             [string] $processName = "DeleteFile";
 
             # Act
-            [IContext] $result = doing run-process -name $processName -doOutput -silent;
+            [IContext] $result = doing run -name $processName -doOutput -silent;
 
             # Assert
             $result | Should -Not -Be $null;

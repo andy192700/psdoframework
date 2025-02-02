@@ -4,9 +4,9 @@ using namespace DoFramework.Testing;
 
 Describe 'AdvancedProcessTests' {
     BeforeEach {
-        [ProxyResult] $script:mockContext = doing create-proxy -type ([IContext]);
+        [ProxyResult] $script:mockContext = doing mock -type ([IContext]);
         
-        [ProxyResult] $script:mockDispatcher = doing create-proxy -type ([IProcessDispatcher]);
+        [ProxyResult] $script:mockDispatcher = doing mock -type ([IProcessDispatcher]);
     }
 
     Context 'AdvancedProcessTests' {
@@ -26,15 +26,15 @@ Describe 'AdvancedProcessTests' {
             # Assert
             $result | Should -Be $false;
             $script:mockContext.Proxy.CountCalls("KeyExists") | Should -Be 1; 
-            $script:mockContext.Proxy.CountCalls("KeyExists", (doing Read-Args -key "Person1FirstName")) | Should -Be 1;
-            $script:mockContext.Proxy.CountCalls("KeyExists", (doing Read-Args -key "Person1LastName")) | Should -Be 0;
-            $script:mockContext.Proxy.CountCalls("KeyExists", (doing Read-Args -key "Person1Age")) | Should -Be 0;
-            $script:mockContext.Proxy.CountCalls("KeyExists", (doing Read-Args -key "Person2FirstName")) | Should -Be 0;
-            $script:mockContext.Proxy.CountCalls("KeyExists", (doing Read-Args -key "Person2LastName")) | Should -Be 0;
-            $script:mockContext.Proxy.CountCalls("KeyExists", (doing Read-Args -key "Person2Age")) | Should -Be 0;
-            $script:mockContext.Proxy.CountCalls("KeyExists", (doing Read-Args -key "Person3FirstName")) | Should -Be 0;
-            $script:mockContext.Proxy.CountCalls("KeyExists", (doing Read-Args -key "Person3LastName")) | Should -Be 0;
-            $script:mockContext.Proxy.CountCalls("KeyExists", (doing Read-Args -key "Person3Age")) | Should -Be 0;
+            $script:mockContext.Proxy.CountCalls("KeyExists", (doing args -key "Person1FirstName")) | Should -Be 1;
+            $script:mockContext.Proxy.CountCalls("KeyExists", (doing args -key "Person1LastName")) | Should -Be 0;
+            $script:mockContext.Proxy.CountCalls("KeyExists", (doing args -key "Person1Age")) | Should -Be 0;
+            $script:mockContext.Proxy.CountCalls("KeyExists", (doing args -key "Person2FirstName")) | Should -Be 0;
+            $script:mockContext.Proxy.CountCalls("KeyExists", (doing args -key "Person2LastName")) | Should -Be 0;
+            $script:mockContext.Proxy.CountCalls("KeyExists", (doing args -key "Person2Age")) | Should -Be 0;
+            $script:mockContext.Proxy.CountCalls("KeyExists", (doing args -key "Person3FirstName")) | Should -Be 0;
+            $script:mockContext.Proxy.CountCalls("KeyExists", (doing args -key "Person3LastName")) | Should -Be 0;
+            $script:mockContext.Proxy.CountCalls("KeyExists", (doing args -key "Person3Age")) | Should -Be 0;
         }
         It 'Is valid' {
             # Arrange
@@ -52,15 +52,15 @@ Describe 'AdvancedProcessTests' {
             # Assert
             $result | Should -Be $true;
             $script:mockContext.Proxy.CountCalls("KeyExists") | Should -Be 9; 
-            $script:mockContext.Proxy.CountCalls("KeyExists", (doing Read-Args -key "Person1FirstName")) | Should -Be 1;
-            $script:mockContext.Proxy.CountCalls("KeyExists", (doing Read-Args -key "Person1LastName")) | Should -Be 1;
-            $script:mockContext.Proxy.CountCalls("KeyExists", (doing Read-Args -key "Person1Age")) | Should -Be 1;
-            $script:mockContext.Proxy.CountCalls("KeyExists", (doing Read-Args -key "Person2FirstName")) | Should -Be 1;
-            $script:mockContext.Proxy.CountCalls("KeyExists", (doing Read-Args -key "Person2LastName")) | Should -Be 1;
-            $script:mockContext.Proxy.CountCalls("KeyExists", (doing Read-Args -key "Person2Age")) | Should -Be 1;
-            $script:mockContext.Proxy.CountCalls("KeyExists", (doing Read-Args -key "Person3FirstName")) | Should -Be 1;
-            $script:mockContext.Proxy.CountCalls("KeyExists", (doing Read-Args -key "Person3LastName")) | Should -Be 1;
-            $script:mockContext.Proxy.CountCalls("KeyExists", (doing Read-Args -key "Person3Age")) | Should -Be 1;
+            $script:mockContext.Proxy.CountCalls("KeyExists", (doing args -key "Person1FirstName")) | Should -Be 1;
+            $script:mockContext.Proxy.CountCalls("KeyExists", (doing args -key "Person1LastName")) | Should -Be 1;
+            $script:mockContext.Proxy.CountCalls("KeyExists", (doing args -key "Person1Age")) | Should -Be 1;
+            $script:mockContext.Proxy.CountCalls("KeyExists", (doing args -key "Person2FirstName")) | Should -Be 1;
+            $script:mockContext.Proxy.CountCalls("KeyExists", (doing args -key "Person2LastName")) | Should -Be 1;
+            $script:mockContext.Proxy.CountCalls("KeyExists", (doing args -key "Person2Age")) | Should -Be 1;
+            $script:mockContext.Proxy.CountCalls("KeyExists", (doing args -key "Person3FirstName")) | Should -Be 1;
+            $script:mockContext.Proxy.CountCalls("KeyExists", (doing args -key "Person3LastName")) | Should -Be 1;
+            $script:mockContext.Proxy.CountCalls("KeyExists", (doing args -key "Person3Age")) | Should -Be 1;
         }
 
         It 'Dispatches processes' {
@@ -96,7 +96,7 @@ Describe 'AdvancedProcessTests' {
             [string] $processName = "AdvancedProcess";
 
             # Act
-            [IContext] $result = doing run-process -name $processName -doOutput -silent;
+            [IContext] $result = doing run -name $processName -doOutput -silent;
 
             # Assert
             $result | Should -Not -Be $null;

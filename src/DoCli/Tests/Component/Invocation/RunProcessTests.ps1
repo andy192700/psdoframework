@@ -20,7 +20,7 @@ Describe 'RunProcessTests' {
         [string] $processName = "TestProcess1";
 
         # Act
-        [IContext] $context = doing run-process -name $processName -doOutput -silent;
+        [IContext] $context = doing run -name $processName -doOutput -silent;
 
         # Assert
         $context.Session.CurrentProcessName | Should -Be ([string]::Empty);
@@ -41,7 +41,7 @@ Describe 'RunProcessTests' {
         [string] $processName = "TestProcess1";
 
         # Act
-        [IContext] $context = doing run-process -name $processName -silent;
+        [IContext] $context = doing run -name $processName -silent;
 
         # Assert
         $context | Should -Be $null;
@@ -52,7 +52,7 @@ Describe 'RunProcessTests' {
         [string] $processName = "TestProcess1";
 
         # Act
-        [IContext] $context = doing run-process -name $processName -doOutput "invalid" -silent;
+        [IContext] $context = doing run -name $processName -doOutput "invalid" -silent;
 
         # Assert
         $context | Should -Be $null;
@@ -63,7 +63,7 @@ Describe 'RunProcessTests' {
         [string] $processName = "TestOrchestrator";
 
         # Act
-        [IContext] $context = doing run-process -name $processName -doOutput -silent;
+        [IContext] $context = doing run -name $processName -doOutput -silent;
 
         # Assert
         $context.Get("ContextEntry") | Should -Be "some_value";
@@ -104,7 +104,7 @@ Describe 'RunProcessTests' {
         [string] $processName = "TestOrchestrator";
 
         # Act
-        [IContext] $context = doing run-process -name $processName -Mode "Fail" -doOutput -silent;
+        [IContext] $context = doing run -name $processName -Mode "Fail" -doOutput -silent;
 
         # Assert
         $context.Get("ContextEntry") | Should -BeNullOrEmpty;
@@ -145,7 +145,7 @@ Describe 'RunProcessTests' {
         [string] $processName = "TestOrchestrator";
 
         # Act
-        [IContext] $context = doing run-process -name $processName -Mode "Invalid" -doOutput -silent;
+        [IContext] $context = doing run -name $processName -Mode "Invalid" -doOutput -silent;
 
         # Assert
         $context.Get("ContextEntry") | Should  -BeNullOrEmpty;
@@ -186,7 +186,7 @@ Describe 'RunProcessTests' {
         [string] $processName = "ServiceContainerProcess1";
 
         # Act
-        [IContext] $context = doing run-process -name $processName -doOutput -silent;
+        [IContext] $context = doing run -name $processName -doOutput -silent;
 
         # Assert
         $interface = $context.Get("Interface");

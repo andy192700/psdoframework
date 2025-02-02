@@ -21,7 +21,7 @@ class RunProcess : CLIFunction[DescriptorManagementDictionaryValidator, [IContex
 
     .DESCRIPTION
     Constructor for the RunProcess class, which sets up the base name 
-    for the command as "Run-Process".
+    for the command as "Run".
     #>
     RunProcess() : base("Run") {}
 

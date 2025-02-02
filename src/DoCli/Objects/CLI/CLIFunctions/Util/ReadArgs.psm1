@@ -19,9 +19,9 @@ class ReadArgs : CLIFunction[EmptyCLIFunctionDictionaryValidator, [Dictionary[st
 
     .DESCRIPTION
     Constructor for the ReadArgs class, which sets up the base name 
-    for the command as "Read-Args".
+    for the command as "args".
     #>
-    ReadArgs() : base("Read-Args") {}
+    ReadArgs() : base("args") {}
 
     <#
     .SYNOPSIS
