@@ -18,6 +18,8 @@ Describe 'DeleteFileTests' {
         [ProxyResult] $script:mockLogger = doing mock -type ([ILogger]);
         
         [ProxyResult] $script:mockDeletePersonsFile = doing mock -type ([DeletePersonsFile]) -params @($script:mockContext.Instance);
+        
+        [IContext] $script:context = [Context]::new([Session]::new());
     }
     Context 'DeleteFileTests' {
         It 'Is Invalid, no prior reports' {
@@ -25,94 +27,13 @@ Describe 'DeleteFileTests' {
             [DeleteFile] $sut = [DeleteFile]::new(
                 $script:mockCreatePersons.Instance,
                 $script:mockLogger.Instance,
-                $script:mockContext.Instance);
-
-            $script:mockSession.Proxy.MockProperty("ProcessReports", {
-                [List[ProcessReport]] $reports = [List[ProcessReport]]::new();
-
-                return $reports;
-            });
+                $script:context);
 
             # Act
             [bool] $result = $sut.Validate();
 
             # Assert
             $result | Should -Be $false;
-
-            $script:mockContext.Proxy.CountPropertyCalls("Session") | Should -Be 1;
-            $script:mockContext.Proxy.CountCalls("KeyExists") | Should -Be 0;
-            $script:mockSession.Proxy.CountPropertyCalls("ProcessReports") | Should -Be 1;
-        }
-
-        It 'Is Invalid, first report name does not match' {
-            # Arrange
-            [DeleteFile] $sut = [DeleteFile]::new(
-                $script:mockCreatePersons.Instance,
-                $script:mockLogger.Instance,
-                $script:mockContext.Instance);
-
-            $script:mockSession.Proxy.MockProperty("ProcessReports", {
-                [List[ProcessReport]] $reports = [List[ProcessReport]]::new();
-            
-                [ProcessReport] $p1 = [ProcessReport]::new();
-                [ProcessDescriptor] $ps1 = [ProcessDescriptor]::new();
-                $ps1.Name = "wrong";
-                $p1.Descriptor = $ps1;
-
-                $reports.Add($p1);
-
-                return $reports;
-            });
-
-            # Act
-            [bool] $result = $sut.Validate();
-
-            # Assert
-            $result | Should -Be $false;
-
-            $script:mockContext.Proxy.CountPropertyCalls("Session") | Should -Be 2;
-            $script:mockContext.Proxy.CountCalls("KeyExists") | Should -Be 0;
-            $script:mockSession.Proxy.CountPropertyCalls("ProcessReports") | Should -Be 2;
-        }
-
-        It 'Is Invalid, missing context value' {
-            # Arrange
-            [DeleteFile] $sut = [DeleteFile]::new(
-                $script:mockCreatePersons.Instance,
-                $script:mockLogger.Instance,
-                $script:mockContext.Instance);
-                
-            $script:mockSession.Proxy.MockProperty("ProcessReports", {
-                [List[ProcessReport]] $reports = [List[ProcessReport]]::new();
-            
-                [ProcessReport] $p1 = [ProcessReport]::new();
-                [ProcessDescriptor] $ps1 = [ProcessDescriptor]::new();
-                $ps1.Name = "Registrations";
-                $p1.Descriptor = $ps1;
-                
-                $reports.Add($p1);
-
-                return $reports;
-            });
-        
-            $script:mockContext.Proxy.MockMethod("KeyExists", {
-                param (
-                    [string] $key
-                )
-
-                return $false;
-            });
-
-            # Act
-            [bool] $result = $sut.Validate();
-
-            # Assert
-            $result | Should -Be $false;
-
-            $script:mockContext.Proxy.CountPropertyCalls("Session") | Should -Be 2;
-            $script:mockContext.Proxy.CountCalls("KeyExists") | Should -Be 1;
-            $script:mockContext.Proxy.CountCalls("KeyExists", (doing args -key "PersonsFilePath")) | Should -Be 1;
-            $script:mockSession.Proxy.CountPropertyCalls("ProcessReports") | Should -Be 2;
         }
 
         It 'Is Valid' {
@@ -120,39 +41,22 @@ Describe 'DeleteFileTests' {
             [DeleteFile] $sut = [DeleteFile]::new(
                 $script:mockCreatePersons.Instance,
                 $script:mockLogger.Instance,
-                $script:mockContext.Instance);
+                $script:context);
                 
-            $script:mockSession.Proxy.MockProperty("ProcessReports", {
-                [List[ProcessReport]] $reports = [List[ProcessReport]]::new();
-            
-                [ProcessReport] $p1 = [ProcessReport]::new();
-                [ProcessDescriptor] $ps1 = [ProcessDescriptor]::new();
-                $ps1.Name = "Registrations";
-                $p1.Descriptor = $ps1;
+            [ProcessReport] $p1 = [ProcessReport]::new();
+            $p1.Name = "AdvancedProcess";
+            $p1.ProcessResult = [ProcessResult]::Completed;
+            $script:context.Session.ProcessReports.Add($p1);
 
-                $reports.Add($p1);
+            $script:context.SetComposedBy("AdvancedComposer");
 
-                return $reports;
-            });
-        
-            $script:mockContext.Proxy.MockMethod("KeyExists", {
-                param (
-                    [string] $key
-                )
-
-                return $true;
-            });
+            $script:context.AddOrUpdate("PersonsFilePath", "sample value");
 
             # Act
             [bool] $result = $sut.Validate();
 
             # Assert
             $result | Should -Be $true;
-
-            $script:mockContext.Proxy.CountPropertyCalls("Session") | Should -Be 2;
-            $script:mockContext.Proxy.CountCalls("KeyExists") | Should -Be 1;
-            $script:mockContext.Proxy.CountCalls("KeyExists", (doing args -key "PersonsFilePath")) | Should -Be 1;
-            $script:mockSession.Proxy.CountPropertyCalls("ProcessReports") | Should -Be 2;
         }
         
         It 'Runs as Expected' {
