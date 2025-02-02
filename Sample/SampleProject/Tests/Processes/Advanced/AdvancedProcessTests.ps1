@@ -41,7 +41,7 @@ Describe 'AdvancedProcessTests' {
             $result | Should -Be $true;
         }
 
-        It 'Processes as expected' {
+        It 'Runs as expected' {
             # Arrange
             [string] $currentDir = "The Directory";
             
@@ -62,7 +62,7 @@ Describe 'AdvancedProcessTests' {
             $mockContext.Proxy.CountCalls("AddOrUpdate", (doing args -PersonsFilePath "$($currentDir)$([System.IO.Path]::DirectorySeparatorChar)persons.json"));
         }
 
-        It 'Runs as expected' {
+        It 'Processes as expected' {
             # Arrange 
             [string] $processName = "AdvancedProcess";
 
@@ -71,10 +71,10 @@ Describe 'AdvancedProcessTests' {
 
             # Assert
             $result | Should -Not -Be $null;
-            $result.
-                Requires().
-                ProcessSucceeded($processName).
-                Verify() | Should -Be $false;
+            $result.Session.ProcessCount | Should -Be 1;
+            $result.Session.ProcessReports.Count | Should -Be 1;
+            $result.Session.ProcessReports[0].Descriptor.Name | Should -Be $processName;
+            $result.Session.ProcessReports[0].ProcessResult | Should -Be ([ProcessResult]::Invalidated);
         }
     }
 }
