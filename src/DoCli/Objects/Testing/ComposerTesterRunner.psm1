@@ -85,7 +85,7 @@ class ComposerTesterRunner : ITestRunner[ComposerDescriptor] {
                 throw;
             }
             else {         
-                $this.Logger.LogInfo("Importing Composer '$resultComposer'.");
+                $this.Logger.LogInfo("Importing Composer '$composerName'.");
             
                 [ComposerDescriptor] $descriptor = $resultComposer.Descriptor;
     

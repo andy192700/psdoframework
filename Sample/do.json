@@ -22,7 +22,8 @@
       "Processes\\Advanced\\DeleteFileTests.ps1",
       "Processes\\Simple\\SimpleProcessTests.ps1",
       "Processes\\Simple\\DoublesANumberTests.ps1",
-      "Processes\\Simple\\FailingProcessTests.ps1"
+      "Processes\\Simple\\FailingProcessTests.ps1",
+      "Processes\\Advanced\\ConfigurationSampleTests.ps1"
     ],
     "ModuleTests": [
       "Modules\\Models\\PersonTests.ps1",
@@ -32,7 +33,10 @@
       "Modules\\CreatePersonsTests.ps1",
       "Modules\\ModuleWithFunctionsTests.ps1"
     ],
-    "ComposerTests": []
+    "ComposerTests": [
+      "Composers\\AdvancedComposerTests.ps1",
+      "Composers\\ConfigurationComposerTests.ps1"
+    ]
   },
   "Modules": [
     "Models\\Person.psm1",
