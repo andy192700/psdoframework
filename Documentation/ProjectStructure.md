@@ -2,6 +2,7 @@
 Rather than working with isolate scripts, PowerShell development using Do is done within a fixed project structure, it is made up of the following components:
 - Processes
 - Modules
+- Composers
 - Tests
 - Project file
 - Env files
@@ -22,7 +23,7 @@ To add these to your project see the [add-process](./CLIFunctions.md#add-process
 For more information regarding Processes see the relevant [documentation](./Processes.md).
 
 ## Modules
-Do Framework Modules are in fact traditional PowerShell modules, taking the form of .psm1 files.
+DoFramework Modules are in fact traditional PowerShell modules, taking the form of .psm1 files.
 
 Modules are optional entities that house functions and classes for reusable/abstraction purposes.
 
@@ -32,23 +33,31 @@ To add these to your project see the [add-module](./CLIFunctions.md#add-module) 
 
 For more information regarding Modules see the relevant [documentation](./Modules.md).
 
+## Composers
+DoFramework Composers are .ps1 files that handle DI registration and configuration, like Processes the intent is that they house a single class implementing the `DoFramework.Processing.IComposer` interface, click [here](./Composers.md) to find out more.
+
+To add these to your project see the [add-composer](./CLIFunctions.md#add-composer) function.
+
+These files must exist within the Composers directory, it is possible to create these within nested directories underneath allowing for scalability.
+
 ## Tests
-Tests are optional .ps1 files which run off the module Pester (which is deployed with the Do Framework)
+Tests are optional .ps1 files which run off the module Pester (which is deployed with the DoFramework)
 
 Tests test either Modules/Processes, they reside in Tests/Modules or Tests/Processes directory, mirroring the Process/Module directory structure to enfore consistency.
 
-Tests can be added with the optional switches on the `add-process` or `add-module` functions. If a Process/Module is created without Tests (as mentioned above these are optional) these can be added afterwards using the [add-test](./CLIFunctions.md#add-test) function.
+Tests can be added with the optional switches on the `add-process`, `add-module` or `add-composer` functions. If an entity is created without Tests (as mentioned above these are optional) these can be added afterwards using the [add-test](./CLIFunctions.md#add-test) function.
 
 For more information regarding Tests see the relevant [documentation](./Testing.md).
 
 ## Project File
-Do Framework projects are driven by a project file named `do.json`, this exists at the root of the project's working directory.
+DoFramework projects are driven by a project file named `do.json`, this exists at the root of the project's working directory.
 
 The file contains the following information:
 - DoFramework version (at the time of project creation)
 - PowerShell version (at the time of project creation)
 - Processes (paths to the Process files)
 - Modules (paths to the Module files)
+- Composers (paths to the Composer files)
 - Tests (paths to the Test files)
 
 ## Env Files
@@ -79,22 +88,40 @@ Parent Directory
     │       │   Module4.psm1
     │       │   ...
     │
+    ├───Composers
+    │   │   Composer1.psm1
+    │   │   Composer2.psm1
+    │   │
+    │   └───NestedProcessFolder
+    │       │   Composer3.psm1
+    │       │   Composer4.psm1
+    │       │   ...
+    │
     └───Tests
         ├───Processes
-        │   │   Process1.ps1
-        │   │   Process2.ps1
+        │   │   Process1Tests.ps1
+        │   │   Process2Tests.ps1
         │   │
         │   └───NestedProcessFolder
-        │       │   Process3.ps1
-        │       │   Process4.ps1
+        │       │   Process3Tests.ps1
+        │       │   Process4Tests.ps1
         │       │   ...
         │
-        └───Modules
-            │   Module1.psm1
-            │   Module2.psm1
+        ├───Modules
+        │   │   Module1Tests.psm1
+        │   │   Module2Tests.psm1
+        │   │
+        │   └───NestedProcessFolder
+        │       │   Module3Tests.psm1
+        │       │   Module4Tests.psm1
+        │       │   ...
+        │
+        └───Composers
+            │   Composer1Tests.psm1
+            │   Composer2Tests.psm1
             │
             └───NestedProcessFolder
-                │   Module3.psm1
-                │   Module4.psm1
+                │   Composer3Tests.psm1
+                │   Composer4Tests.psm1
                 │   ...
 ```
