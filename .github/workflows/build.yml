@@ -237,3 +237,25 @@ jobs:
       if: steps.install_module.conclusion == 'success'
       run: |
         make pstestspostinstall psNuGetSourceName=PSGallery
+
+  tag_release:
+    name: "Tag Release"
+    needs: linuxinstall
+    #if: ${{ github.ref == 'refs/heads/main' && success() }}
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Create Git Tag
+      id: create_tag
+      run: |
+        import-module ./Scripts/lib/VersionCalculator.psm1;
+        [string] $version = [VersionCalculator]::GetLatest("PSGallery");
+
+        git config --global user.name "github-actions"
+        git config --global user.email "github-actions@github.com"
+        git tag -a $version -m "Release $version"
+        git push origin --tags
+      shell: pwsh
