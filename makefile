@@ -62,3 +62,6 @@ runsamplecomposer:
 runsampletests:
 	pwsh -ExecutionPolicy Bypass -Command "doing test -filter $(testFilter) -projectPath \"${CURDIR}/Sample\""
 
+# Pipeline
+gitrelease:
+	pwsh -ExecutionPolicy Bypass -Command "& '${CURDIR}/Scripts/GitRelease.ps1'"
