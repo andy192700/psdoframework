@@ -251,3 +251,5 @@ jobs:
       id: create_tag
       run: |
         make gitrelease
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN  }}

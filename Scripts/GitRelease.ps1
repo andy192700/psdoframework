@@ -8,3 +8,6 @@ git config --global user.name "github-actions";
 git config --global user.email "github-actions@github.com";
 git tag -a $version -m "Release $version";
 git push origin --tags;
+
+gh release create $version --title "Release $version" --notes "Check out the release notes at https://github.com/andy192700/psdoframework/tree/main/Documentation/ReleaseNotes/v$($version).md.";
+    
