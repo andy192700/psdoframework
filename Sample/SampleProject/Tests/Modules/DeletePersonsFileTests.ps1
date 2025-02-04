@@ -5,7 +5,7 @@ using module "..\..\Modules\Models\Person.psm1";
 
 Describe 'DeletePersonsFileTests' {
     BeforeEach {
-        [ProxyResult] $script:mockContext = doing create-proxy -type ([IContext]);
+        [ProxyResult] $script:mockContext = doing mock -type ([IContext]);
     }
 
     Context 'DeletePersonsFileTests' {
@@ -40,7 +40,7 @@ Describe 'DeletePersonsFileTests' {
 
             # Assert
             $mockContext.Proxy.CountCalls("Get") | Should -Be 1;
-            $mockContext.Proxy.CountCalls("Get", (doing Read-Args -key "PersonsFilePath")) | Should -Be 1;
+            $mockContext.Proxy.CountCalls("Get", (doing args -key "PersonsFilePath")) | Should -Be 1;
             
             Should -Invoke -CommandName Test-Path -ModuleName "DeletePersonsFile" -Times 1 -ParameterFilter { $Path -eq $filePath };
             Should -Invoke -CommandName Remove-Item -ModuleName "DeletePersonsFile" -Times 0;
@@ -77,7 +77,7 @@ Describe 'DeletePersonsFileTests' {
 
             # Assert
             $mockContext.Proxy.CountCalls("Get") | Should -Be 1;
-            $mockContext.Proxy.CountCalls("Get", (doing Read-Args -key "PersonsFilePath")) | Should -Be 1;
+            $mockContext.Proxy.CountCalls("Get", (doing args -key "PersonsFilePath")) | Should -Be 1;
             
             Should -Invoke -CommandName Test-Path -ModuleName "DeletePersonsFile" -Times 1 -ParameterFilter { $Path -eq $filePath };
             Should -Invoke -CommandName Remove-Item -ModuleName "DeletePersonsFile" -Times 1 -ParameterFilter { $Path -eq $filePath };

@@ -6,7 +6,7 @@ using module "..\..\Modules\Models\Person.psm1";
 
 Describe 'CreatePersonsFileTests' {
     BeforeEach {
-        [ProxyResult] $script:mockContext = doing create-proxy -type ([IContext]);
+        [ProxyResult] $script:mockContext = doing mock -type ([IContext]);
     }
 
     Context 'Tests' {
@@ -53,8 +53,8 @@ Describe 'CreatePersonsFileTests' {
             $sut.Create();
 
             # Assert
-            $mockContext.Proxy.CountCalls("Get", (doing Read-Args -key "persons")) | Should -Be 1;
-            $mockContext.Proxy.CountCalls("Get", (doing Read-Args -key "PersonsFilePath")) | Should -Be 1;
+            $mockContext.Proxy.CountCalls("Get", (doing args -key "persons")) | Should -Be 1;
+            $mockContext.Proxy.CountCalls("Get", (doing args -key "PersonsFilePath")) | Should -Be 1;
             $mockContext.Proxy.CountCalls("Get") | Should -Be 2;
 
             Should -Invoke -CommandName Out-File -ModuleName "CreatePersonsFile" -Times 1 -ParameterFilter { $FilePath -eq $path -and $InputObject -eq $personJson };

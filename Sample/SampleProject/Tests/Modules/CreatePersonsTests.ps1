@@ -6,7 +6,7 @@ using module "..\..\Modules\Models\Person.psm1";
 
 Describe 'CreatePersonsTests' {
     BeforeEach {
-        [ProxyResult] $script:mockContext = doing create-proxy -type ([IContext]);
+        [ProxyResult] $script:mockContext = doing mock -type ([IContext]);
     }
 
     Context 'CreatePersonsTests' {
@@ -39,18 +39,18 @@ Describe 'CreatePersonsTests' {
 
             # Assert
             $script:mockContext.Proxy.CountCalls("AddOrUpdate") | Should -Be 1;       
-            $script:mockContext.Proxy.CountCalls("AddOrUpdate", (doing Read-Args -key "persons" -value $script:persons)) | Should -Be 1;    
+            $script:mockContext.Proxy.CountCalls("AddOrUpdate", (doing args -key "persons" -value $script:persons)) | Should -Be 1;    
 
             $script:mockContext.Proxy.CountCalls("Get") | Should -Be 9; 
-            $script:mockContext.Proxy.CountCalls("Get", (doing Read-Args -key "Person1FirstName")) | Should -Be 1;
-            $script:mockContext.Proxy.CountCalls("Get", (doing Read-Args -key "Person1LastName")) | Should -Be 1;
-            $script:mockContext.Proxy.CountCalls("Get", (doing Read-Args -key "Person1Age")) | Should -Be 1;
-            $script:mockContext.Proxy.CountCalls("Get", (doing Read-Args -key "Person2FirstName")) | Should -Be 1;
-            $script:mockContext.Proxy.CountCalls("Get", (doing Read-Args -key "Person2LastName")) | Should -Be 1;
-            $script:mockContext.Proxy.CountCalls("Get", (doing Read-Args -key "Person2Age")) | Should -Be 1;
-            $script:mockContext.Proxy.CountCalls("Get", (doing Read-Args -key "Person3FirstName")) | Should -Be 1;
-            $script:mockContext.Proxy.CountCalls("Get", (doing Read-Args -key "Person3LastName")) | Should -Be 1;
-            $script:mockContext.Proxy.CountCalls("Get", (doing Read-Args -key "Person3Age")) | Should -Be 1;
+            $script:mockContext.Proxy.CountCalls("Get", (doing args -key "Person1FirstName")) | Should -Be 1;
+            $script:mockContext.Proxy.CountCalls("Get", (doing args -key "Person1LastName")) | Should -Be 1;
+            $script:mockContext.Proxy.CountCalls("Get", (doing args -key "Person1Age")) | Should -Be 1;
+            $script:mockContext.Proxy.CountCalls("Get", (doing args -key "Person2FirstName")) | Should -Be 1;
+            $script:mockContext.Proxy.CountCalls("Get", (doing args -key "Person2LastName")) | Should -Be 1;
+            $script:mockContext.Proxy.CountCalls("Get", (doing args -key "Person2Age")) | Should -Be 1;
+            $script:mockContext.Proxy.CountCalls("Get", (doing args -key "Person3FirstName")) | Should -Be 1;
+            $script:mockContext.Proxy.CountCalls("Get", (doing args -key "Person3LastName")) | Should -Be 1;
+            $script:mockContext.Proxy.CountCalls("Get", (doing args -key "Person3Age")) | Should -Be 1;
 
             $script:persons.Count | Should -Be 3;
             $script:persons[0].FirstName | Should -Be "Person1FirstName";

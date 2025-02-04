@@ -24,9 +24,9 @@ class CreateData : Process {
     }
 
     [bool] Validate() {
-        return $this.Context.Session.ProcessReports.Count -eq 2 `
-            -and $this.Context.Session.ProcessReports[0].Descriptor.Name -eq "Registrations" `
-            -and $this.Context.Session.ProcessReports[1].Descriptor.Name -eq "DeleteFile";
+        return $this.Context.Requires().
+            ProcessSucceeded("DeleteFile").
+            Verify();
     }
 
     [void] Run() {

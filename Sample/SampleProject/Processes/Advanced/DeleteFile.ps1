@@ -22,9 +22,11 @@ class DeleteFile : Process {
     }
 
     [bool] Validate() {
-        return $this.Context.Session.ProcessReports.Count -gt 0 `
-            -and $this.Context.Session.ProcessReports[0].Descriptor.Name -eq "Registrations" `
-            -and $this.Context.KeyExists("PersonsFilePath");
+        return $this.Context.Requires().
+            ComposedBy("AdvancedComposer").
+            ConfirmKey("PersonsFilePath").
+            ProcessSucceeded("AdvancedProcess").
+            Verify();
     }
 
     [void] Run() {

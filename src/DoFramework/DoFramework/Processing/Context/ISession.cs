@@ -21,4 +21,14 @@ public interface ISession
     /// Gets or sets the list of process reports.
     /// </summary>
     List<ProcessReport> ProcessReports { get; set; }
+
+    /// <summary>
+    /// Gets or sets the composer that has driven processing.
+    /// </summary>
+    string? ComposedBy { get; set; }
+
+    /// <summary>
+    /// Determines if processing has been invoked by a composer.
+    /// </summary>
+    bool Composed { get; }
 }

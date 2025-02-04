@@ -65,4 +65,4 @@ if (!$useLatest) {
 RunTests -testRoot "$($testRoot)$($sep)Component";
 
 # run sample project tests
-doing run-tests -filter .* -outputFormat NUnitXml -silent -projectPath "$(Get-Location)$($sep)Sample$($sep)";
+doing test -filter .* -outputFormat NUnitXml -silent -projectPath "$(Get-Location)$($sep)Sample$($sep)";

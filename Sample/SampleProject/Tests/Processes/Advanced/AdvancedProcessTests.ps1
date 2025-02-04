@@ -4,91 +4,62 @@ using namespace DoFramework.Testing;
 
 Describe 'AdvancedProcessTests' {
     BeforeEach {
-        [ProxyResult] $script:mockContext = doing create-proxy -type ([IContext]);
-        
-        [ProxyResult] $script:mockDispatcher = doing create-proxy -type ([IProcessDispatcher]);
+        [IContext] $script:context = [Context]::new([Session]::new());
     }
 
     Context 'AdvancedProcessTests' {
         It 'Is invalid' {
             # Arrange
-            [AdvancedProcess] $sut = [AdvancedProcess]::new($script:mockDispatcher.Instance, $script:mockContext.Instance);
-
-            $mockContext.Proxy.MockMethod("KeyExists", {
-                param ([string] $key)
-
-                return $false;
-            });
+            [AdvancedProcess] $sut = [AdvancedProcess]::new($script:context);
 
             # Act
             [bool] $result = $sut.Validate();
 
             # Assert
             $result | Should -Be $false;
-            $script:mockContext.Proxy.CountCalls("KeyExists") | Should -Be 1; 
-            $script:mockContext.Proxy.CountCalls("KeyExists", (doing Read-Args -key "Person1FirstName")) | Should -Be 1;
-            $script:mockContext.Proxy.CountCalls("KeyExists", (doing Read-Args -key "Person1LastName")) | Should -Be 0;
-            $script:mockContext.Proxy.CountCalls("KeyExists", (doing Read-Args -key "Person1Age")) | Should -Be 0;
-            $script:mockContext.Proxy.CountCalls("KeyExists", (doing Read-Args -key "Person2FirstName")) | Should -Be 0;
-            $script:mockContext.Proxy.CountCalls("KeyExists", (doing Read-Args -key "Person2LastName")) | Should -Be 0;
-            $script:mockContext.Proxy.CountCalls("KeyExists", (doing Read-Args -key "Person2Age")) | Should -Be 0;
-            $script:mockContext.Proxy.CountCalls("KeyExists", (doing Read-Args -key "Person3FirstName")) | Should -Be 0;
-            $script:mockContext.Proxy.CountCalls("KeyExists", (doing Read-Args -key "Person3LastName")) | Should -Be 0;
-            $script:mockContext.Proxy.CountCalls("KeyExists", (doing Read-Args -key "Person3Age")) | Should -Be 0;
         }
+
         It 'Is valid' {
             # Arrange
-            [AdvancedProcess] $sut = [AdvancedProcess]::new($script:mockDispatcher.Instance, $script:mockContext.Instance);
+            $script:context.SetComposedBy("AdvancedComposer");
+            $script:context.AddOrUpdate("Person1FirstName", "some name1");
+            $script:context.AddOrUpdate("Person1LastName", "some name1");
+            $script:context.AddOrUpdate("Person1Age", 22);
+            $script:context.AddOrUpdate("Person2FirstName", "some name2");
+            $script:context.AddOrUpdate("Person2LastName", "some name2");
+            $script:context.AddOrUpdate("Person2Age", 3);
+            $script:context.AddOrUpdate("Person3FirstName", "some name3");
+            $script:context.AddOrUpdate("Person3LastName", "some name3");
+            $script:context.AddOrUpdate("Person3Age", 5);
 
-            $mockContext.Proxy.MockMethod("KeyExists", {
-                param ([string] $key)
-
-                return $true;
-            });
+            [AdvancedProcess] $sut = [AdvancedProcess]::new($script:context);
 
             # Act
             [bool] $result = $sut.Validate();
 
             # Assert
             $result | Should -Be $true;
-            $script:mockContext.Proxy.CountCalls("KeyExists") | Should -Be 9; 
-            $script:mockContext.Proxy.CountCalls("KeyExists", (doing Read-Args -key "Person1FirstName")) | Should -Be 1;
-            $script:mockContext.Proxy.CountCalls("KeyExists", (doing Read-Args -key "Person1LastName")) | Should -Be 1;
-            $script:mockContext.Proxy.CountCalls("KeyExists", (doing Read-Args -key "Person1Age")) | Should -Be 1;
-            $script:mockContext.Proxy.CountCalls("KeyExists", (doing Read-Args -key "Person2FirstName")) | Should -Be 1;
-            $script:mockContext.Proxy.CountCalls("KeyExists", (doing Read-Args -key "Person2LastName")) | Should -Be 1;
-            $script:mockContext.Proxy.CountCalls("KeyExists", (doing Read-Args -key "Person2Age")) | Should -Be 1;
-            $script:mockContext.Proxy.CountCalls("KeyExists", (doing Read-Args -key "Person3FirstName")) | Should -Be 1;
-            $script:mockContext.Proxy.CountCalls("KeyExists", (doing Read-Args -key "Person3LastName")) | Should -Be 1;
-            $script:mockContext.Proxy.CountCalls("KeyExists", (doing Read-Args -key "Person3Age")) | Should -Be 1;
         }
 
-        It 'Dispatches processes' {
+        It 'Runs as expected' {
             # Arrange
-            [AdvancedProcess] $sut = [AdvancedProcess]::new($script:mockDispatcher.Instance, $script:mockContext.Instance);
+            [string] $currentDir = "The Directory";
+            
+            Mock Get-Location {
+                return $currentDir;
+            }
 
-            [ProcessingRequest] $script:request;
-
-            $mockDispatcher.Proxy.MockMethod("Dispatch", {
-                param ([ProcessingRequest] $processingRequest)
-
-                $script:request = $processingRequest;
-            });
+            [ProxyResult] $mockContext = doing mock -type ([IContext]);
+            
+            [AdvancedProcess] $sut = [AdvancedProcess]::new($mockContext.Instance);
 
             # Act
             $sut.Run();
 
             # Assert
-            $script:mockContext.Proxy.CountCalls("KeyExists") | Should -Be 0;
-            $script:mockDispatcher.Proxy.CountCalls("Dispatch") | Should -Be 1;
+            Should -Invoke -CommandName Get-Location -Times 1;
 
-            $script:request.Processes.Length | Should -Be 6;
-            $script:request.Processes -contains "Registrations" | Should -Be $true;
-            $script:request.Processes -contains "DeleteFile" | Should -Be $true;
-            $script:request.Processes -contains "CreateData" | Should -Be $true;
-            $script:request.Processes -contains "CreateFile" | Should -Be $true;
-            $script:request.Processes -contains "ReadFile" | Should -Be $true;
-            $script:request.Processes -contains "DeleteFile" | Should -Be $true;
+            $mockContext.Proxy.CountCalls("AddOrUpdate", (doing args -PersonsFilePath "$($currentDir)$([System.IO.Path]::DirectorySeparatorChar)persons.json"));
         }
 
         It 'Processes as expected' {
@@ -96,29 +67,14 @@ Describe 'AdvancedProcessTests' {
             [string] $processName = "AdvancedProcess";
 
             # Act
-            [IContext] $result = doing run-process -name $processName -doOutput -silent;
+            [IContext] $result = doing run -name $processName -doOutput -silent;
 
             # Assert
             $result | Should -Not -Be $null;
-            $result.Session.ProcessCount | Should -Be 7;
-            $result.Session.ProcessReports.Count | Should -Be 7;
-
-            [string[]] $processes = @(
-                "Registrations",
-                "DeleteFile",
-                "CreateData",
-                "CreateFile",
-                "ReadFile",
-                "DeleteFile"
-            );
-
-            for ($i = 0; $i -lt $processes.Length; $i++) {
-                $result.Session.ProcessReports[$i].Descriptor.Name | Should -Be $processes[$i];
-                $result.Session.ProcessReports[$i].ProcessResult | Should -Be ([ProcessResult]::Completed);
-            }
-
-            $result.Session.ProcessReports[6].Descriptor.Name | Should -Be $processName;
-            $result.Session.ProcessReports[6].ProcessResult | Should -Be ([ProcessResult]::Completed);
+            $result.Session.ProcessCount | Should -Be 1;
+            $result.Session.ProcessReports.Count | Should -Be 1;
+            $result.Session.ProcessReports[0].Descriptor.Name | Should -Be $processName;
+            $result.Session.ProcessReports[0].ProcessResult | Should -Be ([ProcessResult]::Invalidated);
         }
     }
 }

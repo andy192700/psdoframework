@@ -3,6 +3,7 @@ using namespace DoFramework.Services;
 using namespace DoFramework.Processing;
 using namespace DoFramework.Validators;
 using namespace System.Collections.Generic;
+using module "..\..\..\Processing\ProcessBuilder.psm1";
 
 <#
 .SYNOPSIS
@@ -20,27 +21,18 @@ class RunProcess : CLIFunction[DescriptorManagementDictionaryValidator, [IContex
 
     .DESCRIPTION
     Constructor for the RunProcess class, which sets up the base name 
-    for the command as "Run-Process".
+    for the command as "Run".
     #>
-    RunProcess() : base("Run-Process") {}
+    RunProcess() : base("Run") {}
 
-    [IContext] Invoke([Dictionary[string, object]] $params, [IServiceContainer] $serviceContainer) {        
+    [IContext] Invoke([Dictionary[string, object]] $params, [IServiceContainer] $serviceContainer) {      
+        [ServiceContainerExtensions]::CheckEnvironment($serviceContainer); 
+        [ServiceContainerExtensions]::ConsumeEnvFiles($serviceContainer);    
         [ServiceContainerExtensions]::AddParameters($serviceContainer, $params);
-        [ServiceContainerExtensions]::CheckEnvironment($serviceContainer);
-        [ServiceContainerExtensions]::ConsumeEnvFiles($serviceContainer);
+        [ServiceContainerExtensions]::AddProcessingServices($serviceContainer, [ProcessBuilder]);
         
-        [IProcessingRequest] $request = [ProcessingRequest]::new($params["name"], $params);
-    
-        $serviceContainer.GetService[IProcessDispatcher]().Dispatch($request);
+        [IEntryPoint] $entryPoint = $serviceContainer.GetService[IEntryPoint]();
 
-        [IContext] $context = $serviceContainer.GetService[IContext]();
-
-        $context.Session.CurrentProcessName = [string]::Empty;
-
-        [CLIFunctionParameters] $cliParams = $serviceContainer.GetService([CLIFunctionParameters]);
-
-        [IContext] $output = if ($cliParams.ParseSwitch("doOutput")) { $context } else { $null };
-
-        return $output;
+        return $entryPoint.Enter();
     }
 }

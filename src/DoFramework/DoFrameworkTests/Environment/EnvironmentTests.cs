@@ -28,7 +28,8 @@ public class EnvironmentTests
         var processDescriptorMapper = new ProcessDescriptorMapper(osSanitise.Object);
         var moduleDescriptorMapper = new ModuleDescriptorMapper(osSanitise.Object);
         var testDescriptorMapper = new TestDescriptorMapper(osSanitise.Object);
-        var contentsMapper = new ReadProjectContentsMapper(processDescriptorMapper, moduleDescriptorMapper, testDescriptorMapper, osSanitise.Object);
+        var composerDescriptorMapper = new ComposerDescriptorMapper(osSanitise.Object);
+        var contentsMapper = new ReadProjectContentsMapper(processDescriptorMapper, moduleDescriptorMapper, testDescriptorMapper, composerDescriptorMapper, osSanitise.Object);
         var contentsProvider = new ReadProjectContents(contentsMapper, readProcessLocation.Object, fileManager.Object, jsonConverter);
 
         string jsonString = JsonConvert.SerializeObject(projectContentsStorage, Formatting.Indented);

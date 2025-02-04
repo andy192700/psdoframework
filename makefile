@@ -4,7 +4,8 @@ psNuGetSourceName=LocalNuGetRepository
 psNuGetSourceLocation=.\LocalNuGetRepository
 psNuGetApiKey=''
 version=1.0.0
-processName=AdvancedProcess
+composerName=AdvancedComposer
+processName=SimpleProcess
 testFilter=.*
 
 # Validation
@@ -52,9 +53,12 @@ echopsversion:
 	pwsh -ExecutionPolicy Bypass -Command '& Write-Host "PSVersion: $$($$PSVersionTable.PSVersion.ToString())"'
 
 # Run Samples
-sampleproject:
-	pwsh -ExecutionPolicy Bypass -Command "doing run-process -name $(processName) -showReports -projectPath \"${CURDIR}/Sample\""
+runsampleprocess:
+	pwsh -ExecutionPolicy Bypass -Command "doing run -name $(processName) -showReports -projectPath \"${CURDIR}/Sample\""
+	
+runsamplecomposer:
+	pwsh -ExecutionPolicy Bypass -Command "doing compose -name $(composerName) -showReports -projectPath \"${CURDIR}/Sample\""
 
-sampleprojecttests:
-	pwsh -ExecutionPolicy Bypass -Command "doing run-tests -filter $(testFilter) -projectPath \"${CURDIR}/Sample\""
+runsampletests:
+	pwsh -ExecutionPolicy Bypass -Command "doing test -filter $(testFilter) -projectPath \"${CURDIR}/Sample\""
 

@@ -2,6 +2,8 @@
 using DoFramework.FileSystem;
 using DoFramework.Logging;
 using DoFramework.Processing;
+using DoFramework.Types;
+using DoFramework.Validators;
 
 namespace DoFramework.Services;
 
@@ -30,7 +32,7 @@ public static class ServiceContainerExtensions
     }
 
     /// <summary>
-    /// Adds application parameters to the service container.
+    /// Adds application parameters to the service container, writing them to the <see cref="IContext"/>.
     /// </summary>
     /// <param name="container">The service container.</param>
     /// <param name="applicationParams">The application parameters to add.</param>
@@ -42,6 +44,8 @@ public static class ServiceContainerExtensions
         container.GetService<CLIFunctionParameters>().Parameters = applicationParams;
 
         container.GetService<ILogger>().Parameters = container.GetService<CLIFunctionParameters>();
+
+        container.GetService<IContextWriter>().Write(applicationParams);
 
         return container;
     }
@@ -59,4 +63,43 @@ public static class ServiceContainerExtensions
 
         return container;
     }
+
+    /// <summary>
+    /// Adds processing services to the specified service container.
+    /// </summary>
+    /// <param name="container">The service container to which the services will be added.</param>
+    /// <param name="processBuilderType">The type of the process builder to be registered.</param>
+    /// <returns>The updated service container.</returns>
+    public static IServiceContainer AddProcessingServices(this IServiceContainer container, Type processBuilderType)
+    {
+        container.RegisterService<IProcessInstanceRunner, ProcessInstanceRunner>();
+        container.RegisterService<IProcessExecutor, ProcessExecutor>();
+        container.RegisterService<IProcessRunner, ProcessRunner>();
+        container.RegisterService<IEntryPoint, EntryPoint>();
+        container.RegisterService<IFailedReportChecker, FailedReportChecker>();
+        container.RegisterService<ILookupType<IProcess>, LookupProcessType>();
+        container.RegisterService<IValidator<IProcessingRequest>, ProcessingRequestValidator>();
+        container.RegisterService<TypeValidator<IProcess>, ProcessTypeValidator>();
+        container.RegisterService(typeof(IProcessBuilder), processBuilderType);
+
+        return container;
+    }
+
+    /// <summary>
+    /// Adds composer services to the specified service container.
+    /// </summary>
+    /// <param name="container">The service container to which the services will be added.</param>
+    /// <param name="composerType">The type of the composer to be registered.</param>
+    /// <returns>The updated service container.</returns>
+    public static IServiceContainer AddComposerServices(this IServiceContainer container, Type composerType)
+    {
+        container.RegisterService<ILookupType<IComposer>, LookupComposerType>();
+        container.RegisterService<TypeValidator<IComposer>, ComposerTypeValidator>();
+        container.RegisterService<IProcessRegistry, ProcessRegistry>();
+        container.RegisterService<IComposerOrchestrator, ComposerOrchestrator>();
+        container.RegisterService(typeof(IComposerBuilder), composerType);
+
+        return container;
+    }
+
 }

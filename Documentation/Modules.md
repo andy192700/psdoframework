@@ -22,7 +22,7 @@ Additionally, the PowerShell unit/component tests which test this framework also
 
 To see how Modules can be used by Processes see [here](./Processes.md).
 
-To explore the possibiliies with Do's Depedency Injection functionality see [here](./DependencyInjection.md).
+To explore the possibiliies with Do's Depedency Injection functionality see [here](./DependencyInjection.md) and the [Composer documentation](./Composers.md).
 
 ## Modules Walk Through
 When a Module is added to a Project, it's code will take the form:

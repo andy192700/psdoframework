@@ -7,7 +7,7 @@ using module "..\..\..\Modules\ModuleWithFunctions.psm1";
 
 Describe 'DoublesANumberTests' {
     BeforeEach {
-        [ProxyResult] $script:mockContext = doing create-proxy -type ([IContext]);
+        [ProxyResult] $script:mockContext = doing mock -type ([IContext]);
 
         $script:mockContext.Proxy.MockMethod("Get", {
             param (
@@ -50,7 +50,7 @@ Describe 'DoublesANumberTests' {
 
             # Assert
             $script:mockContext.Proxy.CountCalls("Get") | Should -Be 1;
-            $script:mockContext.Proxy.CountCalls("Get", (doing read-args -key "InputInteger")) | Should -Be 1;
+            $script:mockContext.Proxy.CountCalls("Get", (doing args -key "InputInteger")) | Should -Be 1;
 
             [int] $inputInteger = $script:mockContext.Instance.Get("InputInteger");
 
@@ -64,7 +64,7 @@ Describe 'DoublesANumberTests' {
             [string] $processName = "DoublesANumber";
 
             # Act
-            [IContext] $result = doing run-process -name $processName -doOutput -silent;
+            [IContext] $result = doing run -name $processName -doOutput -silent;
 
             # Assert
             $result | Should -Not -Be $null;

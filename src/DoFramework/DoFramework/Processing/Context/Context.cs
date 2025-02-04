@@ -65,4 +65,16 @@ public class Context(ISession session) : IContext
 
         return false;
     }
+
+    /// <inheritdoc/>
+    public IContextVerifier Requires()
+    {
+        return new ContextVerifier(this);
+    }
+
+    /// <inheritdoc/>
+    public void SetComposedBy(string composedBy)
+    {
+        Session.ComposedBy = composedBy;
+    }
 }

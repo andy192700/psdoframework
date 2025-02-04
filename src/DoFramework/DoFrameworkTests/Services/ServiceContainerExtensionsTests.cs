@@ -1,13 +1,16 @@
-﻿using AutoFixture.Xunit2;
-using DoFramework.CLI;
+﻿using DoFramework.CLI;
 using DoFramework.Logging;
 using DoFramework.Environment;
 using DoFramework.Processing;
 using DoFramework.Services;
 using FluentAssertions;
-using Moq;
 using DoFramework.FileSystem;
-using System.Net.Http.Headers;
+using DoFramework.Domain;
+using DoFramework.Types;
+using DoFramework.Validators;
+using System.ComponentModel;
+using DoFramework.Data;
+using DoFramework.Mappers;
 
 namespace DoFrameworkTests.Services;
 
@@ -53,19 +56,17 @@ public class ServiceContainerExtensionsTests
         // Arrange
         var sut = new ServiceContainer();
 
+        sut.RegisterService<ISession, Session>();
+        sut.RegisterService<IContext, Context>();
+        sut.RegisterService<IContextWriter, ContextWriter>();
         sut.RegisterService<IConsoleWrapper, ConsoleWrapper>();
         sut.RegisterService<ILogger, Logger>();
 
         // Act
         sut.AddParameters(appParams);
 
-        var result = sut.Instances.Count;
-
         // Assert
         sut.GetService<CLIFunctionParameters>().Should().NotBeNull();
-
-        result.Should().Be(4);
-
         sut.GetService<ILogger>().Parameters!.Parameters.Should().BeEquivalentTo(appParams);
     }
 
@@ -85,6 +86,161 @@ public class ServiceContainerExtensionsTests
         // Assert
         consumeEnv!.Called.Should().BeTrue();
     }
+
+    [Fact]
+    public void ServiceContainerExtensions_AddsProcessingServices()
+    {
+        // Arrange
+        var sut = new ServiceContainer();
+
+        sut.RegisterService<IEnvironment, DoFramework.Environment.Environment>();
+        sut.RegisterService<ISession, Session>();
+        sut.RegisterService<IContext, Context>();
+        sut.RegisterService<IConsoleWrapper, ConsoleWrapper>();
+        sut.RegisterService<ILogger, Logger>();
+        sut.RegisterService<IReadProcessLocation, TestReadLocation>();
+        sut.RegisterService<ISetProcessLocation, TestSetLocation>();
+        sut.RegisterService<ISimpleDataProvider<ProjectContents>, TestContentsProvider>();
+        sut.RegisterService<IMapper<ProjectContentsStorage, ProjectContents>, ReadProjectContentsMapper>();
+        sut.RegisterService<IMapper<string, ProcessDescriptor>, ProcessDescriptorMapper>();
+        sut.RegisterService<IMapper<string, ModuleDescriptor>, ModuleDescriptorMapper>();
+        sut.RegisterService<IMapper<string, ComposerDescriptor>, ComposerDescriptorMapper>();
+        sut.RegisterService<IMapper<string, TestDescriptor>, TestDescriptorMapper>();
+        sut.RegisterService<IOSSanitise, OSSanitise>();
+        sut.RegisterService<IFileManager, FileManager>();
+        sut.RegisterService<IJsonConverter, JsonConverter>();
+        sut.RegisterService<IResolver<ProcessDescriptor>, ProcessResolver>();
+        sut.RegisterService<IDataCollectionProvider<ProcessDescriptor, string>, ProcessProvider>();
+        sut.RegisterService<IDisplayReports, TestReportShower>();
+        sut.RegisterService<IContextWriter, ContextWriter>();
+        sut.RegisterService<IValidationErrorWriter, ValidationErrorWriter>();
+
+        sut.AddParameters([]);
+
+        // Act
+        sut.AddProcessingServices(typeof(TestProcessBuilder));
+
+        // Assert
+        sut.GetService<IProcessInstanceRunner>().Should().NotBeNull();
+        sut.GetService<IProcessInstanceRunner>().Should().BeOfType<ProcessInstanceRunner>();
+
+        sut.GetService<IProcessExecutor>().Should().NotBeNull();
+        sut.GetService<IProcessExecutor>().Should().BeOfType<ProcessExecutor>();
+
+        sut.GetService<IProcessRunner>().Should().NotBeNull();
+        sut.GetService<IProcessRunner>().Should().BeOfType<ProcessRunner>();
+
+        sut.GetService<IEntryPoint>().Should().NotBeNull();
+        sut.GetService<IEntryPoint>().Should().BeOfType<EntryPoint>();
+
+        sut.GetService<IFailedReportChecker>().Should().NotBeNull();
+        sut.GetService<IFailedReportChecker>().Should().BeOfType<FailedReportChecker>();
+
+        sut.GetService<ILookupType<IProcess>>().Should().NotBeNull();
+        sut.GetService<ILookupType<IProcess>>().Should().BeOfType<LookupProcessType>();
+
+        sut.GetService<IValidator<IProcessingRequest>>().Should().NotBeNull();
+        sut.GetService<IValidator<IProcessingRequest>>().Should().BeOfType<ProcessingRequestValidator>();
+
+        sut.GetService<TypeValidator<IProcess>>().Should().NotBeNull();
+        sut.GetService<TypeValidator<IProcess>>().Should().BeOfType<ProcessTypeValidator>();
+
+        sut.GetService<IProcessBuilder>().Should().NotBeNull();
+        sut.GetService<IProcessBuilder>().Should().BeOfType<TestProcessBuilder>();
+    }
+
+    [Fact]
+    public void ServiceContainerExtensions_AddsComposerServices()
+    {
+        // Arrange
+        var sut = new ServiceContainer();
+        sut.RegisterService<IEnvironment, DoFramework.Environment.Environment>();
+        sut.RegisterService<ISession, Session>();
+        sut.RegisterService<IContext, Context>();
+        sut.RegisterService<IConsoleWrapper, ConsoleWrapper>();
+        sut.RegisterService<ILogger, Logger>();
+        sut.RegisterService<IReadProcessLocation, TestReadLocation>();
+        sut.RegisterService<ISetProcessLocation, TestSetLocation>();
+        sut.RegisterService<ISimpleDataProvider<ProjectContents>, TestContentsProvider>();
+        sut.RegisterService<IMapper<ProjectContentsStorage, ProjectContents>, ReadProjectContentsMapper>();
+        sut.RegisterService<IMapper<string, ProcessDescriptor>, ProcessDescriptorMapper>();
+        sut.RegisterService<IMapper<string, ModuleDescriptor>, ModuleDescriptorMapper>();
+        sut.RegisterService<IMapper<string, ComposerDescriptor>, ComposerDescriptorMapper>();
+        sut.RegisterService<IMapper<string, TestDescriptor>, TestDescriptorMapper>();
+        sut.RegisterService<IOSSanitise, OSSanitise>();
+        sut.RegisterService<IFileManager, FileManager>();
+        sut.RegisterService<IJsonConverter, JsonConverter>();
+        sut.RegisterService<IResolver<ComposerDescriptor>, ComposerResolver>();
+        sut.RegisterService<IDataCollectionProvider<ComposerDescriptor, string>, ComposerProvider>();
+        sut.RegisterService<IDisplayReports, TestReportShower>();
+        sut.RegisterService<IContextWriter, ContextWriter>();
+        sut.RegisterService<IValidationErrorWriter, ValidationErrorWriter>();
+
+        // Act
+        sut.AddComposerServices(typeof(TestComposerBuilder));
+
+        // Assert
+        sut.GetService<ILookupType<IComposer>>().Should().NotBeNull();
+        sut.GetService<ILookupType<IComposer>>().Should().BeOfType<LookupComposerType>();
+
+        sut.GetService<TypeValidator<IComposer>>().Should().NotBeNull();
+        sut.GetService<TypeValidator<IComposer>>().Should().BeOfType<ComposerTypeValidator>();
+
+        sut.GetService<IProcessRegistry>().Should().NotBeNull();
+        sut.GetService<IProcessRegistry>().Should().BeOfType<ProcessRegistry>();
+
+        sut.GetService<IComposerOrchestrator>().Should().NotBeNull();
+        sut.GetService<IComposerOrchestrator>().Should().BeOfType<ComposerOrchestrator>();
+
+        sut.GetService<IComposerBuilder>().Should().NotBeNull();
+        sut.GetService<IComposerBuilder>().Should().BeOfType<TestComposerBuilder>();
+    }
+}
+
+public class TestReportShower : IDisplayReports
+{
+    public void Display(List<ProcessReport> processReports)
+    {
+    }
+}
+
+public class TestContentsProvider : ISimpleDataProvider<ProjectContents>
+{
+    public ProjectContents Provide()
+    {
+        return new ProjectContents();
+    }
+}
+
+public class TestSetLocation : ISetProcessLocation
+{
+    public void Set(string location)
+    {
+    }
+}
+
+public class TestReadLocation : IReadProcessLocation
+{
+    public string Read()
+    {
+        return string.Empty;
+    }
+}
+
+public class TestProcessBuilder : IProcessBuilder
+{
+    public IProcess Build(ProcessDescriptor descriptor)
+    {
+        throw new NotImplementedException();
+    }
+}
+
+public class TestComposerBuilder : IComposerBuilder
+{
+    public IComposer Build(ComposerDescriptor composerDescriptor)
+    {
+        throw new NotImplementedException();
+    }
 }
 
 public class TestEnvironment : IEnvironment
@@ -93,6 +249,7 @@ public class TestEnvironment : IEnvironment
     public string ProcessesDir { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
     public string TestsDir { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
     public string ModuleDir { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+    public string ComposersDir { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
     public bool CheckEnvironment() 
     { 
@@ -111,6 +268,7 @@ public class TestThrowingEnvironment : IEnvironment
     public string ProcessesDir { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
     public string TestsDir { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
     public string ModuleDir { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+    public string ComposersDir { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
     public bool CheckEnvironment()
     {

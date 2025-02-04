@@ -9,29 +9,22 @@ namespace DoFramework.Environment;
 /// </summary>
 public class Environment : IEnvironment
 {
-    /// <summary>
-    /// Gets or sets the home directory of the environment.
-    /// </summary>
+    /// <inheritdoc/>
     public string HomeDir { get; set; }
 
-    /// <summary>
-    /// Gets or sets the processes directory within the environment.
-    /// </summary>
+    /// <inheritdoc/>
     public string ProcessesDir { get; set; }
 
-    /// <summary>
-    /// Gets or sets the tests directory within the environment.
-    /// </summary>
+    /// <inheritdoc/>
     public string TestsDir { get; set; }
 
-    /// <summary>
-    /// Gets or sets the modules directory within the environment.
-    /// </summary>
+    /// <inheritdoc/>
     public string ModuleDir { get; set; }
 
-    /// <summary>
-    /// Gets the directory separator character.
-    /// </summary>
+    /// <inheritdoc/>
+    public string ComposersDir { get; set; }
+
+    /// <inheritdoc/>
     public static char Separator { get; } = Path.DirectorySeparatorChar;
 
     private readonly IReadProcessLocation _readProcessLocation;
@@ -56,5 +49,6 @@ public class Environment : IEnvironment
         ProcessesDir = $"{HomeDir}{Separator}{contents.Name}{Separator}Processes";
         TestsDir = $"{HomeDir}{Separator}{contents.Name}{Separator}Tests";
         ModuleDir = $"{HomeDir}{Separator}{contents.Name}{Separator}Modules";
+        ComposersDir = $"{HomeDir}{Separator}{contents.Name}{Separator}Composers";
     }
 }

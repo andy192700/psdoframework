@@ -16,8 +16,7 @@ public class ProcessRunnerTests
         [Frozen] Mock<IContext> context,
         [Frozen] Mock<IProcessExecutor> executor,
         string path,
-        string name,
-        string prefix)
+        string name)
     {
         // Arrange
         context.Setup(x => x.Session).Returns(new Session
@@ -46,16 +45,11 @@ public class ProcessRunnerTests
 
         executor.Setup(x => x.Execute(It.IsAny<ProcessDescriptor>())).Returns(report);
 
-        var computeHierarchyPrefix = new Mock<IComputeHierarchyPrefix>();
-
-        computeHierarchyPrefix.Setup(x => x.Compute()).Returns(prefix);
-
         var sut = new ProcessRunner(
             context.Object,
             processResolver.Object,
             executor.Object,
-            logger.Object,
-            computeHierarchyPrefix.Object);
+            logger.Object);
 
         // Act
         sut.Run(name);
@@ -65,7 +59,7 @@ public class ProcessRunnerTests
 
         logger.Verify(x => x.LogFatal(It.IsAny<string>()), Times.Never);
 
-        report.Name.Should().Be($"{prefix}{name}");
+        report.Name.Should().Be(name);
 
         context.Object.Session.ProcessReports.Should().Contain(report);
         context.Object.Session.ProcessReports.Should().HaveCount(1);
@@ -79,8 +73,7 @@ public class ProcessRunnerTests
         [Frozen] Mock<IContext> context,
         [Frozen] Mock<IProcessExecutor> executor,
         string path,
-        string name,
-        string prefix)
+        string name)
     {
         // Arrange
         context.Setup(x => x.Session).Returns(new Session
@@ -97,16 +90,11 @@ public class ProcessRunnerTests
 
         processResolver.Setup(x => x.Resolve(It.IsAny<string>())).Returns(resolutionResult);
 
-        var computeHierarchyPrefix = new Mock<IComputeHierarchyPrefix>();
-
-        computeHierarchyPrefix.Setup(x => x.Compute()).Returns(prefix);
-
         var sut = new ProcessRunner(
             context.Object,
             processResolver.Object,
             executor.Object,
-            logger.Object,
-            computeHierarchyPrefix.Object);
+            logger.Object);
 
         // Act
         sut.Run(name);
@@ -118,7 +106,7 @@ public class ProcessRunnerTests
 
         logger.Verify(x => x.LogFatal($"Process not found: {name}"), Times.Once);
 
-        report.Name.Should().Be($"{prefix}{name}");
+        report.Name.Should().Be(name);
 
         context.Object.Session.ProcessReports.Should().HaveCount(1);
         context.Object.Session.ProcessCount.Should().Be(1);

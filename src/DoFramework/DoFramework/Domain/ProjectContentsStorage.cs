@@ -34,4 +34,9 @@ public class ProjectContentsStorage
     /// Gets or sets the list of modules associated with the project.
     /// </summary>
     public List<string> Modules { get; set; } = [];
+
+    /// <summary>
+    /// Gets or sets the list of composers associated with the project.
+    /// </summary>
+    public List<string> Composers { get; set; } = [];
 }
