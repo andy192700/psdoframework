@@ -1,6 +1,6 @@
 {
   "Name": "SampleProject",
-  "Version": "1.0.179",
+  "Version": "1.1.12",
   "PSVersion": "7.4.6",
   "Processes": [
     "Simple\\SimpleProcess.ps1",
