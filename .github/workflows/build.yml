@@ -3,244 +3,245 @@ on:
   workflow_dispatch:
 
 jobs:
-  # windowsbuild:
-  #   name: "Windows Build"
-  #   runs-on: windows-latest
+  windowsbuild:
+    name: "Windows Build"
+    runs-on: windows-latest
 
-  #   steps:
-  #   - name: Checkout code
-  #     id: checkout
-  #     uses: actions/checkout@v2
+    steps:
+    - name: Checkout code
+      id: checkout
+      uses: actions/checkout@v2
 
-  #   - name: Set up .NET 8 SDK
-  #     id: dotnet_install
-  #     if: steps.checkout.conclusion == 'success'
-  #     uses: actions/setup-dotnet@v2
-  #     with:
-  #       dotnet-version: '8.0.x'
+    - name: Set up .NET 8 SDK
+      id: dotnet_install
+      if: steps.checkout.conclusion == 'success'
+      uses: actions/setup-dotnet@v2
+      with:
+        dotnet-version: '8.0.x'
 
-  #   - name: Echo PS Version
-  #     id: echo_psversion
-  #     if: steps.dotnet_install.conclusion == 'success'
-  #     run: |
-  #       make echopsversion
+    - name: Echo PS Version
+      id: echo_psversion
+      if: steps.dotnet_install.conclusion == 'success'
+      run: |
+        make echopsversion
 
-  #   - name: Validate makefile
-  #     id: validate_make
-  #     if: steps.echo_psversion.conclusion == 'success'
-  #     run: |
-  #       make validate
+    - name: Validate makefile
+      id: validate_make
+      if: steps.echo_psversion.conclusion == 'success'
+      run: |
+        make validate
 
-  #   - name: dotnet build
-  #     id: dotnet_build
-  #     if: steps.validate_make.conclusion == 'success'
-  #     run: |
-  #       make dotnetbuild
+    - name: dotnet build
+      id: dotnet_build
+      if: steps.validate_make.conclusion == 'success'
+      run: |
+        make dotnetbuild
 
-  #   - name: dotnet test
-  #     id: dotnet_test
-  #     if: steps.dotnet_build.conclusion == 'success'
-  #     run: |
-  #       make dotnettest
+    - name: dotnet test
+      id: dotnet_test
+      if: steps.dotnet_build.conclusion == 'success'
+      run: |
+        make dotnettest
 
-  #   - name: build module manifest
-  #     id: manifest_build
-  #     if: steps.dotnet_test.conclusion == 'success'
-  #     run: |
-  #       make createmanifest
+    - name: build module manifest
+      id: manifest_build
+      if: steps.dotnet_test.conclusion == 'success'
+      run: |
+        make createmanifest
 
-  #   - name: run powershell tests
-  #     id: ps_tests
-  #     if: steps.manifest_build.conclusion == 'success'
-  #     run: |
-  #       make pstests
+    - name: run powershell tests
+      id: ps_tests
+      if: steps.manifest_build.conclusion == 'success'
+      run: |
+        make pstests
 
-  # macosbuild:
-  #   name: "MacOS Build"
-  #   needs: windowsbuild
-  #   if: success()
-  #   runs-on: macos-latest
+  macosbuild:
+    name: "MacOS Build"
+    needs: windowsbuild
+    if: success()
+    runs-on: macos-latest
 
-  #   steps:
-  #   - name: Checkout code
-  #     id: checkout
-  #     uses: actions/checkout@v2
+    steps:
+    - name: Checkout code
+      id: checkout
+      uses: actions/checkout@v2
 
-  #   - name: Set up .NET 8 SDK
-  #     id: dotnet_install
-  #     if: steps.checkout.conclusion == 'success'
-  #     uses: actions/setup-dotnet@v2
-  #     with:
-  #       dotnet-version: '8.0.x'
+    - name: Set up .NET 8 SDK
+      id: dotnet_install
+      if: steps.checkout.conclusion == 'success'
+      uses: actions/setup-dotnet@v2
+      with:
+        dotnet-version: '8.0.x'
 
-  #   - name: Echo PS Version
-  #     id: echo_psversion
-  #     if: steps.dotnet_install.conclusion == 'success'
-  #     run: |
-  #       make echopsversion
+    - name: Echo PS Version
+      id: echo_psversion
+      if: steps.dotnet_install.conclusion == 'success'
+      run: |
+        make echopsversion
 
-  #   - name: Validate makefile
-  #     id: validate_make
-  #     if: steps.echo_psversion.conclusion == 'success'
-  #     run: |
-  #       make validate
+    - name: Validate makefile
+      id: validate_make
+      if: steps.echo_psversion.conclusion == 'success'
+      run: |
+        make validate
 
-  #   - name: dotnet build
-  #     id: dotnet_build
-  #     if: steps.validate_make.conclusion == 'success'
-  #     run: |
-  #       make dotnetbuild
+    - name: dotnet build
+      id: dotnet_build
+      if: steps.validate_make.conclusion == 'success'
+      run: |
+        make dotnetbuild
 
-  #   - name: dotnet test
-  #     id: dotnet_test
-  #     if: steps.dotnet_build.conclusion == 'success'
-  #     run: |
-  #       make dotnettest
+    - name: dotnet test
+      id: dotnet_test
+      if: steps.dotnet_build.conclusion == 'success'
+      run: |
+        make dotnettest
 
-  #   - name: build module manifest
-  #     id: manifest_build
-  #     if: steps.dotnet_test.conclusion == 'success'
-  #     run: |
-  #       make createmanifest
+    - name: build module manifest
+      id: manifest_build
+      if: steps.dotnet_test.conclusion == 'success'
+      run: |
+        make createmanifest
 
-  #   - name: run powershell tests
-  #     id: ps_tests
-  #     if: steps.manifest_build.conclusion == 'success'
-  #     run: |
-  #       make pstests
+    - name: run powershell tests
+      id: ps_tests
+      if: steps.manifest_build.conclusion == 'success'
+      run: |
+        make pstests
 
-  # linuxbuild:
-  #   name: "Linux Build & Publish"
-  #   needs: macosbuild
-  #   if: success()
-  #   runs-on: ubuntu-latest
+  linuxbuild:
+    name: "Linux Build & Publish"
+    needs: macosbuild
+    if: success()
+    runs-on: ubuntu-latest
 
-  #   steps:
-  #   - name: Checkout code
-  #     id: checkout
-  #     uses: actions/checkout@v2
+    steps:
+    - name: Checkout code
+      id: checkout
+      uses: actions/checkout@v2
 
-  #   - name: Set up .NET 8 SDK
-  #     id: dotnet_install
-  #     if: steps.checkout.conclusion == 'success'
-  #     uses: actions/setup-dotnet@v2
-  #     with:
-  #       dotnet-version: 8.0.x
+    - name: Set up .NET 8 SDK
+      id: dotnet_install
+      if: steps.checkout.conclusion == 'success'
+      uses: actions/setup-dotnet@v2
+      with:
+        dotnet-version: 8.0.x
 
-  #   - name: Echo PS Version
-  #     id: echo_psversion
-  #     if: steps.dotnet_install.conclusion == 'success'
-  #     run: |
-  #       make echopsversion
+    - name: Echo PS Version
+      id: echo_psversion
+      if: steps.dotnet_install.conclusion == 'success'
+      run: |
+        make echopsversion
 
-  #   - name: Validate makefile
-  #     id: validate_make
-  #     if: steps.echo_psversion.conclusion == 'success'
-  #     run: |
-  #       make validate
+    - name: Validate makefile
+      id: validate_make
+      if: steps.echo_psversion.conclusion == 'success'
+      run: |
+        make validate
 
-  #   - name: dotnet build
-  #     id: dotnet_build
-  #     if: steps.validate_make.conclusion == 'success'
-  #     run: |
-  #       make dotnetbuild
+    - name: dotnet build
+      id: dotnet_build
+      if: steps.validate_make.conclusion == 'success'
+      run: |
+        make dotnetbuild
 
-  #   - name: dotnet test
-  #     id: dotnet_test
-  #     if: steps.dotnet_build.conclusion == 'success'
-  #     run: |
-  #       make dotnettest
+    - name: dotnet test
+      id: dotnet_test
+      if: steps.dotnet_build.conclusion == 'success'
+      run: |
+        make dotnettest
 
-  #   - name: build module manifest
-  #     id: manifest_build
-  #     if: steps.dotnet_test.conclusion == 'success'
-  #     run: |
-  #       make createmanifest psNuGetSourceName=PSGallery
+    - name: build module manifest
+      id: manifest_build
+      if: steps.dotnet_test.conclusion == 'success'
+      run: |
+        make createmanifest psNuGetSourceName=PSGallery
 
-  #   - name: run powershell tests
-  #     id: ps_tests
-  #     if: steps.manifest_build.conclusion == 'success'
-  #     run: |
-  #       make pstests
+    - name: run powershell tests
+      id: ps_tests
+      if: steps.manifest_build.conclusion == 'success'
+      run: |
+        make pstests
 
-  #   - name: publish module
-  #     id: publish_module
-  #     if: ${{ github.ref == 'refs/heads/main' && steps.ps_tests.conclusion == 'success' }}
-  #     run: |
-  #       make publishmodule psNuGetSourceName=PSGallery psNuGetApiKey=${{ secrets.PSGALLERY_KEY }}
+    - name: publish module
+      id: publish_module
+      if: ${{ github.ref == 'refs/heads/main' && steps.ps_tests.conclusion == 'success' }}
+      run: |
+        make publishmodule psNuGetSourceName=PSGallery psNuGetApiKey=${{ secrets.PSGALLERY_KEY }}
 
-  # windowsinstall:
-  #   name: "Windows Install & Test"
-  #   needs: linuxbuild
-  #   if: ${{ github.ref == 'refs/heads/main' && success() }}
-  #   runs-on: windows-latest
+  windowsinstall:
+    name: "Windows Install & Test"
+    needs: linuxbuild
+    if: ${{ github.ref == 'refs/heads/main' && success() }}
+    runs-on: windows-latest
 
-  #   steps:
-  #   - name: Checkout code
-  #     id: checkout
-  #     uses: actions/checkout@v2
+    steps:
+    - name: Checkout code
+      id: checkout
+      uses: actions/checkout@v2
 
-  #   - name: install module
-  #     id: install_module
-  #     if: steps.checkout.conclusion == 'success'
-  #     run: |
-  #       make installmodule psNuGetSourceName=PSGallery
+    - name: install module
+      id: install_module
+      if: steps.checkout.conclusion == 'success'
+      run: |
+        make installmodule psNuGetSourceName=PSGallery
 
-  #   - name: run powershell tests
-  #     id: ps_tests_install
-  #     if: steps.install_module.conclusion == 'success'
-  #     run: |
-  #       make pstestspostinstall psNuGetSourceName=PSGallery
+    - name: run powershell tests
+      id: ps_tests_install
+      if: steps.install_module.conclusion == 'success'
+      run: |
+        make pstestspostinstall psNuGetSourceName=PSGallery
 
-  # macosinstall:
-  #   name: "MacOS Install & Test"
-  #   needs: windowsinstall
-  #   if: ${{ github.ref == 'refs/heads/main' && success() }}
-  #   runs-on: macos-latest
+  macosinstall:
+    name: "MacOS Install & Test"
+    needs: windowsinstall
+    if: ${{ github.ref == 'refs/heads/main' && success() }}
+    runs-on: macos-latest
 
-  #   steps:
-  #   - name: Checkout code
-  #     id: checkout
-  #     uses: actions/checkout@v2
+    steps:
+    - name: Checkout code
+      id: checkout
+      uses: actions/checkout@v2
 
-  #   - name: install module
-  #     id: install_module
-  #     if: steps.checkout.conclusion == 'success'
-  #     run: |
-  #       make installmodule psNuGetSourceName=PSGallery
+    - name: install module
+      id: install_module
+      if: steps.checkout.conclusion == 'success'
+      run: |
+        make installmodule psNuGetSourceName=PSGallery
 
-  #   - name: run powershell tests
-  #     id: ps_tests_install
-  #     if: steps.install_module.conclusion == 'success'
-  #     run: |
-  #       make pstestspostinstall psNuGetSourceName=PSGallery
+    - name: run powershell tests
+      id: ps_tests_install
+      if: steps.install_module.conclusion == 'success'
+      run: |
+        make pstestspostinstall psNuGetSourceName=PSGallery
 
-  # linuxinstall:
-  #   name: "Linux Install & Test"
-  #   needs: macosinstall
-  #   if: ${{ github.ref == 'refs/heads/main' && success() }}
-  #   runs-on: linux-latest
+  linuxinstall:
+    name: "Linux Install & Test"
+    needs: macosinstall
+    if: ${{ github.ref == 'refs/heads/main' && success() }}
+    runs-on: linux-latest
 
-  #   steps:
-  #   - name: Checkout code
-  #     id: checkout
-  #     uses: actions/checkout@v2
+    steps:
+    - name: Checkout code
+      id: checkout
+      uses: actions/checkout@v2
 
-  #   - name: install module
-  #     id: install_module
-  #     if: steps.checkout.conclusion == 'success'
-  #     run: |
-  #       make installmodule psNuGetSourceName=PSGallery
+    - name: install module
+      id: install_module
+      if: steps.checkout.conclusion == 'success'
+      run: |
+        make installmodule psNuGetSourceName=PSGallery
 
-  #   - name: run powershell tests
-  #     id: ps_tests_install
-  #     if: steps.install_module.conclusion == 'success'
-  #     run: |
-  #       make pstestspostinstall psNuGetSourceName=PSGallery
+    - name: run powershell tests
+      id: ps_tests_install
+      if: steps.install_module.conclusion == 'success'
+      run: |
+        make pstestspostinstall psNuGetSourceName=PSGallery
 
   tag_release:
     name: "Tag Release"
-    #if: ${{ github.ref == 'refs/heads/main' && success() }}
+    needs: linuxinstall
+    if: ${{ github.ref == 'refs/heads/main' && success() }}
     runs-on: ubuntu-latest
 
     steps:
