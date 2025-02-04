@@ -33,7 +33,9 @@ class MyExampleClass : Process {
     }    
 
     [bool] Validate() {
-        return $this.Context.KeyExists("SomeKey");
+        return $this.Context.Requires().
+            ConfirmKey("SomeKey").
+            Verify();
     }
 
     [void] Run() {
@@ -67,6 +69,32 @@ Note - this method is intended for none primative objects (not integers, floats 
 [MyComplexGenericType[int]] $someVar = $context.Get[MyComplexGenericType[int]]("whateveritiscalled");
 ```
 
+## Requires
+The `Requires` method returns a [DoFramework.Processing.IContextVerifier](../src/DoFramework/DoFramework/Processing/Context/IContextVerifier.cs) instance which is used to verify the state of the context.
+
+It has three methods for checking context state:
+- ComposedBy: Verifies that a Process has been invoked by a specific Composer
+- ConfirmKey: Verifies that a certain key is present in the `IContext`
+- ProcessSucceeded: Verifies that a Process has ran and succeeded
+
+These methods all return the original `IContextVerifier`, and can be chained together:
+
+```PowerShell
+[IContext] $context;
+
+[bool] $contextValid = $context.Requires().
+    ComposedBy("SomeComposer").
+    ConfirmKey("Key1").
+    ConfirmKey("Key2").
+    ConfirmKey("Key3").
+    Processucceeded("Process1").
+    Processucceeded("Process2").
+    Processucceeded("Process3").
+    Verify();
+```
+
+Above the `Requires` method creates the verifier and the `Verify` method executes the specified checks. This method is ideal for usage in a Process' `Validate` method.
+
 ## AddOrUpdate
 The `AddOrUpdate` method does exactly what it says on the tin - adds a variable if no other variable with that name exists OR updates a variable with the supplied name that already exists irrespective of it's former type.
 
@@ -84,11 +112,11 @@ It is useful to check if a key exists in the context - this may be useful in Pro
  ```
 
  ## ParseSwitch
- It is possible to parse boolean values held by the `Context`. If `-theSwitch` is passed whilst running the `run-process` command for example the following could be used to interperet it:
+ It is possible to parse boolean values held by the `Context`. If `-theSwitch` is passed whilst running the `run` command for example the following could be used to interperet it:
 
  ```PowerShell
  #Example CLI call
- doing run-process -name SomeProcess -theSwitch;
+ doing run -name SomeProcess -theSwitch;
 
  #Example showing how to parse a switch from an IContext object
  [bool] $theSwitch = $this.Context.KeyExists("theSwitch");
@@ -101,7 +129,7 @@ It is useful to check if a key exists in the context - this may be useful in Pro
  - true if there is a boolean value in the context with name `theSwitch` and set to true.
 
  # .env* file based Context population
- Do will automatically digest all files following the `.env*` pattern when `run-process` is called via the CLI, it expects them to have the form `key=value` like so:
+ Do will automatically digest all files following the `.env*` pattern when `run` is called via the CLI, it expects them to have the form `key=value` like so:
 
  ```
  this=that
@@ -115,10 +143,10 @@ It is useful to check if a key exists in the context - this may be useful in Pro
  # CLI based Context population
  Variables can be fed into a process via the CLI as well as by .env files.
 
- The following `run-process` call runs a process called `myProcess` but then appends a variable for consumption by a Process:
+ The following `run` call runs a process called `myProcess` but then appends a variable for consumption by a Process:
 
  ```PowerShell
- doing run-process -name myProcess -hello world
+ doing run -name myProcess -hello world
  ```
 
  Which could then be accessed like so:
@@ -154,10 +182,10 @@ class ExampleUsingSwitch : Process {
 }
 ```
 
-Below is an example of calling `run-process`, passing a switch:
+Below is an example of calling `run`, passing a switch:
 
 ```PowerShell
-doing run-process -name "nameOfProcess" -MySwitch
+doing run -name "nameOfProcess" -MySwitch
 ```
 
 A runnable example exists in the sample project [here](../Sample/SampleProject/Processes/Simple/DoublesANumber.ps1).

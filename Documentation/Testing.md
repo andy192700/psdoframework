@@ -1,5 +1,5 @@
 # Testing
-The DoFramework provides the facility to write tests for [Modules](./Modules.md) and [Processes](./Processes.md) created within a project.
+The DoFramework provides the facility to write tests for [Modules](./Modules.md), [Processes](./Processes.md) and [Composers](./Composers.md) created within a project.
 
 Test files are .ps1 files that live with the "Tests" directory of a project, see the overview of Do's [project structure](./ProjectStructure.md).
 
@@ -9,17 +9,20 @@ It is also worth pointing out that the execution of a Process using Do is perfor
 
 Full examples are included in the [sample project](../Sample/).
 
-Adding tests can be done 3 ways - see the add-process, add-module and add-test functions [here](./CLIFunctions.md).
+Adding tests can be done 3 ways - see the add-process, add-module, add-composer and add-test functions [here](./CLIFunctions.md).
 
-To run tests see the [run-tests](./CLIFunctions.md#run-tests) function.
+To run tests see the [test](./CLIFunctions.md#test) function.
 
 ## Writing Process Tests
 Once an associated test file is created for a Process, e.g. if a process named "DoSomething.ps1" exists in the root of the Processes directory and a Test named "DoSomethingTests.ps1" exists in the root of the "Tests/Processes" directory, then the test file "DoSomethingTests" will be able to use the type "DoSomething" without any intervention from a developer. This is because Processes are dot-sourced just before their associated tests run.
 
 To reference modules/namespaces required by tests, `using` statements are required so the test file has access to the required types/functions.
 
+## Writing Composer Tests
+Composer tests work in exactly the same way as Process tests do - where the `IComposer` implementation class is dot-sourced before the tests are ran thus giving the tests access to the type.
+
 ## Writing Modules Tests
-Differing slightly from Process Tests, a developer is required to import their module using a `using` statement at the top of the test file.
+Differing slightly from Process/Composer Tests, a developer is required to import their module using a `using` statement at the top of the test file.
 
 Then just like Process tests, enrich the test file with `using` statements as required.
 
@@ -98,16 +101,16 @@ class MyClass {
 }
 ```
 
-Use the [create-proxy](./CLIFunctions.md#create-proxy) function to create [ProxyResult](../src/DoFramework/DoFramework/Testing/Mocking/ProxyResult.cs) objects which house:
+Use the [mock](./CLIFunctions.md#mock) function to create [ProxyResult](../src/DoFramework/DoFramework/Testing/Mocking/ProxyResult.cs) objects which house:
 - An `Instance` property - this is the mocked object which derives from the input type
 - A `Proxy` property - this allows methods to be mocked and can verify calls.
 
 The `params` argument is only required when there are constructor parameters.
 
 ```PowerShell
-[DoFramework.Testing.ProxyResult] $otherClassProxy = doing create-proxy -type ([OtherClass]);
-[DoFramework.Testing.ProxyResult] $otherClass2Proxy = doing create-proxy -type ([OtherClass2]);
-[DoFramework.Testing.ProxyResult] $myClassProxy = doing create-proxy -type ([MyClass]) -params @($otherClassProxy.Instance, $otherClass2Proxy.Instance);
+[DoFramework.Testing.ProxyResult] $otherClassProxy = doing mock -type ([OtherClass]);
+[DoFramework.Testing.ProxyResult] $otherClass2Proxy = doing mock -type ([OtherClass2]);
+[DoFramework.Testing.ProxyResult] $myClassProxy = doing mock -type ([MyClass]) -params @($otherClassProxy.Instance, $otherClass2Proxy.Instance);
 ```
 
 Create mock behaviour using the `Proxy` property, Mocking is done by passing a script block.
@@ -139,11 +142,11 @@ Finally, count the calls to the methods, this can be done for all calls for a pa
 
 See the [source code](../src/DoFramework/DoFramework/Testing/Mocking/IProxy.cs) for the `Proxy` property for more details.
 
-This is done below using the [read-args](./CLIFunctions.md#read-args) function, which creates a `[Dictionary[string, object]]` for convenience.
+This is done below using the [args](./CLIFunctions.md#args) function, which creates a `[Dictionary[string, object]]` for convenience.
 
 ```PowerShell
 $result.Proxy.CountCalls("MyMethodToMock1") | Should -Be 1;
-$result.Proxy.CountCalls("MyMethodToMock1", (doing read-args -someInput "some string")) | Should -Be 1;
+$result.Proxy.CountCalls("MyMethodToMock1", (doing args -someInput "some string")) | Should -Be 1;
 $result.Proxy.CountCalls("MyMethodToMock2") | Should -Be 1;
 ```
 
@@ -165,9 +168,9 @@ interface MyInterface {
 }
 ```
 
-Similar to a class use the `create-proxy` function to create a mock instance and proxy:
+Similar to a class use the `mock` function to create a mock instance and proxy:
 ```PowerShell
-[DoFramework.Testing.ProxyResult] $myInterfaceProxy = doing create-proxy -type ([MyInterface]);
+[DoFramework.Testing.ProxyResult] $myInterfaceProxy = doing mock -type ([MyInterface]);
 ```
 
 Mocking methods works analagously to PowerShell classes.

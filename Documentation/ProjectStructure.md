@@ -89,12 +89,12 @@ Parent Directory
     │       │   ...
     │
     ├───Composers
-    │   │   Composer1.psm1
-    │   │   Composer2.psm1
+    │   │   Composer1.ps1
+    │   │   Composer2.ps1
     │   │
     │   └───NestedProcessFolder
-    │       │   Composer3.psm1
-    │       │   Composer4.psm1
+    │       │   Composer3.ps1
+    │       │   Composer4.ps1
     │       │   ...
     │
     └───Tests
@@ -108,20 +108,20 @@ Parent Directory
         │       │   ...
         │
         ├───Modules
-        │   │   Module1Tests.psm1
-        │   │   Module2Tests.psm1
+        │   │   Module1Tests.ps1
+        │   │   Module2Tests.ps1
         │   │
         │   └───NestedProcessFolder
-        │       │   Module3Tests.psm1
-        │       │   Module4Tests.psm1
+        │       │   Module3Tests.ps1
+        │       │   Module4Tests.ps1
         │       │   ...
         │
         └───Composers
-            │   Composer1Tests.psm1
-            │   Composer2Tests.psm1
+            │   Composer1Tests.ps1
+            │   Composer2Tests.ps1
             │
             └───NestedProcessFolder
-                │   Composer3Tests.psm1
-                │   Composer4Tests.psm1
+                │   Composer3Tests.ps1
+                │   Composer4Tests.ps1
                 │   ...
 ```

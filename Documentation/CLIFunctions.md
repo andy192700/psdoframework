@@ -8,7 +8,7 @@ The current directory for the current PowerShell instance is where the framework
 
 To allow more flexibility the `projectPath` may be supplied such that calling functions to operate on a project can be ran from anywhere. The `projectPath` parameter is a universally available to all functions, see the [Universal Parameters](#Universal-Parameters) for more details.
 
-One nuance to be aware of is when making code changes to existing Processes, Modules and Tests that the framework may not always pick up changes to method signatures etc. It is considered best practice to reload the PowerShell terminal before re-running, one way to work around this is to use make, see the make target `sampleproject` in the base of this repository.
+One nuance to be aware of is when making code changes to existing Composers, Processes, Modules and Tests that the framework may not always pick up changes to method signatures etc. It is considered best practice to reload the PowerShell terminal before re-running, one way to work around this is to use make, see the make targets `runsample*` in the base of this repository.
 
 # Syntax
 All doing function expects a minimum of one argument - the target function name, example below.
@@ -40,7 +40,7 @@ Universal Parameters:
 | Parameter Name  | Desription | Type | Default Value |
 |----------|----------|----------|----------|
 | silent | A switch which suppresses logging by the framework | switch/boolean | false |
-| projectPath | This framework requires the executing shell to be in the directory of a project by default, by supplying this parameter, this does not have to be the case. By supplying the full path of the parent directory of a project, a developer can use the functions specified in this document from anywhere. The make targets `sampleproject` and `sampleprojecttests` in the root of this repository demonstrate its usage. | string | N/A | 
+| projectPath | This framework requires the executing shell to be in the directory of a project by default, by supplying this parameter, this does not have to be the case. By supplying the full path of the parent directory of a project, a developer can use the functions specified in this document from anywhere. The make targets `runsample*` in the root of this repository demonstrate its usage. | string | N/A | 
 
 Example calls via PowerShell, demonstrated using the `create-project` function:
 
@@ -142,11 +142,45 @@ Example calls via PowerShell:
 ```PowerShell
 doing remove-module -name MyModule
 ```
+### Add-Composer
+Adds a new Composer to a project, see the [Composer](./Composers.md) documentation to learn more.
+
+If desired, this function can create the associated test file for the Composer, in this case the framework will also call the [add-test](#add-test) function.
+
+Parameters:
+| Parameter Name  | Required | Desription | Type | Default Value |
+|----------|----------|----------|----------|----------|
+| name | Yes | The Composer's name, this should include the full path to the Composer file from the project's Composer directory. Note that the name of the Composer is the final part of the supplied string. If a Composer with the same name already exists, the framework will alert the caller and take no action. | string | N/A |
+| addTests | No | Specifies if the framework should create the associated test file for the Composer. | switch/boolean | false |
+
+Example calls via PowerShell:
+```PowerShell
+doing add-composer -name MyComposer
+
+doing add-composer -name "My/Nested/MyComposer"
+
+doing add-composer -name "My/Nested/MyComposer" -addTests
+```
+
+### Remove-Composer
+Removes a Composer from a project, deleting the file, if it exists.
+
+If there is a test file associated with the specified Composer, the framework will call the [remove-test](#remove-test) function.
+
+Parameters:
+| Parameter Name  | Required | Desription | Type | Default Value |
+|----------|----------|----------|----------|----------|
+| name | Yes | The Composer's name, this should not include the full path like the associated `add-composer` function. | string | N/A |
+
+Example calls via PowerShell:
+```PowerShell
+doing remove-composer -name MyComposer
+```
 
 ### Add-Test
 Adds a new Test to a project, see the [Testing](./Testing.md) documentation to learn more.
 
-Called by the [add-process](#add-process) or [add-module](#add-module) functions if the `addTests` parameter is supplied.
+Called by the [add-process](#add-process), [add-module](#add-module) and [add-composer](#add-composer) functions if the `addTests` parameter is supplied.
 
 This can also be called retrospectively to supplement an existing Module/Process if the Test file was not created at their time of creation.
 
@@ -158,6 +192,7 @@ Parameters:
 | name | Yes | The Test's name, this should include the full path to the Test file from the project's associated Process or Module directory. Note that the name of the Test is the final part of the supplied string. If a Test with the same name already exists, the framework will alert the caller and take no action. The Test's name should be suffixed "Tests". | string | N/A |
 | forProcess | No | Informs the framework that the test is intended for a Process. | switch/boolean | false |
 | forModule | No | Informs the framework that the test is intended for a Module. | switch/boolean | false |
+| forComposer | No | Informs the framework that the test is intended for a Composer. | switch/boolean | false |
 
 Example calls via PowerShell:
 ```PowerShell
@@ -165,9 +200,13 @@ doing add-test -name MyProcessTests -forProcess
 
 doing add-test -name MyModuleTests -forModule
 
+doing add-test -name MyComposerTests -forComposer
+
 doing add-test -name "My/Nested/ProcessFileTests" -forProcess
 
 doing add-test -name "My/Nested/ModuleFileTests" -forModule
+
+doing add-test -name "My/Nested/MyComposerTests" -forComposer
 ```
 
 ### Remove-Test
@@ -189,30 +228,52 @@ doing remove-test -name MyModuleTests
 
 This section details how to utilise a projects low hanging fruit: running processes and tests.
 
-### Run-Process
-Runs a specified Process, see the [Process](./Processes.md) for more detail.
+### Run
+Runs a specified Process, see the [documentation](./Processes.md) for more detail.
 
 Parameters:
 | Parameter Name  | Required | Desription | Type | Default Value |
 |----------|----------|----------|----------|----------|
 | name | Yes | The Process's name, this should not include the full path like the associated `add-process` function. | string | N/A |
-| doOutput | No | Returns the [DoFramework.Processing.Session](../src/DoFramework/DoFramework/Processing/Context/ISession.cs) object associated with the run, this object provides insight into Processes that have ran, the outcome as well as the associated [DoFramework.Processing.IContext](../src/DoFramework/DoFramework/Processing/Context/IContext.cs). | switch/boolean | false |
+| doOutput | No | Returns the [DoFramework.Processing.IContext](../src/DoFramework/DoFramework/Processing/Context/IContext.cs) object associated with the run. | switch/boolean | false |
 | showReports | No | Presents a view of the Processes executed, the output ([DoFramework.Domain.ProcessResult](../src/DoFramework/DoFramework/Domain/ProcessResult.cs)) and information relating to execution time, all in tabular form. | switch/boolean | false |
 | extra parameters | No | Optional collection of additional values or switches, these must also follow the syntax called out in the [Syntax](#syntax) section. The intent of these parameters is to load extra data for Process consumption at runtime, see the section in the [Process Context](./ProcessContext.md#cli-based-context-population) documentation to learn more. | Any | N/A |
 
 Example calls via PowerShell:
 ```PowerShell
-doing run-process -name "MyProcess"
+doing run -name "MyProcess"
 
-doing run-process -name "MyProcess" -doOutput
+doing run -name "MyProcess" -doOutput
 
-doing run-process -name "MyProcess" -doOutput -showReports
+doing run -name "MyProcess" -doOutput -showReports
 
-doing run-process -name "MyProcess" -doOutput -showReports -key1 Val1 -AdditionalSwitch
+doing run -name "MyProcess" -doOutput -showReports -key1 Val1 -AdditionalSwitch
 ```
 
-### Run-Tests
-Runs Tests specified by a filter, see the [Testing](./Testing.md) documentation to discover more.
+### Compose
+Runs a Composer, see the [documentation](./Composers.md) for more detail.
+
+Parameters:
+| Parameter Name  | Required | Desription | Type | Default Value |
+|----------|----------|----------|----------|----------|
+| name | Yes | The Composer's name, this should not include the full path like the associated `add-composer` function. | string | N/A |
+| doOutput | No | Returns the [DoFramework.Processing.IContext](../src/DoFramework/DoFramework/Processing/Context/IContext.cs) object associated with the run. | switch/boolean | false |
+| showReports | No | Presents a view of the Processes executed, the output ([DoFramework.Domain.ProcessResult](../src/DoFramework/DoFramework/Domain/ProcessResult.cs)) and information relating to execution time, all in tabular form. | switch/boolean | false |
+| extra parameters | No | Optional collection of additional values or switches, these must also follow the syntax called out in the [Syntax](#syntax) section. The intent of these parameters is to load extra data for Process consumption at runtime, see the section in the [Process Context](./ProcessContext.md#cli-based-context-population) documentation to learn more. | Any | N/A |
+
+Example calls via PowerShell:
+```PowerShell
+doing compose -name "MyComposer"
+
+doing compose -name "MyComposer" -doOutput
+
+doing compose -name "MyComposer" -doOutput -showReports
+
+doing compose -name "MyComposer" -doOutput -showReports -key1 Val1 -AdditionalSwitch
+```
+
+### Test
+Runs Tests specified by a filter, see the [documentation](./Testing.md) to discover more.
 
 Parameters:
 | Parameter Name  | Required | Desription | Type | Default Value |
@@ -220,35 +281,42 @@ Parameters:
 | filter | Yes | Filters the Tests on their name, use `.*` to run all tests or a specific substring to target individuals | string | N/A |
 | forProcesses | No | Switch to instruct the framework to only execute Process Tests. | switch/boolean | false |
 | forModules | No | Switch to instruct the framework to only execute Module Tests. | switch/boolean | false |
+| forComposers | No | Switch to instruct the framework to only execute Composer Tests. | switch/boolean | false |
 | outputFormat | No | Indicates to the framework that it should output the Pester test results to the base directory of the current project. Values must parse exactly to one of the [DoFramework.Testing.PesterOutputType](../src/DoFramework/DoFramework/Testing/PesterOutputType.cs) values which dictates the test output type. | string | [PesterOutputType]::None |
 
 Example calls via PowerShell:
 ```PowerShell
-doing run-tests -filter .*
+doing test -filter .*
 
-doing run-tests -filter MyProcess
+doing test -filter MyProcess
 
-doing run-tests -filter MyProcessTests
+doing test -filter MyProcessTests
 
-doing run-tests -filter MyModule
+doing test -filter MyModule
 
-doing run-tests -filter MyModuleTests
+doing test -filter MyModuleTests
 
-doing run-tests -filter .* -forProcesses
+doing test -filter MyComposer
 
-doing run-tests -filter .* -forModules
+doing test -filter MyComposerTests
 
-doing run-tests -filter .* -outputFormat None
+doing test -filter .* -forProcesses
 
-doing run-tests -filter .* -outputFormat NUnitXml
+doing test -filter .* -forModules
 
-doing run-tests -filter .* -outputFormat JUnitXml
+doing test -filter .* -forComposers
+
+doing test -filter .* -outputFormat None
+
+doing test -filter .* -outputFormat NUnitXml
+
+doing test -filter .* -outputFormat JUnitXml
 ```
 
 ## Utility Functions
 Utility functions are called from within code files within a project structure, the framework provides these to enrich developer experience where necessary.
 
-### Create-Proxy
+### Mock
 Creates a proxy for a given type, allowing mocking of PowerShell classes and Dotnet interfaces. To learn more see how to mock [PowerShell classes](./Testing.md#mocking-powershell-classes) and [Dotnet Interfaces](./Testing.md#mocking-dotnet-interfaces).
 
 Example calls via PowerShell:
@@ -283,13 +351,13 @@ class MyClass {
 }
 
 # Now we Mock the classes
-[DoFramework.Testing.ProxyResult] $otherClassProxy = doing create-proxy -type ([OtherClass]);
-[DoFramework.Testing.ProxyResult] $otherClass2Proxy = doing create-proxy -type ([OtherClass2]);
-[DoFramework.Testing.ProxyResult] $myClassProxy = doing create-proxy -type ([MyClass]) -params @($otherClassProxy.Instance, $otherClass2Proxy.Instance);
+[DoFramework.Testing.ProxyResult] $otherClassProxy = doing mock -type ([OtherClass]);
+[DoFramework.Testing.ProxyResult] $otherClass2Proxy = doing mock -type ([OtherClass2]);
+[DoFramework.Testing.ProxyResult] $myClassProxy = doing mock -type ([MyClass]) -params @($otherClassProxy.Instance, $otherClass2Proxy.Instance);
 ```
 
 ### Get-MethodInfo
-**Used by the create-proxy function, not intended for developer usage.**
+**Used by the mock function, not intended for developer usage.**
 
 Invoked by a Proxy object's method when mock behaviour is introduced, returning a `System.Reflection.MemberInfo` instance detailing the mocked method.
 
@@ -305,8 +373,8 @@ Example calls via PowerShell:
 [System.reflection.MethodInfo] $methodInfo = doing get-methodinfo -methodName SomeMethod -type ([MyClass]) -parameters @("some argument", "some other argument")
 ```
 
-### Read-Args
-The read-args method is provided as a convenience method returning a `Dictionary[string, object]`, it is generally used when verifying mock method calls.
+### Args
+The args method is provided as a convenience method returning a `Dictionary[string, object]`, it is generally used when verifying mock method calls.
 
 Parameters:
 | Parameter Name  | Required | Desription | Type | Default Value |
@@ -316,11 +384,11 @@ Parameters:
 Example calls via PowerShell:
 ```PowerShell
 # An empty Dictionary
-[System.Collections.Generic.Dictionary[string, object]] $dictionary = doing read-args;
+[System.Collections.Generic.Dictionary[string, object]] $dictionary = doing args;
 
 # A Dictionary with 1 entry
-[System.Collections.Generic.Dictionary[string, object]] $dictionary = doing read-args -key1 val1;
+[System.Collections.Generic.Dictionary[string, object]] $dictionary = doing args -key1 val1;
 
 # A Dictionary with 2 entries.
-[System.Collections.Generic.Dictionary[string, object]] $dictionary = doing read-args -key1 val1 -key2 val2;
+[System.Collections.Generic.Dictionary[string, object]] $dictionary = doing args -key1 val1 -key2 val2;
 ```

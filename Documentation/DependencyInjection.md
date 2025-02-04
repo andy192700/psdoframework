@@ -1,14 +1,14 @@
 # Dependency Injection
 One of the great features offered by the DoFramework is the ability to inject dependencies into Processes. This can be done in two ways:
 - Injection using built in dependencies that the framework offers.
-- Injection using classes defined in Modules defined by the developer.
+- Injection using classes defined in Modules defined by the developer, this MUST be done by a [composer](./Composers.md).
 
-The [sample project](../Sample/SampleProject/) provides in depth examples for both, the sample project also demonstrates how to test the Processes/Modules see [here](./Testing.md) to learn more.
+The [sample project](../Sample/SampleProject/) provides in depth examples for both, the sample project also demonstrates how to test components, see [here](./Testing.md) to learn more.
 
 ## Built In Injection
 This section details the offerings of the framework which a developer can inject into their Processes automatically.
 
-Here is an example injecting the `DoFramework.Processing.Context` instance into a Process:
+Here is an example injecting the `DoFramework.Processing.IContext` instance into a Process:
 
 ```PowerShell
 using namespace DoFramework.Processing;
@@ -35,11 +35,6 @@ Further, any dependency defined in the `DoFramework.Services.IServiceContainer` 
 
 Continuing on in this section, some incredibly useful dependencies are discussed in more detail.
 
-### IProcessDispatcher
-The [DoFramework.Processing.IProcessDispatcher](../src/DoFramework/DoFramework/Processing/Invocation/IProcessDispatcher.cs) is used to invoke other Processes from a Process, this allows developers to split their Processes into individual operations, helping to drive the single responsibility priciple.
-
-It requires a [DoFramework.Processing.IProcessingRequest](../src/DoFramework/DoFramework/Processing/Invocation/IProcessingRequest.cs) instance to be initialised which houses an array of Processes (called out by name). The specified Processes will execute in series from within the current Process.
-
 An example can be found in the sample project [here](../Sample/SampleProject/Processes/Advanced/AdvancedProcess.ps1).
 
 ### IContext
@@ -48,11 +43,6 @@ The [DoFramework.Processing.IContext](../src/DoFramework/DoFramework/Processing/
 - Observe Processes that have completed already, this allows developers to ensure certain Processes can only execute if other specified Processes have executed already.
 
 The `IContext` feature is described in detail [here](./ProcessContext.md) and the Advanced Process samples within the sample project demonstrate it's advance usage.
-
-### IServiceContainer
-The driving `IServiceContainer` can also be injected into a Process, which allows developers to register PowerShell classes defined in Modules, once registered they can be called upon immediately OR they can forfill required dependencies for subsequent Processes.
-
-See how the [advanced example](../Sample/SampleProject/Processes/Advanced/Registrations.ps1) registers classes from Modules which are later dialed in other Processes, for example [see](../Sample/SampleProject/Processes/Advanced/DeleteFile.ps1) where the `DeletePersonsFile` is picked up after being registered in a prior Process.
 
 ### ILogger
 There is a built in Logger which is useful for writing information out via the CLI, it is governed by the interface [DoFramework.Logging.ILogger](../src/DoFramework/DoFramework/Logging/ILogger.cs).
@@ -65,8 +55,8 @@ Using the built in logger is easy and has the following advantages:
 Again the advanced example in the sample project contains examples on usage. 
 
 ## Developer Driven Injection
-It is possible to inject developer defined classes into Processes too, this is done using the aforementioned `IServiceContainer` instance.
+It is possible to inject developer defined classes into Processes too, as previously stated this is done by using a Composer to initiate processing.
 
-It is also worth stating that the `IServiceContainer` will attempt to forfill any required dependencies required to construct an object, registrations are instantiated once and are reused like a singleton.
+The framework will attempt to fulfill any required dependencies of a type registered and will only be instantiated once, much like a singleton.
 
 Note - one current limitation with dependency injection using this feature is that dependencies are required to have one constructor.
