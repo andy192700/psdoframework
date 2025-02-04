@@ -58,6 +58,15 @@ public class DescriptorCreatorValidator(
 
                     break;
                 }
+            case "Composer":
+                {
+                    if (contents.Composers.Exists(t => t.Name!.Equals(item.Name)))
+                    {
+                        errors.Add($"A Composer named {item.Name} already exists");
+                    }
+
+                    break;
+                }
             case "Test":
                 {
                     if (contents.Tests.Exists(t => t.Name!.Equals(item.Name)))
