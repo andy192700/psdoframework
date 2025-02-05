@@ -12,11 +12,11 @@ foreach ($moduleName in $requiredModules.Keys) {
 
     [object[]] $moduleJson = Get-Module -ListAvailable -Name $moduleName | select-object Version;
 
-    [PSCustomObject] $version = ($moduleJson | Where-Object {
+    [PSCustomObject] $capturedVersion = ($moduleJson | Where-Object {
         return $_.Version -eq $moduleVersion;
     });
 
-    if ($null -eq $version) {
+    if ($null -eq $capturedVersion) {
         Install-Module -Name $moduleName -RequiredVersion $moduleVersion -Force -Scope CurrentUser -SkipPublisherCheck;
     }
 }

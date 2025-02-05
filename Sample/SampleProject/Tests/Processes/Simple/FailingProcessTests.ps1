@@ -43,7 +43,7 @@ Describe 'FailingProcessTests' {
             [string] $processName = "FailingProcess";
 
             # Act
-            [IContext] $result = doing run-process -name $processName -doOutput -silent;
+            [IContext] $result = doing run -name $processName -doOutput -silent;
 
             # Assert
             $result | Should -Not -Be $null;

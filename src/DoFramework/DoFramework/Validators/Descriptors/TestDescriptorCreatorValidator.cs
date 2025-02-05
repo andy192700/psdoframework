@@ -44,7 +44,8 @@ public class TestDescriptorCreatorValidator(
             var sb = new StringBuilder();
             sb.AppendLine("Please specify a type of test to define.");
             sb.AppendLine("-forProcess for Process tests.");
-            sb.AppendLine("-forModule for module tests.");
+            sb.AppendLine("-forModule for Module tests.");
+            sb.AppendLine("-forComposer for Composer tests.");
             result.Errors.Add(sb.ToString());
         }
 
@@ -53,7 +54,8 @@ public class TestDescriptorCreatorValidator(
             var sb = new StringBuilder();
             sb.AppendLine("Multiple test types requested, only ONE can be selected.");
             sb.AppendLine("-forProcess for Process tests.");
-            sb.AppendLine("-forModule for module tests.");
+            sb.AppendLine("-forModule for Module tests.");
+            sb.AppendLine("-forComposer for Composer tests.");
             result.Errors.Add(sb.ToString());
         }
 
@@ -65,7 +67,8 @@ public class TestDescriptorCreatorValidator(
         var switches = new List<string>
         {
             "forProcess",
-            "forModule"
+            "forModule",
+            "forComposer"
         };
 
         var switchCount = 0;

@@ -3,7 +3,6 @@ using DoFramework.FileSystem;
 using DoFramework.Mappers;
 using FluentAssertions;
 using Moq;
-using System.IO;
 
 namespace DoFrameworkTests.Mappers;
 
@@ -16,22 +15,26 @@ public class ReadProjectContentsMapperTests
         // Arrange
         var processDescriptor = new ProcessDescriptor();
         var moduleDescriptor = new ModuleDescriptor();
+        var composerDescriptor = new ComposerDescriptor();
         var testDescriptor = new TestDescriptor();
 
         var mockProcessDescriptorMapper = new Mock<IMapper<string, ProcessDescriptor>>();
         var mockModuleDescriptorMapper = new Mock<IMapper<string, ModuleDescriptor>>();
         var mockTestDescriptorMapper = new Mock<IMapper<string, TestDescriptor>>();
+        var mockComposerDescriptorMapper = new Mock<IMapper<string, ComposerDescriptor>>();
 
         var osSanitise = new Mock<IOSSanitise>();
 
         mockProcessDescriptorMapper.Setup(x => x.Map(It.IsAny<string>())).Returns(processDescriptor);
         mockModuleDescriptorMapper.Setup(x => x.Map(It.IsAny<string>())).Returns(moduleDescriptor);
         mockTestDescriptorMapper.Setup(x => x.Map(It.IsAny<string>())).Returns(testDescriptor);
+        mockComposerDescriptorMapper.Setup(x => x.Map(It.IsAny<string>())).Returns(composerDescriptor);
 
         var sut = new ReadProjectContentsMapper(
             mockProcessDescriptorMapper.Object,
             mockModuleDescriptorMapper.Object,
             mockTestDescriptorMapper.Object,
+            mockComposerDescriptorMapper.Object,
             osSanitise.Object);
 
         // Act
@@ -49,8 +52,11 @@ public class ReadProjectContentsMapperTests
 
         result.Modules.Should().HaveCount(projectContentsStorage.Modules.Count);
 
+        result.Composers.Should().HaveCount(projectContentsStorage.Composers.Count);
+
         result.Tests.Should().HaveCount(
                projectContentsStorage.Tests.ModuleTests.Count
-             + projectContentsStorage.Tests.ProcessTests.Count);
+             + projectContentsStorage.Tests.ProcessTests.Count
+             + projectContentsStorage.Tests.ComposerTests.Count);
     }
 }

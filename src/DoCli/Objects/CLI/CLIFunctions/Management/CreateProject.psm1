@@ -69,7 +69,9 @@ class CreateProject : CLIFunction[EmptyCLIFunctionDictionaryValidator] {
             $this.CreateDirectory($environment.TestsDir);
             $this.CreateDirectory("$($environment.TestsDir)$([DoFramework.Environment.Environment]::Separator)Processes");
             $this.CreateDirectory("$($environment.TestsDir)$([DoFramework.Environment.Environment]::Separator)Modules");
+            $this.CreateDirectory("$($environment.TestsDir)$([DoFramework.Environment.Environment]::Separator)Composers");
             $this.CreateDirectory($environment.ModuleDir);
+            $this.CreateDirectory($environment.ComposersDir);
 
             New-Item -ItemType File "$($environment.HomeDir)$([DoFramework.Environment.Environment]::Separator).env";
         }

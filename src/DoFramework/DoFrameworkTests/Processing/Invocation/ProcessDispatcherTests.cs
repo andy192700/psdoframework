@@ -37,15 +37,12 @@ public class ProcessDispatcherTests
 
         var logger = new Mock<ILogger>();
 
-        var contextWriter = new Mock<IContextWriter>();
-
         var sut = new ProcessDispatcher(
             context.Object,
             runner.Object,
             displayReports.Object,
             processingRequestValidator.Object,
             logger.Object,
-            contextWriter.Object,
             cliFunctionParameters);
 
         var request = new ProcessingRequest(processes);
@@ -56,7 +53,6 @@ public class ProcessDispatcherTests
         // Assert
         processingRequestValidator.Verify(x => x.Validate(It.IsAny<IProcessingRequest>()), Times.Once);
         logger.Verify(x => x.LogError(It.IsAny<string>()), Times.Never);
-        contextWriter.Verify(x => x.Write(It.IsAny<Dictionary<string, object>>()), Times.Once);
         runner.Verify(x => x.Run(It.IsAny<string>()), Times.Exactly(processes.Length));
         displayReports.Verify(x => x.Display(It.IsAny<List<ProcessReport>>()), Times.Never);
     }
@@ -95,15 +91,12 @@ public class ProcessDispatcherTests
 
         var logger = new Mock<ILogger>();
 
-        var contextWriter = new Mock<IContextWriter>();
-
         var sut = new ProcessDispatcher(
             context.Object,
             runner.Object,
             displayReports.Object,
             processingRequestValidator.Object,
             logger.Object,
-            contextWriter.Object,
             cliFunctionParameters);
 
         var request = new ProcessingRequest(processes);
@@ -114,7 +107,6 @@ public class ProcessDispatcherTests
         // Assert
         processingRequestValidator.Verify(x => x.Validate(It.IsAny<IProcessingRequest>()), Times.Once);
         logger.Verify(x => x.LogError(It.IsAny<string>()), Times.Never);
-        contextWriter.Verify(x => x.Write(It.IsAny<Dictionary<string, object>>()), Times.Once);
         runner.Verify(x => x.Run(It.IsAny<string>()), Times.Exactly(processes.Length));
         displayReports.Verify(x => x.Display(It.IsAny<List<ProcessReport>>()), Times.Once);
     }
@@ -156,15 +148,12 @@ public class ProcessDispatcherTests
 
 		var logger = new Mock<ILogger>();
 
-		var contextWriter = new Mock<IContextWriter>();
-
 		var sut = new ProcessDispatcher(
 			context.Object,
 			runner.Object,
 			displayReports.Object,
 			processingRequestValidator.Object,
 			logger.Object,
-			contextWriter.Object, 
             cliFunctionParameters);
 
 		var request = new ProcessingRequest(processes);
@@ -175,7 +164,6 @@ public class ProcessDispatcherTests
 		// Assert
 		processingRequestValidator.Verify(x => x.Validate(It.IsAny<IProcessingRequest>()), Times.Once);
 		logger.Verify(x => x.LogError(It.IsAny<string>()), Times.Never);
-		contextWriter.Verify(x => x.Write(It.IsAny<Dictionary<string, object>>()), Times.Once);
 		runner.Verify(x => x.Run(It.IsAny<string>()), Times.Exactly(processes.Length));
 		displayReports.Verify(x => x.Display(It.IsAny<List<ProcessReport>>()), Times.Exactly(outputReportsCount));
 	}
@@ -215,15 +203,12 @@ public class ProcessDispatcherTests
 
         var logger = new Mock<ILogger>();
 
-        var contextWriter = new Mock<IContextWriter>();
-
         var sut = new ProcessDispatcher(
             context.Object,
             runner.Object,
             displayReports.Object,
             processingRequestValidator.Object,
             logger.Object,
-            contextWriter.Object,
             cliFunctionParameters);
 
         var request = new ProcessingRequest(processes);
@@ -234,7 +219,6 @@ public class ProcessDispatcherTests
         // Assert
         processingRequestValidator.Verify(x => x.Validate(It.IsAny<IProcessingRequest>()), Times.Once);
         logger.Verify(x => x.LogError(It.IsAny<string>()), Times.Exactly(errors.Count));
-        contextWriter.Verify(x => x.Write(It.IsAny<Dictionary<string, object>>()), Times.Never);
         runner.Verify(x => x.Run(It.IsAny<string>()), Times.Never);
         displayReports.Verify(x => x.Display(It.IsAny<List<ProcessReport>>()), Times.Never);
     }

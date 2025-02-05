@@ -6,7 +6,7 @@ using module "..\..\Modules\Models\Person.psm1";
 
 Describe 'ReadPersonsFileTests' {
     BeforeEach {
-        [ProxyResult] $script:mockContext = doing create-proxy -type ([IContext]);
+        [ProxyResult] $script:mockContext = doing mock -type ([IContext]);
     }
 
     Context 'ReadPersonsFileTests' {
@@ -41,7 +41,7 @@ Describe 'ReadPersonsFileTests' {
             $result.Count | Should -Be 0;
 
             $mockContext.Proxy.CountCalls("Get") | Should -Be 1;
-            $mockContext.Proxy.CountCalls("Get", (doing Read-Args -key "PersonsFilePath")) | Should -Be 1;
+            $mockContext.Proxy.CountCalls("Get", (doing args -key "PersonsFilePath")) | Should -Be 1;
             
             Should -Invoke -CommandName Get-Content -ModuleName "ReadPersonsFile" -Times 1 -ParameterFilter { $Path -eq $filePath };
             
@@ -125,7 +125,7 @@ Describe 'ReadPersonsFileTests' {
             $result[2].Age | Should -Be 58;
 
             $mockContext.Proxy.CountCalls("Get") | Should -Be 1;
-            $mockContext.Proxy.CountCalls("Get", (doing Read-Args -key "PersonsFilePath")) | Should -Be 1;
+            $mockContext.Proxy.CountCalls("Get", (doing args -key "PersonsFilePath")) | Should -Be 1;
             
             Should -Invoke -CommandName Get-Content -ModuleName "ReadPersonsFile" -Times 1 -ParameterFilter { $Path -eq $filePath };
 

@@ -11,13 +11,13 @@ using module "..\..\..\..\Objects\Testing\ModuleTestRunner.psm1";
 Describe 'ModuleTestRunnerTests' {
 
     BeforeEach {
-        [ProxyResult] $mockEnv = doing create-proxy -type ([IEnvironment]);
+        [ProxyResult] $mockEnv = doing mock -type ([IEnvironment]);
 
-        [ProxyResult] $script:mockLogger = doing create-proxy -type ([ILogger]);
+        [ProxyResult] $script:mockLogger = doing mock -type ([ILogger]);
 
-        [ProxyResult] $script:mockProvider = doing create-proxy -type ([IDataCollectionProvider[TestDescriptor, string]]);
+        [ProxyResult] $script:mockProvider = doing mock -type ([IDataCollectionProvider[TestDescriptor, string]]);
         
-        [ProxyResult] $script:pesterRunner = doing create-proxy -type ([IPesterRunner]);
+        [ProxyResult] $script:pesterRunner = doing mock -type ([IPesterRunner]);
 
         [CLIFunctionParameters] $params = [CLIFunctionParameters]::new();
 
@@ -46,11 +46,11 @@ Describe 'ModuleTestRunnerTests' {
             $sut.Test("abc");
 
             # Assert
-            $mockProvider.Proxy.CountCalls("Provide", (doing read-args -parameter "abc")) | Should -Be 1;
+            $mockProvider.Proxy.CountCalls("Provide", (doing args -parameter "abc")) | Should -Be 1;
 
             $mockLogger.Proxy.CountCalls("LogInfo") | Should -Be 1;   
 
-            $mockLogger.Proxy.CountCalls("LogInfo", (doing read-args -message "Found 0 candidate module test files.")) | Should -Be 1;
+            $mockLogger.Proxy.CountCalls("LogInfo", (doing args -message "Found 0 candidate module test files.")) | Should -Be 1;
 
             $pesterRunner.Proxy.CountCalls("Run") | Should -Be 0;  
         }
@@ -83,13 +83,13 @@ Describe 'ModuleTestRunnerTests' {
             $sut.Test("abc");
 
             # Assert
-            $mockProvider.Proxy.CountCalls("Provide", (doing read-args -parameter "abc")) | Should -Be 1;
+            $mockProvider.Proxy.CountCalls("Provide", (doing args -parameter "abc")) | Should -Be 1;
 
             $mockLogger.Proxy.CountCalls("LogInfo") | Should -Be 2;    
 
-            $mockLogger.Proxy.CountCalls("LogInfo", (doing read-args -message "Found 2 candidate module test files.")) | Should -Be 1;
+            $mockLogger.Proxy.CountCalls("LogInfo", (doing args -message "Found 2 candidate module test files.")) | Should -Be 1;
 
-            $mockLogger.Proxy.CountCalls("LogInfo", (doing read-args -message "Running 2 module test files.")) | Should -Be 1;
+            $mockLogger.Proxy.CountCalls("LogInfo", (doing args -message "Running 2 module test files.")) | Should -Be 1;
 
             $pesterRunner.Proxy.CountCalls("Run") | Should -Be 1;   
         }

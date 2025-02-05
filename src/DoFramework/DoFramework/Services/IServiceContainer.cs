@@ -3,18 +3,8 @@
 /// <summary>
 /// Interface for a service container that allows for registering and retrieving services.
 /// </summary>
-public interface IServiceContainer
+public interface IServiceContainer : IReadOnlyServiceContainer
 {
-    /// <summary>
-    /// Gets the dictionary of registered service types.
-    /// </summary>
-    Dictionary<Type, Type> Services { get; }
-
-    /// <summary>
-    /// Gets the dictionary of service instances.
-    /// </summary>
-    Dictionary<Type, object> Instances { get; }
-
     /// <summary>
     /// Registers a service with the specified type.
     /// </summary>
@@ -42,20 +32,6 @@ public interface IServiceContainer
     void RegisterService<TAbstraction, TImplementation>()
         where TAbstraction : class
         where TImplementation : class, TAbstraction;
-
-    /// <summary>
-    /// Retrieves a service of the specified type.
-    /// </summary>
-    /// <typeparam name="TService">The type of the service to retrieve.</typeparam>
-    /// <returns>An instance of the specified service type.</returns>
-    TService GetService<TService>();
-
-    /// <summary>
-    /// Retrieves a service of the specified type.
-    /// </summary>
-    /// <param name="type">The type of the service to retrieve.</param>
-    /// <returns>An instance of the specified service type.</returns>
-    object GetService(Type type);
 
     /// <summary>
     /// Retrieves all services of the specified base type.

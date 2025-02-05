@@ -13,5 +13,10 @@ public enum TestType
     /// <summary>
     /// Test that involves a module.
     /// </summary>
-    Module
+    Module,
+
+    /// <summary>
+    /// Test that involves a composer.
+    /// </summary>
+    Composer
 }

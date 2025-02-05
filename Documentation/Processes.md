@@ -10,7 +10,7 @@ Proceses have the following features:
 - Overridable pre-flight validation checks.
 - Reference Modules in the project using "developer familiar" PowerShell using statements.
 
-See the [Dependency Injection](./DependencyInjection.md) documentation for more information relating to injecting services spun up with the DoFramework by default OR those registered by previous Processes. This feature has many built in uses, such as accessing of [Context](./ProcessContext.md) values, dispatching of new Processes and more!
+See the [Dependency Injection](./DependencyInjection.md) documentation for more information relating to injecting services spun up with the DoFramework by default OR those registered by a Composer.
 
 Processes can either: run successfully, be invalid or fail. If a Process is invalid or fails, all subsequent Processes will not execute and be in a "not run" state, see all possible states [here](../src/DoFramework/DoFramework/Domain/ProcessResult.cs).
 
@@ -18,7 +18,9 @@ If an exception is thrown whilst a Process is executing, Do will automatically c
 
 More information on creating/working with DoFramework Modules can be found [here](./Modules.md).
 
-There are many example Processes in the [Sample Project](../Sample), consult the specific documentation on how to [add processes](./CLIFunctions.md#add-process) to a project, to learn about how to run a process, see this [section](./CLIFunctions.md#run-process).
+There are many example Processes in the [Sample Project](../Sample), consult the specific documentation on how to [add processes](./CLIFunctions.md#add-process) to a project, to learn about how to run a process, see this [section](./CLIFunctions.md#run).
+
+Processes are runnable by themselves, but it is not possible (via the framework) to run multiple Processes at once without a Composer to orchestrate. Learn more about Composers [here](./Composers.md).
 
 End to end/unit tests can be written for Processes, does it work in isolation, does the framework execute the process successfully? In depth examples can be found in the sample project. For more information on working with tests see [here](./Testing.md).
 

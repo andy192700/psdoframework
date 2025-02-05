@@ -59,6 +59,11 @@ class AddTest : CLIFunction[DescriptorManagementDictionaryValidator] {
             $params["PathPrefix"] = "Modules";
         }
 
+        if ($cliParams.ParseSwitch("forComposer")) { 
+            $params["testType"] = [TestType]::Composer;
+            $params["PathPrefix"] = "Composers";
+        }
+
         [TestDescriptor] $descriptor = $mapper.Map("$($params["PathPrefix"])$([DoFramework.Environment.Environment]::Separator)$($params["name"]).ps1");
     
         $descriptor.TestType = $params["testType"];

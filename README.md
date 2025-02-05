@@ -11,7 +11,7 @@ This framework offers developers some excellent features:
 - Unit and end to end testing
 - Simple mocking of PowerShell classes and dotnet interfaces
 
-See the [getting started](./Documentation/GettingStarted.md) documentation to install the PowerShell module and create a project.
+To install the module and start creating projects see the [getting started](./Documentation/GettingStarted.md) documentation.
 
 A [sample project](./Sample/) is provided to demonstrate the framework's capabilities.
 
@@ -27,6 +27,7 @@ This sections contains links and descriptions to all available documentation.
 | Project Structure | Details a project's structure and its components. | [Link](./Documentation/ProjectStructure.md) |
 | Processes | Processes replace traditional PowerShell scripts, these are to be thought of as "entry points". | [Link](./Documentation/Processes.md) |
 | Modules | Modules are PowerShell Modules that can be utilised using developer-friendly `using` statements, they enrich Processes with reusable PowerShell functions and classes. | [Link](./Documentation/Modules.md) |
+| Composers | Composers perform DI registration, configure objects and dictate which Processes should run. | [Link](./Documentation/Composers.md) |
 | Testing | Writing tests is possible for Processes and Modules, the DoFramework incorporates Pester into its installation and supplements testing capability with the ability to mock PowerShell classes and dotnet interfaces with ease. | [Link](./Documentation/Testing.md) |
 | CLI Functions | Learn more about this framework's PowerShell command line interface. | [Link](./Documentation/CLIFunctions.md) |
 | Dependency Injection | Discover how to inject dependencies into Processes, improving testability. | [Link](./Documentation/DependencyInjection.md) |

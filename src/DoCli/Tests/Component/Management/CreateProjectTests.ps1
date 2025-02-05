@@ -43,11 +43,15 @@ Describe 'CreateProjectTests' {
 
         (Test-Path -Path "$($projectDirectory)$($script:sep)Modules$($script:sep).gitkeep") | Should -Be $true;
 
+        (Test-Path -Path "$($projectDirectory)$($script:sep)Composers$($script:sep).gitkeep") | Should -Be $true;
+
         (Test-Path -Path "$($projectDirectory)$($script:sep)Tests$($script:sep).gitkeep") | Should -Be $true;
 
         (Test-Path -Path "$($projectDirectory)$($script:sep)Tests$($script:sep)Processes$($script:sep).gitkeep") | Should -Be $true;
 
         (Test-Path -Path "$($projectDirectory)$($script:sep)Tests$($script:sep)Modules$($script:sep).gitkeep") | Should -Be $true;
+
+        (Test-Path -Path "$($projectDirectory)$($script:sep)Tests$($script:sep)Composers$($script:sep).gitkeep") | Should -Be $true;
 
         (Test-Path -Path $projectFile) | Should -Be $true;
 
@@ -104,11 +108,15 @@ Describe 'CreateProjectTests' {
 
         (Test-Path -Path "$($projectDirectory)$($script:sep)Modules$($script:sep).gitkeep") | Should -Be $true;
 
+        (Test-Path -Path "$($projectDirectory)$($script:sep)Composers$($script:sep).gitkeep") | Should -Be $true;
+
         (Test-Path -Path "$($projectDirectory)$($script:sep)Tests$($script:sep).gitkeep") | Should -Be $true;
 
         (Test-Path -Path "$($projectDirectory)$($script:sep)Tests$($script:sep)Processes$($script:sep).gitkeep") | Should -Be $true;
 
         (Test-Path -Path "$($projectDirectory)$($script:sep)Tests$($script:sep)Modules$($script:sep).gitkeep") | Should -Be $true;
+
+        (Test-Path -Path "$($projectDirectory)$($script:sep)Tests$($script:sep)Composers$($script:sep).gitkeep") | Should -Be $true;
 
         (Test-Path -Path $projectFile) | Should -Be $true;
 
@@ -120,9 +128,13 @@ Describe 'CreateProjectTests' {
 
         [string[]] $modules = $projectContent.Modules;
 
+        [string[]] $composers = $projectContent.Composers;
+
         [string[]] $processTests = $projectContent.Tests.Processes;
 
         [string[]] $moduleTests = $projectContent.Tests.Modules;
+
+        [string[]] $composerTests = $projectContent.Tests.Composers;
 
         [string] $name = $projectContent.Name;
 
@@ -134,9 +146,13 @@ Describe 'CreateProjectTests' {
         
         $modules.Length | Should -Be 0;
         
+        $composers.Length | Should -Be 0;
+        
         $processTests.Length | Should -Be 0;
         
         $moduleTests.Length | Should -Be 0;
+        
+        $composerTests.Length | Should -Be 0;
 
         $name | Should -Be $projectName;
 
@@ -183,9 +199,13 @@ Describe 'CreateProjectTests' {
 
         [string[]] $modules = $projectContent.Modules;
 
+        [string[]] $composers = $projectContent.Composers;
+
         [string[]] $processTests = $projectContent.Tests.Processes;
 
         [string[]] $moduleTests = $projectContent.Tests.Modules;
+
+        [string[]] $composerTests = $projectContent.Tests.Composers;
 
         [string] $name = $projectContent.Name;
 
@@ -197,9 +217,13 @@ Describe 'CreateProjectTests' {
         
         $modules.Length | Should -Be 0;
         
+        $composers.Length | Should -Be 0;
+        
         $processTests.Length | Should -Be 0;
         
         $moduleTests.Length | Should -Be 0;
+        
+        $composerTests.Length | Should -Be 0;
 
         $name | Should -Be $projectName;
 

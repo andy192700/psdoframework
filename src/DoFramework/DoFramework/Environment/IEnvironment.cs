@@ -26,13 +26,7 @@ public interface IEnvironment
     string ModuleDir { get; set; }
 
     /// <summary>
-    /// Checks if the environment is valid by verifying the existence of a specific file.
+    /// Gets or sets the composers directory within the environment.
     /// </summary>
-    /// <returns>True if the environment is valid; otherwise, false.</returns>
-    bool CheckEnvironment();
-
-    /// <summary>
-    /// Validates the environment by checking for the existence of a required project file.
-    /// </summary>
-    void ValidateEnvironment();
+    string ComposersDir { get; set; }
 }

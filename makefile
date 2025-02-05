@@ -4,7 +4,8 @@ psNuGetSourceName=LocalNuGetRepository
 psNuGetSourceLocation=.\LocalNuGetRepository
 psNuGetApiKey=''
 version=1.0.0
-processName=AdvancedProcess
+composerName=AdvancedComposer
+processName=SimpleProcess
 testFilter=.*
 
 # Validation
@@ -20,14 +21,10 @@ dotnettest:
 
 # DoFramework PowerShell Testing
 pstests:
-	pwsh -ExecutionPolicy Bypass -Command " \
-		Import-Module .\Build\PSDoFramework\PSDoFramework.psd1 -Force -verbose -ErrorAction Stop; \
-		& '${CURDIR}/Scripts/PSTestOrchestrator.ps1';"
-
-pstestsbuild:
-	pwsh -ExecutionPolicy Bypass -Command " \
-		Import-Module .\Build\PSDoFramework\PSDoFramework.psd1 -Force -verbose -ErrorAction Stop; \
-		& '${CURDIR}/Scripts/PSTestOrchestrator.ps1' -isBuildRun;"
+	pwsh -ExecutionPolicy Bypass -Command "& '${CURDIR}/Scripts/PSTestOrchestrator.ps1';"
+	
+pstestspostinstall:
+	pwsh -ExecutionPolicy Bypass -Command "& '${CURDIR}/Scripts/PSTestOrchestrator.ps1' -useLatest -psNuGetSourceName $(psNuGetSourceName);"
 
 # Module deployment
 createmanifest:
@@ -35,6 +32,9 @@ createmanifest:
 
 publishmodule:
 	pwsh -ExecutionPolicy Bypass -Command "& '${CURDIR}/Scripts/PublishPowerShellModule.ps1' -psNuGetSourceName $(psNuGetSourceName) -psNuGetApiKey $(psNuGetApiKey)"
+
+installmodule:
+	pwsh -ExecutionPolicy Bypass -Command "& '${CURDIR}/Scripts/InstallModule.ps1' -psNuGetSourceName $(psNuGetSourceName)"
 
 # Local Development support features
 createlocalnugetsource:
@@ -53,9 +53,15 @@ echopsversion:
 	pwsh -ExecutionPolicy Bypass -Command '& Write-Host "PSVersion: $$($$PSVersionTable.PSVersion.ToString())"'
 
 # Run Samples
-sampleproject:
-	pwsh -ExecutionPolicy Bypass -Command "doing run-process -name $(processName) -showReports -projectPath \"${CURDIR}/Sample\""
+runsampleprocess:
+	pwsh -ExecutionPolicy Bypass -Command "doing run -name $(processName) -showReports -projectPath \"${CURDIR}/Sample\""
+	
+runsamplecomposer:
+	pwsh -ExecutionPolicy Bypass -Command "doing compose -name $(composerName) -showReports -projectPath \"${CURDIR}/Sample\""
 
-sampleprojecttests:
-	pwsh -ExecutionPolicy Bypass -Command "doing run-tests -filter $(testFilter) -projectPath \"${CURDIR}/Sample\""
+runsampletests:
+	pwsh -ExecutionPolicy Bypass -Command "doing test -filter $(testFilter) -projectPath \"${CURDIR}/Sample\""
 
+# Pipeline
+gitrelease:
+	pwsh -ExecutionPolicy Bypass -Command "& '${CURDIR}/Scripts/GitRelease.ps1'"

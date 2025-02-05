@@ -1,11 +1,6 @@
 using namespace DoFramework.Processing;
 using module "..\..\Modules\ModuleWithFunctions.psm1";
 
-# Simple example injecting a IContext allowing access to shared values set by either
-#    .env* files
-#    supplied directly via the command line (caller can override by appending -InputInteger SomeValue to the run-process call)
-#    a previous process
-# This example also parses a switch - true if is supplied, false if it is not supplied
 class DoublesANumber : Process {
     [IContext] $Context;
 

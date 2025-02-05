@@ -6,14 +6,14 @@ namespace DoFramework.Services;
 public class ServiceContainer : IServiceContainer
 {
     /// <summary>
-    /// Gets the dictionary of registered service types.
+    /// This container's registered services.
     /// </summary>
-    public Dictionary<Type, Type> Services { get; } = [];
+    private Dictionary<Type, Type> Services { get; } = [];
 
     /// <summary>
-    /// Gets the dictionary of service instances.
+    /// This container's service instances, derived from the Services.
     /// </summary>
-    public Dictionary<Type, object> Instances { get; } = [];
+    private Dictionary<Type, object> Instances { get; } = [];
 
     private readonly IObjectBuilder _builder;
 
@@ -22,34 +22,24 @@ public class ServiceContainer : IServiceContainer
     /// </summary>
     public ServiceContainer() : this(new ObjectBuilder()) { }
 
-    /// <summary>
-    /// Initializes a new instance of the <see cref="ServiceContainer"/> class using the specified object builder.
-    /// </summary>
-    /// <param name="objectBuilder">The object builder to use.</param>
+    /// <inheritdoc/>
     public ServiceContainer(IObjectBuilder objectBuilder)
     {
         _builder = objectBuilder;
 
-        RegisterService<IServiceContainer, ServiceContainer>();
+        RegisterService<IReadOnlyServiceContainer, ReadOnlyServiceContainer>();
 
-        Instances[typeof(IServiceContainer)] = this;
+        Instances[typeof(IReadOnlyServiceContainer)] = new ReadOnlyServiceContainer(this);
     }
 
-    /// <summary>
-    /// Registers a service of the specified type.
-    /// </summary>
-    /// <typeparam name="TService">The type of the service to register.</typeparam>
+    /// <inheritdoc/>
     public void RegisterService<TService>()
         where TService : class
     {
         RegisterService(typeof(TService));
     }
 
-    /// <summary>
-    /// Registers a service with the specified abstraction and implementation types.
-    /// </summary>
-    /// <typeparam name="TAbstraction">The abstraction type of the service.</typeparam>
-    /// <typeparam name="TImplementation">The implementation type of the service.</typeparam>
+    /// <inheritdoc/>
     public void RegisterService<TAbstraction, TImplementation>()
         where TAbstraction : class
         where TImplementation : class, TAbstraction
@@ -57,20 +47,13 @@ public class ServiceContainer : IServiceContainer
         RegisterService(typeof(TAbstraction), typeof(TImplementation));
     }
 
-    /// <summary>
-    /// Registers a service with the specified type.
-    /// </summary>
-    /// <param name="type">The type of the service to register.</param>
+    /// <inheritdoc/>
     public void RegisterService(Type type)
     {
         Register(type);
     }
 
-    /// <summary>
-    /// Registers a service with the specified abstraction and implementation types.
-    /// </summary>
-    /// <param name="typeAbstraction">The abstraction type of the service.</param>
-    /// <param name="typeImplementation">The implementation type of the service.</param>
+    /// <inheritdoc/>
     public void RegisterService(Type typeAbstraction, Type typeImplementation)
     {
         if (typeAbstraction.Equals(typeImplementation))
@@ -86,11 +69,7 @@ public class ServiceContainer : IServiceContainer
         Register(typeAbstraction, typeImplementation);
     }
 
-    /// <summary>
-    /// Retrieves all services of the specified base type.
-    /// </summary>
-    /// <typeparam name="TBaseType">The base type of the services to retrieve.</typeparam>
-    /// <returns>A list of services of the specified base type.</returns>
+    /// <inheritdoc/>
     public List<TBaseType> GetServicesByType<TBaseType>()
         where TBaseType : class
     {
@@ -107,11 +86,7 @@ public class ServiceContainer : IServiceContainer
         return services;
     }
 
-    /// <summary>
-    /// Retrieves a service of the specified type.
-    /// </summary>
-    /// <typeparam name="TService">The type of the service to retrieve.</typeparam>
-    /// <returns>An instance of the specified service type.</returns>
+    /// <inheritdoc/>
     public TService GetService<TService>()
     {
         if (!Instances.ContainsKey(typeof(TService)))
@@ -122,11 +97,7 @@ public class ServiceContainer : IServiceContainer
         return (TService)(Instances[typeof(TService)]);
     }
 
-    /// <summary>
-    /// Retrieves a service of the specified type.
-    /// </summary>
-    /// <param name="type">The type of the service to retrieve.</param>
-    /// <returns>An instance of the specified service type.</returns>
+    /// <inheritdoc/>
     public object GetService(Type type)
     {
         if (!Instances.ContainsKey(type))

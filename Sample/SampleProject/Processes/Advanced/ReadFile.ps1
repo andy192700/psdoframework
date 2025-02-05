@@ -4,11 +4,6 @@ using namespace System.Collections.Generic;
 using module "..\..\Modules\Models\Person.psm1";
 using module "..\..\Modules\ReadPersonsFile.psm1";
 
-# A process that reads a file, adding it to an IContext, it requires injection from a previous process 
-#    - specifically the ReadPersonsFile object and other dependencies supplied by the DoFramework.
-# If instantiation is possible, the process will execute if prior successfull processes have been completed, in the correct order.
-# Whilst executing it calls the ReadPersonsFile.Read method which requests data from the IContext and reads the JSON file storing the data, returning a List.
-# Logging is added to provide observability, use of "-silent" via the command line will suppress this
 class ReadFile : Process {
     [ReadPersonsFile] $ReadPersonsFile;
     [ILogger] $Logger;
@@ -24,12 +19,10 @@ class ReadFile : Process {
     }
 
     [bool] Validate() {
-        return $this.Context.Session.ProcessReports.Count -eq 4 `
-            -and $this.Context.Session.ProcessReports[0].Descriptor.Name -eq "Registrations" `
-            -and $this.Context.Session.ProcessReports[1].Descriptor.Name -eq "DeleteFile" `
-            -and $this.Context.Session.ProcessReports[2].Descriptor.Name -eq "CreateData" `
-            -and $this.Context.Session.ProcessReports[3].Descriptor.Name -eq "CreateFile" `
-            -and $this.Context.KeyExists("PersonsFilePath");
+        return $this.Context.Requires().
+            ConfirmKey("PersonsFilePath").
+            ProcessSucceeded("CreateFile").
+            Verify();
     }
 
     [void] Run() {

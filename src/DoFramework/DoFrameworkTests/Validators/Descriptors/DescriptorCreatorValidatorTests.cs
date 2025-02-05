@@ -42,6 +42,19 @@ public class DescriptorCreatorValidatorTests
 
     [Theory]
     [InlineAutoMoqData]
+    public void ComposerDescriptorCreatorValidator_InvalidExtension(
+        [Frozen] Mock<IEnvironment> environment,
+        [Frozen] Mock<IReadProcessLocation> processReader,
+        ProjectContentsStorage projectContentsStorage,
+        string name,
+        string path,
+        string extension)
+    {
+        InValidExtensionsTest<ComposerDescriptor>(environment, processReader, projectContentsStorage, name, path, extension);
+    }
+
+    [Theory]
+    [InlineAutoMoqData]
     public void TestModuleDescriptorCreatorValidator_InvalidExtension(
         [Frozen] Mock<IEnvironment> environment,
         [Frozen] Mock<IReadProcessLocation> processReader,
@@ -56,6 +69,7 @@ public class DescriptorCreatorValidatorTests
         var processDescriptorMapper = new ProcessDescriptorMapper(osSanitise);
         var moduleDescriptorMapper = new ModuleDescriptorMapper(osSanitise);
         var testDescriptorMapper = new TestDescriptorMapper(osSanitise);
+        var composerDescriptorMapper = new ComposerDescriptorMapper(osSanitise);
 
         var descriptor = new TestDescriptor
         {
@@ -73,7 +87,7 @@ public class DescriptorCreatorValidatorTests
 
         descriptor.Path = $"{path}{DoFramework.Environment.Environment.Separator}{descriptor.Name}.{extension}";
 
-        var contentsMapper = new ReadProjectContentsMapper(processDescriptorMapper, moduleDescriptorMapper, testDescriptorMapper, osSanitise);
+        var contentsMapper = new ReadProjectContentsMapper(processDescriptorMapper, moduleDescriptorMapper, testDescriptorMapper, composerDescriptorMapper, osSanitise);
 
         var contentsProvider = new ReadProjectContents(contentsMapper, processReader.Object, fileManager.Object, jsonConverter.Object);
 
@@ -148,6 +162,28 @@ public class DescriptorCreatorValidatorTests
 
     [Theory]
     [InlineAutoMoqData]
+    public void ComposerDescriptorCreatorValidator_InvalidAlreadyExists(
+        [Frozen] Mock<IEnvironment> environment,
+        Mock<IReadProcessLocation> processReader,
+        string name,
+        string path)
+    {
+        var projectContents = new ProjectContents();
+
+        var descriptor = new ComposerDescriptor
+        {
+            Name = name
+        };
+
+        descriptor.Path = $"{path}{DoFramework.Environment.Environment.Separator}{descriptor.Name}{descriptor.Extension}";
+
+        projectContents.Composers.Add(descriptor);
+
+        InvalidAlreadyExistsTest(environment, processReader, projectContents, descriptor);
+    }
+
+    [Theory]
+    [InlineAutoMoqData]
     public void TestDescriptorCreatorValidator_InvalidAlreadyExists(
         [Frozen] Mock<IEnvironment> environment,
         [Frozen] Mock<IReadProcessLocation> processReader,
@@ -189,6 +225,18 @@ public class DescriptorCreatorValidatorTests
 
     [Theory]
     [InlineAutoMoqData]
+    public void ComposerDescriptorCreatorValidator_Valid(
+        [Frozen] Mock<IEnvironment> environment,
+        [Frozen] Mock<IReadProcessLocation> processReader,
+        ProjectContentsStorage projectContentsStorage,
+        string name,
+        string path)
+    {
+        ValidTest<ComposerDescriptor>(environment, processReader, projectContentsStorage, name, path);
+    }
+
+    [Theory]
+    [InlineAutoMoqData]
     public void ModuleDescriptorCreatorValidator_Valid(
         [Frozen] Mock<IEnvironment> environment,
         [Frozen] Mock<IReadProcessLocation> processReader,
@@ -214,6 +262,7 @@ public class DescriptorCreatorValidatorTests
         var processDescriptorMapper = new ProcessDescriptorMapper(osSanitise);
         var moduleDescriptorMapper = new ModuleDescriptorMapper(osSanitise);
         var testDescriptorMapper = new TestDescriptorMapper(osSanitise);
+        var composerDescriptorMapper = new ComposerDescriptorMapper(osSanitise);
 
         var fileManager = new Mock<IFileManager>();
 
@@ -231,7 +280,7 @@ public class DescriptorCreatorValidatorTests
 
         descriptor.Path = $"{path}{DoFramework.Environment.Environment.Separator}{descriptor.Name}{descriptor.Extension}";
 
-        var contentsMapper = new ReadProjectContentsMapper(processDescriptorMapper, moduleDescriptorMapper, testDescriptorMapper, osSanitise);
+        var contentsMapper = new ReadProjectContentsMapper(processDescriptorMapper, moduleDescriptorMapper, testDescriptorMapper, composerDescriptorMapper, osSanitise);
 
         var contentsProvider = new ReadProjectContents(contentsMapper, processReader.Object, fileManager.Object, jsonConverter.Object);
 
@@ -275,6 +324,7 @@ public class DescriptorCreatorValidatorTests
         var processDescriptorMapper = new ProcessDescriptorMapper(osSanitise.Object);
         var moduleDescriptorMapper = new ModuleDescriptorMapper(osSanitise.Object);
         var testDescriptorMapper = new TestDescriptorMapper(osSanitise.Object);
+        var composerDescriptorMapper = new ComposerDescriptorMapper(osSanitise.Object);
 
         var fileManager = new Mock<IFileManager>();
 
@@ -292,7 +342,7 @@ public class DescriptorCreatorValidatorTests
 
         descriptor.Path = $"{path}{DoFramework.Environment.Environment.Separator}{descriptor.Name}{descriptor.Extension}";
 
-        var contentsMapper = new ReadProjectContentsMapper(processDescriptorMapper, moduleDescriptorMapper, testDescriptorMapper, osSanitise.Object);
+        var contentsMapper = new ReadProjectContentsMapper(processDescriptorMapper, moduleDescriptorMapper, testDescriptorMapper, composerDescriptorMapper, osSanitise.Object);
 
         var contentsProvider = new ReadProjectContents(contentsMapper, processReader.Object, fileManager.Object, jsonConverter.Object);
 
@@ -338,6 +388,7 @@ public class DescriptorCreatorValidatorTests
         var processDescriptorMapper = new ProcessDescriptorMapper(osSanitise.Object);
         var moduleDescriptorMapper = new ModuleDescriptorMapper(osSanitise.Object);
         var testDescriptorMapper = new TestDescriptorMapper(osSanitise.Object);
+        var composerDescriptorMapper = new ComposerDescriptorMapper(osSanitise.Object);
 
         var fileManager = new Mock<IFileManager>();
 
@@ -355,7 +406,7 @@ public class DescriptorCreatorValidatorTests
 
         descriptor.Path = $"{path}{DoFramework.Environment.Environment.Separator}{descriptor.Name}{descriptor.Extension}";
 
-        var contentsMapper = new ReadProjectContentsMapper(processDescriptorMapper, moduleDescriptorMapper, testDescriptorMapper, osSanitise.Object);
+        var contentsMapper = new ReadProjectContentsMapper(processDescriptorMapper, moduleDescriptorMapper, testDescriptorMapper, composerDescriptorMapper, osSanitise.Object);
 
         var contentsProvider = new ReadProjectContents(contentsMapper, processReader.Object, fileManager.Object, jsonConverter.Object);
 
@@ -400,6 +451,7 @@ public class DescriptorCreatorValidatorTests
         var processDescriptorMapper = new ProcessDescriptorMapper(osSanitise.Object);
         var moduleDescriptorMapper = new ModuleDescriptorMapper(osSanitise.Object);
         var testDescriptorMapper = new TestDescriptorMapper(osSanitise.Object);
+        var composerDescriptorMapper = new ComposerDescriptorMapper(osSanitise.Object);
 
         var descriptor = new TDescriptor
         {
@@ -414,7 +466,7 @@ public class DescriptorCreatorValidatorTests
 
         descriptor.Path = $"{path}{DoFramework.Environment.Environment.Separator}{descriptor.Name}.{extension}";
 
-        var contentsMapper = new ReadProjectContentsMapper(processDescriptorMapper, moduleDescriptorMapper, testDescriptorMapper, osSanitise.Object);
+        var contentsMapper = new ReadProjectContentsMapper(processDescriptorMapper, moduleDescriptorMapper, testDescriptorMapper, composerDescriptorMapper, osSanitise.Object);
 
         var contentsProvider = new ReadProjectContents(contentsMapper, processReader.Object, fileManager.Object, jsonConverter.Object);
 
@@ -455,8 +507,9 @@ public class DescriptorCreatorValidatorTests
         var processDescriptorMapper = new ProcessDescriptorMapper(osSanitise);
         var moduleDescriptorMapper = new ModuleDescriptorMapper(osSanitise);
         var testDescriptorMapper = new TestDescriptorMapper(osSanitise);
+        var composerDescriptorMapper = new ComposerDescriptorMapper(osSanitise);
 
-        var contentsMapper = new ReadProjectContentsMapper(processDescriptorMapper, moduleDescriptorMapper, testDescriptorMapper, osSanitise);
+        var contentsMapper = new ReadProjectContentsMapper(processDescriptorMapper, moduleDescriptorMapper, testDescriptorMapper, composerDescriptorMapper, osSanitise);
         var saveContentsMapper = new SaveProjectContentsMapper();
 
         var jsonConverter = new Mock<IJsonConverter>();
@@ -509,6 +562,7 @@ public class DescriptorCreatorValidatorTests
         var processDescriptorMapper = new ProcessDescriptorMapper(osSanitise.Object);
         var moduleDescriptorMapper = new ModuleDescriptorMapper(osSanitise.Object);
         var testDescriptorMapper = new TestDescriptorMapper(osSanitise.Object);
+        var composerDescriptorMapper = new ComposerDescriptorMapper(osSanitise.Object);
 
         var fileManager = new Mock<IFileManager>();
 
@@ -523,7 +577,7 @@ public class DescriptorCreatorValidatorTests
 
         descriptor.Path = $"{path}{DoFramework.Environment.Environment.Separator}{descriptor.Name}{descriptor.Extension}";
 
-        var contentsMapper = new ReadProjectContentsMapper(processDescriptorMapper, moduleDescriptorMapper, testDescriptorMapper, osSanitise.Object);
+        var contentsMapper = new ReadProjectContentsMapper(processDescriptorMapper, moduleDescriptorMapper, testDescriptorMapper, composerDescriptorMapper, osSanitise.Object);
 
         var contentsProvider = new ReadProjectContents(contentsMapper, processReader.Object, fileManager.Object, jsonConverter.Object);
 

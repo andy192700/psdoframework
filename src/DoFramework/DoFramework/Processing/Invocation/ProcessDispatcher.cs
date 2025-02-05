@@ -14,7 +14,6 @@ public class ProcessDispatcher : IProcessDispatcher
     private readonly IDisplayReports _displayReports;
     private readonly IValidator<IProcessingRequest> _processingRequestValidator;
     private readonly ILogger _logger;
-    private readonly IContextWriter _contextWriter;
     private readonly CLIFunctionParameters _cliFunctionParameters;
 
     public ProcessDispatcher(
@@ -23,7 +22,6 @@ public class ProcessDispatcher : IProcessDispatcher
         IDisplayReports displayReports,
         IValidator<IProcessingRequest> processingRequestValidator,
         ILogger logger,
-        IContextWriter contextWriter,
         CLIFunctionParameters cliFunctionParameters)
     {
         _context = context;
@@ -31,7 +29,6 @@ public class ProcessDispatcher : IProcessDispatcher
         _displayReports = displayReports;
         _processingRequestValidator = processingRequestValidator;
         _logger = logger;
-        _contextWriter = contextWriter;
         _cliFunctionParameters = cliFunctionParameters;
     }
 
@@ -50,8 +47,6 @@ public class ProcessDispatcher : IProcessDispatcher
 
         if (result.IsValid)
         {
-            _contextWriter.Write(processingRequest.Args);
-
             foreach (var process in processingRequest.Processes)
             {
                 _runner.Run(process);

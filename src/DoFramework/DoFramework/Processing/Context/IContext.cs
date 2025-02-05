@@ -45,4 +45,16 @@ public interface IContext
     /// <param name="key">The name of the key to parse.</param>
     /// <returns>THe parsed switch.</returns>
     public bool ParseSwitch(string key);
+
+    /// <summary>
+    /// Builds a verifier which aids with Context verification when validating processes.
+    /// </summary>
+    /// <returns>A new <see cref="IContextVerifier"/> which can be used to check this object's state.</returns>
+    public IContextVerifier Requires();
+
+    /// <summary>
+    /// Sets the implementation's ComposedBy property, this method exists to aid PowerShell.
+    /// </summary>
+    /// <param name="composedBy">The name of the composing process.</param>
+    public void SetComposedBy(string composedBy);
 }

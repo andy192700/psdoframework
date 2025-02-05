@@ -1,10 +1,8 @@
+using namespace DoFramework.Domain;
+using namespace DoFramework.Environment;
 using namespace DoFramework.Processing;
 using namespace DoFramework.Services;
-using namespace DoFramework.Environment;
-using namespace DoFramework.Domain;
 using namespace DoFramework.Types;
-using namespace DoFramework.Validators;
-using namespace DoFramework.Logging;
 using namespace System.Reflection;
 
 <#
@@ -25,22 +23,17 @@ class ProcessBuilder : IProcessBuilder {
     Constructor for the ProcessBuilder class, which sets up the service container, 
     environment, lookup type, type validator, and logger for the process building.
     #>
-    [IServiceContainer] $ServiceContainer;
     [IEnvironment] $Environment;
-    [ILookupProcessType] $LookupType;
-    [IValidator[Type]] $TypeVaidator;
-    [ILogger] $Logger;
+    [IReadOnlyServiceContainer] $ServiceContainer;
+    [ILookupType[IProcess]] $LookupType;
 
     ProcessBuilder(
-        [IServiceContainer] $serviceContainer, 
         [IEnvironment] $environment,
-        [ILookupProcessType] $lookupType,
-        [IValidator[Type]] $typeValidator,
-        [ILogger] $logger) {
-        $this.ServiceContainer = $serviceContainer;
+        [IReadOnlyServiceContainer] $serviceContainer,
+        [ILookupType[IProcess]] $lookupType) {
         $this.Environment = $environment;
+        $this.ServiceContainer = $serviceContainer;
         $this.LookupType = $lookupType;
-        $this.Logger = $logger;
     }
 
     <#
@@ -71,6 +64,6 @@ class ProcessBuilder : IProcessBuilder {
             return $null;
         }
         
-        return New-Object -TypeName $descriptor.Name -ArgumentList $constructorParams;
+        return New-Object -TypeName $type.Name -ArgumentList $constructorParams;
     }
 }

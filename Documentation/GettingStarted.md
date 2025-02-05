@@ -74,14 +74,15 @@ Now that we have a project and a Process added, we can run it!
 Execute the following command to run the Process:
 
 ```PowerShell
-doing run-process -name MyProcess -showReports
+doing run -name MyProcess -showReports
 ```
 
 The Process will execute and the framework will print some headline results out on the terminal.
 
-To learn more about the `run-process` function, see the [documentation](./CLIFunctions.md#run-process).
+To learn more about the `run` function, see the [documentation](./CLIFunctions.md#run).
 
 The fun doesn't stop there - this framework is packed full of useful features which can assist developers in achieving their goals in a clean and scalable manner:
+- Utilise [Composers](./Composers.md) to orchestrate Processing, delve into advanced configuration and register depedencies
 - Supplement your Processes with "off the shelf" features provided by the framework using [dependency injection](./DependencyInjection.md)
 - Further supplement your Processes with reusable PowerShell functions and classes using [Modules](./Modules.md)
 - Learn about [Testing](./Testing.md) Modules and Processes to grow confidence in your pipeline/local development scripting

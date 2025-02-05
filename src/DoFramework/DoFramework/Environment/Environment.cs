@@ -9,33 +9,25 @@ namespace DoFramework.Environment;
 /// </summary>
 public class Environment : IEnvironment
 {
-    /// <summary>
-    /// Gets or sets the home directory of the environment.
-    /// </summary>
+    /// <inheritdoc/>
     public string HomeDir { get; set; }
 
-    /// <summary>
-    /// Gets or sets the processes directory within the environment.
-    /// </summary>
+    /// <inheritdoc/>
     public string ProcessesDir { get; set; }
 
-    /// <summary>
-    /// Gets or sets the tests directory within the environment.
-    /// </summary>
+    /// <inheritdoc/>
     public string TestsDir { get; set; }
 
-    /// <summary>
-    /// Gets or sets the modules directory within the environment.
-    /// </summary>
+    /// <inheritdoc/>
     public string ModuleDir { get; set; }
 
-    /// <summary>
-    /// Gets the directory separator character.
-    /// </summary>
+    /// <inheritdoc/>
+    public string ComposersDir { get; set; }
+
+    /// <inheritdoc/>
     public static char Separator { get; } = Path.DirectorySeparatorChar;
 
     private readonly IReadProcessLocation _readProcessLocation;
-    private readonly IFileManager _FileManager;
     private readonly ISimpleDataProvider<ProjectContents> _projectContentsProvider;
 
     /// <summary>
@@ -46,41 +38,17 @@ public class Environment : IEnvironment
     /// <param name="projectContentsProvider">An instance of <see cref="ISimpleDataProvider{ProjectContents}"/> to provide project contents.</param>
     public Environment(
         IReadProcessLocation readProcessLocation,
-        IFileManager fileManager,
         ISimpleDataProvider<ProjectContents> projectContentsProvider)
     {
         _readProcessLocation = readProcessLocation;
-        _FileManager = fileManager;
         _projectContentsProvider = projectContentsProvider;
 
         HomeDir = _readProcessLocation.Read();
-
-        ValidateEnvironment();
 
         var contents = _projectContentsProvider.Provide();
         ProcessesDir = $"{HomeDir}{Separator}{contents.Name}{Separator}Processes";
         TestsDir = $"{HomeDir}{Separator}{contents.Name}{Separator}Tests";
         ModuleDir = $"{HomeDir}{Separator}{contents.Name}{Separator}Modules";
-    }
-
-    /// <summary>
-    /// Checks if the environment is valid by verifying the existence of a specific file.
-    /// </summary>
-    /// <returns>True if the environment is valid; otherwise, false.</returns>
-    public bool CheckEnvironment()
-    {
-        return _FileManager.FileExists($"{HomeDir}{Separator}do.json");
-    }
-
-    /// <summary>
-    /// Validates the environment by checking for the existence of a required project file.
-    /// </summary>
-    /// <exception cref="Exception">Thrown when the required project file is not found.</exception>
-    public void ValidateEnvironment()
-    {
-        if (!CheckEnvironment())
-        {
-            throw new Exception("Error - Do project not found.");
-        }
+        ComposersDir = $"{HomeDir}{Separator}{contents.Name}{Separator}Composers";
     }
 }

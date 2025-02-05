@@ -4,12 +4,15 @@ using module "..\CLI\CLIFunctions\Management\Modules\AddModule.psm1";
 using module "..\CLI\CLIFunctions\Management\Modules\RemoveModule.psm1";
 using module "..\CLI\CLIFunctions\Management\Tests\AddTest.psm1";
 using module "..\CLI\CLIFunctions\Management\Tests\RemoveTest.psm1";
+using module "..\CLI\CLIFunctions\Management\Composers\AddComposer.psm1";
+using module "..\CLI\CLIFunctions\Management\Composers\RemoveComposer.psm1";
 using module "..\CLI\CLIFunctions\Management\CreateProject.psm1";
+using module "..\CLI\CLIFunctions\Invocation\Compose.psm1";
 using module "..\CLI\CLIFunctions\Invocation\RunProcess.psm1";
 using module "..\CLI\CLIFunctions\Invocation\RunTests.psm1";
 using module "..\CLI\CLIFunctions\Util\ReadArgs.psm1";
 using module "..\CLI\CLIFunctions\Util\GetMethodInfo.psm1";
-using module "..\CLI\CLIFunctions\Util\CreateProxy.psm1";
+using module "..\CLI\CLIFunctions\Util\CreateMock.psm1";
 using module "..\Environment\ReadProcessLocation.psm1";
 
 using namespace DoFramework.CLI;
@@ -50,19 +53,22 @@ class CLIFunctionServiceContainer {
         $container.RegisterService[ILogger, Logger]();
         $container.RegisterService[IValidationErrorWriter, ValidationErrorWriter]();
         $container.RegisterService[CLIArgValidator]();
+        $container.RegisterService[Compose]();
         $container.RegisterService[RunProcess]();
         $container.RegisterService[ArgMapper]();
         $container.RegisterService[AddProcess]();
         $container.RegisterService[AddModule]();
         $container.RegisterService[AddTest]();
+        $container.RegisterService[AddComposer]();
         $container.RegisterService[CreateProject]();
         $container.RegisterService[RemoveModule]();
         $container.RegisterService[RemoveTest]();
         $container.RegisterService[RemoveProcess]();
+        $container.RegisterService[RemoveComposer]();
         $container.RegisterService[RunTests]();
         $container.RegisterService[ReadArgs]();
         $container.RegisterService[GetMethodInfo]();
-        $container.RegisterService[CreateProxy]();
+        $container.RegisterService[CreateMock]();
 
         return $container;
     }

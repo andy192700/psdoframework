@@ -31,6 +31,7 @@ public class TestDescriptorCreatorValidatorTests
         var processDescriptorMapper = new ProcessDescriptorMapper(osSanitise);
         var moduleDescriptorMapper = new ModuleDescriptorMapper(osSanitise);
         var testDescriptorMapper = new TestDescriptorMapper(osSanitise);
+        var composerDescriptorMapper = new ComposerDescriptorMapper(osSanitise);
 
         var descriptor = new TestDescriptor
         {
@@ -48,7 +49,7 @@ public class TestDescriptorCreatorValidatorTests
 
         jsonConverter.Setup(x => x.Deserialize<ProjectContentsStorage>(It.IsAny<string>())).Returns(projectContentsStorage);
 
-        var contentsMapper = new ReadProjectContentsMapper(processDescriptorMapper, moduleDescriptorMapper, testDescriptorMapper, osSanitise);
+        var contentsMapper = new ReadProjectContentsMapper(processDescriptorMapper, moduleDescriptorMapper, testDescriptorMapper, composerDescriptorMapper, osSanitise);
 
         var contentsProvider = new ReadProjectContents(contentsMapper, processReader.Object, fileManager.Object, jsonConverter.Object);
 
@@ -97,6 +98,7 @@ public class TestDescriptorCreatorValidatorTests
         var processDescriptorMapper = new ProcessDescriptorMapper(osSanitise);
         var moduleDescriptorMapper = new ModuleDescriptorMapper(osSanitise);
         var testDescriptorMapper = new TestDescriptorMapper(osSanitise);
+        var composerDescriptorMapper = new ComposerDescriptorMapper(osSanitise);
 
         projectContentsStorage.Processes.Add($"{name}Test");
 
@@ -114,7 +116,7 @@ public class TestDescriptorCreatorValidatorTests
 
         jsonConverter.Setup(x => x.Deserialize<ProjectContentsStorage>(It.IsAny<string>())).Returns(projectContentsStorage);
 
-        var contentsMapper = new ReadProjectContentsMapper(processDescriptorMapper, moduleDescriptorMapper, testDescriptorMapper, osSanitise);
+        var contentsMapper = new ReadProjectContentsMapper(processDescriptorMapper, moduleDescriptorMapper, testDescriptorMapper, composerDescriptorMapper, osSanitise);
 
         var contentsProvider = new ReadProjectContents(contentsMapper, processReader.Object, fileManager.Object, jsonConverter.Object);
 
@@ -165,6 +167,7 @@ public class TestDescriptorCreatorValidatorTests
         var processDescriptorMapper = new ProcessDescriptorMapper(osSanitise);
         var moduleDescriptorMapper = new ModuleDescriptorMapper(osSanitise);
         var testDescriptorMapper = new TestDescriptorMapper(osSanitise);
+        var composerDescriptorMapper = new ComposerDescriptorMapper(osSanitise);
 
         var descriptor = new TestDescriptor
         {
@@ -182,7 +185,7 @@ public class TestDescriptorCreatorValidatorTests
 
         jsonConverter.Setup(x => x.Deserialize<ProjectContentsStorage>(It.IsAny<string>())).Returns(projectContentsStorage);
 
-        var contentsMapper = new ReadProjectContentsMapper(processDescriptorMapper, moduleDescriptorMapper, testDescriptorMapper, osSanitise);
+        var contentsMapper = new ReadProjectContentsMapper(processDescriptorMapper, moduleDescriptorMapper, testDescriptorMapper, composerDescriptorMapper, osSanitise);
 
         var contentsProvider = new ReadProjectContents(contentsMapper, processReader.Object, fileManager.Object, jsonConverter.Object);
 
@@ -215,7 +218,8 @@ public class TestDescriptorCreatorValidatorTests
         var sb = new StringBuilder();
         sb.AppendLine("Please specify a type of test to define.");
         sb.AppendLine("-forProcess for Process tests.");
-        sb.AppendLine("-forModule for module tests.");
+        sb.AppendLine("-forModule for Module tests.");
+        sb.AppendLine("-forComposer for Composer tests.");
 
         result.Errors[0].Should().Be(sb.ToString());
     }
@@ -235,13 +239,14 @@ public class TestDescriptorCreatorValidatorTests
         var processDescriptorMapper = new ProcessDescriptorMapper(osSanitise);
         var moduleDescriptorMapper = new ModuleDescriptorMapper(osSanitise);
         var testDescriptorMapper = new TestDescriptorMapper(osSanitise);
+        var composerDescriptorMapper = new ComposerDescriptorMapper(osSanitise);
 
         projectContentsStorage.Processes.Add(name);
 
         var descriptor = new TestDescriptor
         {
             Name = $"{name}Tests",
-            TestType = TestType.Process
+            TestType = TestType.Composer
         };
 
         descriptor.Path = $"{path}{DoFramework.Environment.Environment.Separator}{descriptor.Name}{descriptor.Extension}";
@@ -252,7 +257,7 @@ public class TestDescriptorCreatorValidatorTests
 
         jsonConverter.Setup(x => x.Deserialize<ProjectContentsStorage>(It.IsAny<string>())).Returns(projectContentsStorage);
 
-        var contentsMapper = new ReadProjectContentsMapper(processDescriptorMapper, moduleDescriptorMapper, testDescriptorMapper, osSanitise);
+        var contentsMapper = new ReadProjectContentsMapper(processDescriptorMapper, moduleDescriptorMapper, testDescriptorMapper, composerDescriptorMapper, osSanitise);
 
         var contentsProvider = new ReadProjectContents(contentsMapper, processReader.Object, fileManager.Object, jsonConverter.Object);
 
@@ -271,7 +276,8 @@ public class TestDescriptorCreatorValidatorTests
             Parameters = new Dictionary<string, object>
             {
                 { "forProcess", true },
-                { "forModule", true }
+                { "forModule", true },
+                { "forComposer", true }
             }
         };
 
@@ -290,7 +296,8 @@ public class TestDescriptorCreatorValidatorTests
         var sb = new StringBuilder();
         sb.AppendLine("Multiple test types requested, only ONE can be selected.");
         sb.AppendLine("-forProcess for Process tests.");
-        sb.AppendLine("-forModule for module tests.");
+        sb.AppendLine("-forModule for Module tests.");
+        sb.AppendLine("-forComposer for Composer tests.");
 
         result.Errors[0].Should().Be(sb.ToString());
     }
