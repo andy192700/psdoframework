@@ -12,7 +12,7 @@ public interface IContextVerifier
     bool Verify();
 
     /// <summary>
-    /// Sets the composer name for verification.
+    /// Confirms that a specific composer invoked processing.
     /// </summary>
     /// <param name="composerName">The name of the composer.</param>
     /// <returns>The context verifier.</returns>

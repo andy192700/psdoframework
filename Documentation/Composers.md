@@ -13,7 +13,7 @@ Composers are runnable entities that are designed to behave like a program.cs fi
 - Configuring Objects
 - Registering Processes to execute after the Composer runs
 
-A Composer must have an empty constructor and has a singular method `Compose` expecting a [DoFramework.Processing.IWorkBench](../src/DoFramework/DoFramework/Processing/ComposerWorkBench/IComposerWorkBench.cs) which allows a developer to utilies the features mentioned here.
+A Composer must have an empty constructor and have a singular method `Compose` expecting a [DoFramework.Processing.IWorkBench](../src/DoFramework/DoFramework/Processing/ComposerWorkBench/IComposerWorkBench.cs) which allows a developer to utilies the features mentioned here.
 
 The `IComposerWorkBench` provides some syntactic advantages for developers using an [IRepeater](../src/DoFramework/DoFramework/Processing/ComposerWorkBench/IRepeater.cs) pattern to mimic dotnet extension methods, follow the exanples listed within the following subsections to understand more.
 

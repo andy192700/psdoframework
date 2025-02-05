@@ -12,9 +12,8 @@ git push origin --tags;
 
 [StringBuilder] $sb = [StringBuilder]::new();
 
-$sb.AppendLine("Regarding this release:");
-$sb.AppendLine("- Check out the [Release Notes](https://github.com/andy192700/psdoframework/tree/main/Documentation/ReleaseNotes/v$($version).md)");
-$sb.AppendLine("- View the published Module at the [PowerShell Gallery](https://www.powershellgallery.com/packages/PSDoFramework/$version)");
+$sb.Append("Check out the [Release Notes](https://github.com/andy192700/psdoframework/tree/main/Documentation/ReleaseNotes/v$($version).md) ");
+$sb.Append("and view the published Module on the [PowerShell Gallery](https://www.powershellgallery.com/packages/PSDoFramework/$version).");
 
 gh release create $version --title "Release $version" --notes $sb.ToString();
     
