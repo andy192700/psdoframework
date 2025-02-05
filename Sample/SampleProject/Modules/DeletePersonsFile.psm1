@@ -1,6 +1,5 @@
 using namespace DoFramework.Processing;
 
-# Class that uses data from the IContext to delete a file of persons
 class DeletePersonsFile {
     [IContext] $Context;
 

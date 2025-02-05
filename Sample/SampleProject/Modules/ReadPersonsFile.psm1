@@ -2,7 +2,6 @@ using namespace DoFramework.Processing;
 using namespace System.Collections.Generic;
 using module ".\Models\Person.psm1";
 
-# Class that uses data from the IContext to read a specific JSON file and create a collection of Persons as a result.
 class ReadPersonsFile {
     [IContext] $Context;
 

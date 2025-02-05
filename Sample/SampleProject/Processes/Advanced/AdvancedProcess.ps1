@@ -1,8 +1,5 @@
 using namespace DoFramework.Processing;
 
-# Entry point process for this sample project's advanced example, demonstrating Do's capabilities.
-# A IContext is injected for accessing shared values, a IProcessDispatcher is injected to allow for the execution of other processes by this current process
-# This example checks that all context values are present, and if so it fires off a sequence of processes, executed in series.
 class AdvancedProcess : Process {
     [IContext] $Context;
 
