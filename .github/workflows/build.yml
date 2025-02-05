@@ -219,7 +219,7 @@ jobs:
     name: "Linux Install & Test"
     needs: macosinstall
     if: ${{ github.ref == 'refs/heads/main' && success() }}
-    runs-on: linux-latest
+    runs-on: ubuntu-latest
 
     steps:
     - name: Checkout code
