@@ -1,6 +1,4 @@
-﻿using static System.Net.Mime.MediaTypeNames;
-
-namespace DoFramework.Mappers;
+﻿namespace DoFramework.Mappers;
 
 /// <summary>
 /// Class for mapping an array of objects to a dictionary.

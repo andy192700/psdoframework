@@ -1,3 +1,5 @@
+using namespace System.IO;
+
 param (
     [Parameter(Mandatory=$true)] [ValidateNotNullOrEmpty()] [string] $psNuGetSourceName,    
     [string] $psNuGetApiKey
@@ -5,7 +7,9 @@ param (
 
 $ErrorActionPreference = "Stop";
 
-[string] $modulePath = (Join-Path -Path (Get-Location) -ChildPath "Build\PSDoFramework");
+[char] $sep = [Path]::DirectorySeparatorChar;
+
+[string] $modulePath = (Join-Path -Path (Get-Location) -ChildPath "Build$($sep)PSDoFramework");
 
 if (![string]::IsNullOrEmpty($psNuGetApiKey)) {
     Publish-Module -Path $modulePath -Repository $psNuGetSourceName -NuGetApiKey $psNuGetApiKey;

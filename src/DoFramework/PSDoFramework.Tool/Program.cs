@@ -1,12 +1,18 @@
 ﻿using DoFramework.Mappers;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using PSDoFramework.Tool;
 using System.Diagnostics;
 
-var mapper = new ToolingArgMapper();
+var host = Host.CreateDefaultBuilder(args)
+    .ConfigureServices((hostContext, services) =>
+    {
+        services.AddSingleton<IDoCLI, DoCLI>();
+        services.AddSingleton<IMapper<string[], Process>, ToolingArgMapper>();
+    });
 
-var cmd = mapper.Map(args);
+var app = host.Build();
 
-var process = new Process();
-process.StartInfo.FileName = "pwsh";
-process.StartInfo.Arguments = $"-command {cmd}";
-process.Start();
-process.WaitForExit();
+var cli = app.Services.GetService<IDoCLI>();
+
+cli!.Exec(args);
