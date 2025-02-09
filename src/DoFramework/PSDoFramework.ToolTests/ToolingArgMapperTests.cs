@@ -8,8 +8,7 @@ namespace PSDoFramework.ToolTests
 {
     public class ToolingArgMapperTests
     {
-        [Theory]
-        [InlineAutoData]
+        [Fact]
         public void ToolingArgMapper_NoParams()
         {
             // Arrange
