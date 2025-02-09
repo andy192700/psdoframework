@@ -64,6 +64,15 @@ runsamplecomposer:
 
 runsampletests:
 	pwsh -ExecutionPolicy Bypass -Command "doing test -filter $(testFilter) -projectPath \"${CURDIR}/Sample\""
+	
+runsampleprocesswithtool:
+	psdoing run -name $(processName) -showReports -projectPath "${CURDIR}/Sample"
+	
+runsamplecomposerwithtool:
+	psdoing compose -name $(composerName) -showReports -projectPath "${CURDIR}/Sample"
+
+runsampletestswithtool:
+	psdoing test -filter $(testFilter) -projectPath "${CURDIR}/Sample"
 
 # Pipeline
 gitrelease:
