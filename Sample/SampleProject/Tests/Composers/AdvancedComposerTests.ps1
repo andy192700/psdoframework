@@ -75,15 +75,14 @@ Describe 'AdvancedComposerTests' {
             [IContext] $result = doing compose -name $composerName -silent -doOutput;
 
             # Assert
-            $result.Session.Composed | Should -Be $true;
-            $result.Session.ComposedBy | Should -Be $composerName;
             $result.Requires().
+                ComposedBy($composerName).
                 ProcessSucceeded("AdvancedProcess").
                 ProcessSucceeded("DeleteFile").
                 ProcessSucceeded("CreateData").
                 ProcessSucceeded("CreateFile").
                 ProcessSucceeded("ReadFile").
-                Verify();
+                Verify() | Should -Be $true;
         }
     }
 }
