@@ -7,6 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DoFramework", "DoFramework\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DoFrameworkTests", "DoFrameworkTests\DoFrameworkTests.csproj", "{B0595809-456E-4949-9FA7-F4F0B592AD36}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PSDoFramework.Tool", "PSDoFramework.Tool\PSDoFramework.Tool.csproj", "{74195855-0B71-4990-B0FB-6FD440BBB162}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{B0595809-456E-4949-9FA7-F4F0B592AD36}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B0595809-456E-4949-9FA7-F4F0B592AD36}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B0595809-456E-4949-9FA7-F4F0B592AD36}.Release|Any CPU.Build.0 = Release|Any CPU
+		{74195855-0B71-4990-B0FB-6FD440BBB162}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{74195855-0B71-4990-B0FB-6FD440BBB162}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{74195855-0B71-4990-B0FB-6FD440BBB162}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{74195855-0B71-4990-B0FB-6FD440BBB162}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

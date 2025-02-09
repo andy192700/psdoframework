@@ -44,13 +44,6 @@ public class ArgMapper : IMapper<object[], Dictionary<string, object>>
 
                 i += 2;
             }
-            //if (i < source.Length - 1)
-            //{
-            //}
-            //else
-            //{
-            //    break;
-            //}
         }
 
         return dictionary;
