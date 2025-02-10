@@ -13,20 +13,20 @@ using namespace System.Collections.Generic;
 Class for creating projects within the DoFramework environment.
 
 .DESCRIPTION
-The CreateProject class is designed to create new projects within the DoFramework 
+The NewProject class is designed to create new projects within the DoFramework 
 environment. It handles the setup of parameters, environment checks, directory 
 creation, and initialization of project files.
 #>
-class CreateProject : CLIFunction[EmptyCLIFunctionDictionaryValidator] {
+class NewProject : CLIFunction[EmptyCLIFunctionDictionaryValidator] {
     <#
     .SYNOPSIS
     Initializes a new instance of the CreateProject class.
 
     .DESCRIPTION
     Constructor for the CreateProject class, which sets up the base name 
-    for the command as "Create-Project".
+    for the command as "New-Project".
     #>
-    CreateProject() : base("Create-Project") {}
+    NewProject() : base("New-Project") {}
     
     <#
     .SYNOPSIS
@@ -63,7 +63,7 @@ class CreateProject : CLIFunction[EmptyCLIFunctionDictionaryValidator] {
 
             [IEnvironment] $environment = $serviceContainer.GetService[IEnvironment]();
 
-            $logger.LogInfo("Create project '$($projectName)' @ '$($environment.HomeDir)'");
+            $logger.LogInfo("New project '$($projectName)' @ '$($environment.HomeDir)'");
             
             $this.CreateDirectory($environment.ProcessesDir);
             $this.CreateDirectory($environment.TestsDir);

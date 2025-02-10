@@ -34,7 +34,7 @@ Describe 'CreateProjectTests' {
         [string] $envFile = "$($script:testDirectory)$($script:sep).env";
 
         # Act
-        psdoing Create-Project -name $projectName -silent;
+        psdoing new-project -name $projectName -silent;
 
         # Assert
         (Test-Path -Path $projectDirectory) | Should -Be $true;
@@ -99,7 +99,7 @@ Describe 'CreateProjectTests' {
         [string] $envFile = "$($script:testDirectory)$($script:sep).env";
 
         # Act
-        psdoing Create-Project -silent;
+        psdoing new-project -silent;
 
         # Assert
         (Test-Path -Path $projectDirectory) | Should -Be $true;
@@ -174,7 +174,7 @@ Describe 'CreateProjectTests' {
         New-Item -ItemType Directory -Path $projectDirectory | Out-Null;
 
         # Act
-        psdoing Create-Project -projectPath $projectDirectory -silent;
+        psdoing new-project -projectPath $projectDirectory -silent;
 
         # Assert
         (Test-Path -Path $projectDirectory) | Should -Be $true;
@@ -239,7 +239,7 @@ Describe 'CreateProjectTests' {
         [string] $projectDirectory = $script:context.SecondProjectDirectory;
 
         # Act
-        [string] $result = psdoing Create-Project -projectPath $projectDirectory -silent;
+        [string] $result = psdoing new-project -projectPath $projectDirectory -silent;
 
         # Assert
         $result | Should -BeLike "*Requested project path '$projectDirectory' does not exist.*";

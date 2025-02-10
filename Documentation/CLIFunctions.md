@@ -42,14 +42,14 @@ Universal Parameters:
 | silent | A switch which suppresses logging by the framework | switch/boolean | false |
 | projectPath | This framework requires the executing shell to be in the directory of a project by default, by supplying this parameter, this does not have to be the case. By supplying the full path of the parent directory of a project, a developer can use the functions specified in this document from anywhere. The make targets `runsample*` in the root of this repository demonstrate its usage. | string | N/A | 
 
-Example calls via PowerShell, demonstrated using the `create-project` function:
+Example calls via PowerShell, demonstrated using the `new-project` function:
 
 ```PowerShell
-doing create-project -silent
+doing new-project -silent
 
-doing create-project -projectPath "C:\\my\path\to\my\project"
+doing new-project -projectPath "C:\\my\path\to\my\project"
 
-doing create-project -projectPath "my/path/to/my/project"
+doing new-project -projectPath "my/path/to/my/project"
 ```
 
 # Available Functions
@@ -58,7 +58,7 @@ This section contains all of the available functions, their purpose, parameter i
 ## Project Management Functions
 Documented within the section are the functions responsible for creating and managing projects.
 
-### Create-Project
+### New-Project
 Creates a new project if it does not exist already, see the [Project Structure](./ProjectStructure.md) documentation to understand more about a project's layout and components.
 
 Parameters:
@@ -68,9 +68,9 @@ Parameters:
 
 Example calls via PowerShell:
 ```PowerShell
-doing create-project
+doing new-project
 
-doing create-project -name MyProject
+doing new-project -name MyProject
 ```
 
 ### Add-Process

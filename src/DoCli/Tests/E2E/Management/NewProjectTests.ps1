@@ -34,7 +34,7 @@ Describe 'CreateProjectTests' {
         [string] $envFile = "$($script:testDirectory)$($script:sep).env";
 
         # Act
-        doing Create-Project -name $projectName -silent;
+        doing new-project -name $projectName -silent;
 
         # Assert
         (Test-Path -Path $projectDirectory) | Should -Be $true;
@@ -99,7 +99,7 @@ Describe 'CreateProjectTests' {
         [string] $envFile = "$($script:testDirectory)$($script:sep).env";
 
         # Act
-        doing Create-Project -silent;
+        doing new-project -silent;
 
         # Assert
         (Test-Path -Path $projectDirectory) | Should -Be $true;
@@ -174,7 +174,7 @@ Describe 'CreateProjectTests' {
         New-Item -ItemType Directory -Path $projectDirectory | Out-Null;
 
         # Act
-        doing Create-Project -projectPath $projectDirectory -silent;
+        doing new-project -projectPath $projectDirectory -silent;
 
         # Assert
         (Test-Path -Path $projectDirectory) | Should -Be $true;
@@ -240,7 +240,7 @@ Describe 'CreateProjectTests' {
 
         # Act
         $func = {
-            doing Create-Project -projectPath $projectDirectory -silent;
+            doing new-project -projectPath $projectDirectory -silent;
         };
 
         # Assert

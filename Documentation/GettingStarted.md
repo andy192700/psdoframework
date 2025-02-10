@@ -49,7 +49,7 @@ The intention of this section is to provide a walk through of a simplest example
 Firstly, open a PowerShell Core Terminal, then in a directory of your choosing run the following:
 
 ```PowerShell
-doing create-project
+doing new-project
 ```
 
 The above command will create a project, including:
@@ -57,7 +57,7 @@ The above command will create a project, including:
 - a directory structure for housing your code (which will be empty at this point)
 - subdirectories with `.gitkeep` files within them, this is so the structure can be instantly committed to source control, feel free to remove them as they are completely benign otherwise
 
-For more information regarding project structure see the relevant [documentation](./ProjectStructure.md), for more detail regarding the `create-project` function see [here](./CLIFunctions.md#create-project).
+For more information regarding project structure see the relevant [documentation](./ProjectStructure.md), for more detail regarding the `new-project` function see [here](./CLIFunctions.md#new-project).
 
 Secondly, add a Process to the project:
 
