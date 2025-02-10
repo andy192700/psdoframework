@@ -50,7 +50,7 @@ class NewProcess : CLIFunction[DescriptorManagementDictionaryValidator] {
             [bool] $isSilent = $cliParams.ParseSwitch("silent");
     
             if ($cliParams.ParseSwitch("addTests")) { 
-                doing Add-Test -name "$($params["name"])Tests" -forProcess -silent $isSilent;
+                doing new-test -name "$($params["name"])Tests" -forProcess -silent $isSilent;
             }
         }
         else {

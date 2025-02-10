@@ -50,7 +50,7 @@ class NewModule : CLIFunction[DescriptorManagementDictionaryValidator] {
             [bool] $isSilent = $cliParams.ParseSwitch("silent");
     
             if ($cliParams.ParseSwitch("addTests")) { 
-                doing Add-Test -name "$($params["name"])Tests" -forModule -silent $isSilent;
+                doing new-test -name "$($params["name"])Tests" -forModule -silent $isSilent;
             }
         }
         else {

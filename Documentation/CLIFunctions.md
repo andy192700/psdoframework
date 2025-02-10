@@ -76,7 +76,7 @@ doing new-project -name MyProject
 ### new-process
 Adds a new Process to a project, see the [Processes](./Processes.md) documentation to learn more.
 
-If desired, this function can create the associated test file for the Process, in this case the framework will also call the [add-test](#add-test) function.
+If desired, this function can create the associated test file for the Process, in this case the framework will also call the [new-test](#new-test) function.
 
 Parameters:
 | Parameter Name  | Required | Desription | Type | Default Value |
@@ -111,7 +111,7 @@ doing remove-process -name MyProcess
 ### new-module
 Adds a new Module to a project, see the [Modules](./Modules.md) documentation to learn more.
 
-If desired, this function can create the associated test file for the Module, in this case the framework will also call the [add-test](#add-test) function.
+If desired, this function can create the associated test file for the Module, in this case the framework will also call the [new-test](#new-test) function.
 
 Parameters:
 | Parameter Name  | Required | Desription | Type | Default Value |
@@ -145,7 +145,7 @@ doing remove-module -name MyModule
 ### new-composer
 Adds a new Composer to a project, see the [Composer](./Composers.md) documentation to learn more.
 
-If desired, this function can create the associated test file for the Composer, in this case the framework will also call the [add-test](#add-test) function.
+If desired, this function can create the associated test file for the Composer, in this case the framework will also call the [new-test](#new-test) function.
 
 Parameters:
 | Parameter Name  | Required | Desription | Type | Default Value |
@@ -177,7 +177,7 @@ Example calls via PowerShell:
 doing remove-composer -name MyComposer
 ```
 
-### Add-Test
+### new-test
 Adds a new Test to a project, see the [Testing](./Testing.md) documentation to learn more.
 
 Called by the [new-process](#new-process), [new-module](#new-module) and [new-composer](#new-composer) functions if the `addTests` parameter is supplied.
@@ -196,17 +196,17 @@ Parameters:
 
 Example calls via PowerShell:
 ```PowerShell
-doing add-test -name MyProcessTests -forProcess
+doing new-test -name MyProcessTests -forProcess
 
-doing add-test -name MyModuleTests -forModule
+doing new-test -name MyModuleTests -forModule
 
-doing add-test -name MyComposerTests -forComposer
+doing new-test -name MyComposerTests -forComposer
 
-doing add-test -name "My/Nested/ProcessFileTests" -forProcess
+doing new-test -name "My/Nested/ProcessFileTests" -forProcess
 
-doing add-test -name "My/Nested/ModuleFileTests" -forModule
+doing new-test -name "My/Nested/ModuleFileTests" -forModule
 
-doing add-test -name "My/Nested/MyComposerTests" -forComposer
+doing new-test -name "My/Nested/MyComposerTests" -forComposer
 ```
 
 ### Remove-Test

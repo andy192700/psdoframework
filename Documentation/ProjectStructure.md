@@ -45,7 +45,7 @@ Tests are optional .ps1 files which run off the module Pester (which is deployed
 
 Tests test either Modules/Processes, they reside in Tests/Modules or Tests/Processes directory, mirroring the Process/Module directory structure to enfore consistency.
 
-Tests can be added with the optional switches on the `new-process`, `new-module` or `new-composer` functions. If an entity is created without Tests (as mentioned above these are optional) these can be added afterwards using the [add-test](./CLIFunctions.md#add-test) function.
+Tests can be added with the optional switches on the `new-process`, `new-module` or `new-composer` functions. If an entity is created without Tests (as mentioned above these are optional) these can be added afterwards using the [new-test](./CLIFunctions.md#new-test) function.
 
 For more information regarding Tests see the relevant [documentation](./Testing.md).
 

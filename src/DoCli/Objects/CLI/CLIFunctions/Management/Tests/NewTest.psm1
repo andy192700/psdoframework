@@ -14,20 +14,20 @@ using namespace System.Collections.Generic;
 Class for adding tests within the DoFramework environment.
 
 .DESCRIPTION
-The AddTest class and its derived classes are designed to add new tests within 
+The NewTest class and its derived classes are designed to add new tests within 
 the DoFramework environment. They handle the setup of parameters, environment 
 checks, and creation of test descriptors.
 #>
-class AddTest : CLIFunction[DescriptorManagementDictionaryValidator] {
+class NewTest : CLIFunction[DescriptorManagementDictionaryValidator] {
     <#
     .SYNOPSIS
-    Initializes a new instance of the AddTest class.
+    Initializes a new instance of the NewTest class.
 
     .DESCRIPTION
-    Constructor for the AddTest class, which sets up the base name 
+    Constructor for the NewTest class, which sets up the base name 
     for the command based on the provided function name.
     #>
-    AddTest() : base("Add-Test") {}
+    NewTest() : base("new-test") {}
 
     [void] AppendValues([Dictionary[string, object]] $params) {}
 

@@ -50,7 +50,7 @@ class NewComposer : CLIFunction[DescriptorManagementDictionaryValidator] {
             [bool] $isSilent = $cliParams.ParseSwitch("silent");
     
             if ($cliParams.ParseSwitch("addTests")) { 
-                doing Add-Test -name "$($params["name"])Tests" -forComposer -silent $isSilent;
+                doing new-test -name "$($params["name"])Tests" -forComposer -silent $isSilent;
             }
         }
         else {
