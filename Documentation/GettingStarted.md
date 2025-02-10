@@ -62,12 +62,12 @@ For more information regarding project structure see the relevant [documentation
 Secondly, add a Process to the project:
 
 ```PowerShell
-doing add-process -name MyProcess
+doing new-process -name MyProcess
 ```
 
 A file named `MyProcess.ps1` will now be present in this Process subdirectory within the project directory structure, it will also be added to the do.json file.
 
-For more information regarding Processes, explore the [documentation](./Processes.md), the `add-process` function is also documented [here](./CLIFunctions.md#add-process).
+For more information regarding Processes, explore the [documentation](./Processes.md), the `new-process` function is also documented [here](./CLIFunctions.md#new-process).
 
 Now that we have a project and a Process added, we can run it!
 

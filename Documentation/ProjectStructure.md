@@ -18,7 +18,7 @@ Processes are .ps1 files that are intended to house a single PowerShell class wh
 
 Though these files must exist within the Processes directory, it is possible to create these within nested directories underneath allowing for scalability.
 
-To add these to your project see the [add-process](./CLIFunctions.md#add-process) function.
+To add these to your project see the [new-process](./CLIFunctions.md#new-process) function.
 
 For more information regarding Processes see the relevant [documentation](./Processes.md).
 
@@ -45,7 +45,7 @@ Tests are optional .ps1 files which run off the module Pester (which is deployed
 
 Tests test either Modules/Processes, they reside in Tests/Modules or Tests/Processes directory, mirroring the Process/Module directory structure to enfore consistency.
 
-Tests can be added with the optional switches on the `add-process`, `add-module` or `add-composer` functions. If an entity is created without Tests (as mentioned above these are optional) these can be added afterwards using the [add-test](./CLIFunctions.md#add-test) function.
+Tests can be added with the optional switches on the `new-process`, `add-module` or `add-composer` functions. If an entity is created without Tests (as mentioned above these are optional) these can be added afterwards using the [add-test](./CLIFunctions.md#add-test) function.
 
 For more information regarding Tests see the relevant [documentation](./Testing.md).
 

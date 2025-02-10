@@ -1,4 +1,4 @@
-using module "..\CLI\CLIFunctions\Management\Processes\AddProcess.psm1";
+using module "..\CLI\CLIFunctions\Management\Processes\NewProcess.psm1";
 using module "..\CLI\CLIFunctions\Management\Processes\RemoveProcess.psm1";
 using module "..\CLI\CLIFunctions\Management\Modules\AddModule.psm1";
 using module "..\CLI\CLIFunctions\Management\Modules\RemoveModule.psm1";
@@ -56,7 +56,7 @@ class CLIFunctionServiceContainer {
         $container.RegisterService[Compose]();
         $container.RegisterService[RunProcess]();
         $container.RegisterService[ArgMapper]();
-        $container.RegisterService[AddProcess]();
+        $container.RegisterService[NewProcess]();
         $container.RegisterService[AddModule]();
         $container.RegisterService[AddTest]();
         $container.RegisterService[AddComposer]();

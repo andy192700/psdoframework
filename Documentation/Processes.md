@@ -18,7 +18,7 @@ If an exception is thrown whilst a Process is executing, Do will automatically c
 
 More information on creating/working with DoFramework Modules can be found [here](./Modules.md).
 
-There are many example Processes in the [Sample Project](../Sample), consult the specific documentation on how to [add processes](./CLIFunctions.md#add-process) to a project, to learn about how to run a process, see this [section](./CLIFunctions.md#run).
+There are many example Processes in the [Sample Project](../Sample), consult the specific documentation on how to [add processes](./CLIFunctions.md#new-process) to a project, to learn about how to run a process, see this [section](./CLIFunctions.md#run).
 
 Processes are runnable by themselves, but it is not possible (via the framework) to run multiple Processes at once without a Composer to orchestrate. Learn more about Composers [here](./Composers.md).
 

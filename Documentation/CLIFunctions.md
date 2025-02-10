@@ -51,7 +51,7 @@ doing new-project -projectPath "C:\\my\path\to\my\project"
 
 doing new-project -projectPath "my/path/to/my/project"
 ```
-
+add
 # Available Functions
 This section contains all of the available functions, their purpose, parameter information and examples.
 
@@ -73,7 +73,7 @@ doing new-project
 doing new-project -name MyProject
 ```
 
-### Add-Process
+### new-process
 Adds a new Process to a project, see the [Processes](./Processes.md) documentation to learn more.
 
 If desired, this function can create the associated test file for the Process, in this case the framework will also call the [add-test](#add-test) function.
@@ -86,11 +86,11 @@ Parameters:
 
 Example calls via PowerShell:
 ```PowerShell
-doing add-process -name MyProcess
+doing new-process -name MyProcess
 
-doing add-process -name "My/Nested/ProcessFile"
+doing new-process -name "My/Nested/ProcessFile"
 
-doing add-process -name "My/Nested/ProcessFile" -addTests
+doing new-process -name "My/Nested/ProcessFile" -addTests
 ```
 
 ### Remove-Process
@@ -101,7 +101,7 @@ If there is a test file associated with the specified Process, the framework wil
 Parameters:
 | Parameter Name  | Required | Desription | Type | Default Value |
 |----------|----------|----------|----------|----------|
-| name | Yes | The Process's name, this should not include the full path like the associated `add-process` function. | string | N/A |
+| name | Yes | The Process's name, this should not include the full path like the associated `new-process` function. | string | N/A |
 
 Example calls via PowerShell:
 ```PowerShell
@@ -180,7 +180,7 @@ doing remove-composer -name MyComposer
 ### Add-Test
 Adds a new Test to a project, see the [Testing](./Testing.md) documentation to learn more.
 
-Called by the [add-process](#add-process), [add-module](#add-module) and [add-composer](#add-composer) functions if the `addTests` parameter is supplied.
+Called by the [new-process](#new-process), [add-module](#add-module) and [add-composer](#add-composer) functions if the `addTests` parameter is supplied.
 
 This can also be called retrospectively to supplement an existing Module/Process if the Test file was not created at their time of creation.
 
@@ -234,7 +234,7 @@ Runs a specified Process, see the [documentation](./Processes.md) for more detai
 Parameters:
 | Parameter Name  | Required | Desription | Type | Default Value |
 |----------|----------|----------|----------|----------|
-| name | Yes | The Process's name, this should not include the full path like the associated `add-process` function. | string | N/A |
+| name | Yes | The Process's name, this should not include the full path like the associated `new-process` function. | string | N/A |
 | doOutput | No | Returns the [DoFramework.Processing.IContext](../src/DoFramework/DoFramework/Processing/Context/IContext.cs) object associated with the run. | switch/boolean | false |
 | showReports | No | Presents a view of the Processes executed, the output ([DoFramework.Domain.ProcessResult](../src/DoFramework/DoFramework/Domain/ProcessResult.cs)) and information relating to execution time, all in tabular form. | switch/boolean | false |
 | extra parameters | No | Optional collection of additional values or switches, these must also follow the syntax called out in the [Syntax](#syntax) section. The intent of these parameters is to load extra data for Process consumption at runtime, see the section in the [Process Context](./ProcessContext.md#cli-based-context-population) documentation to learn more. | Any | N/A |
