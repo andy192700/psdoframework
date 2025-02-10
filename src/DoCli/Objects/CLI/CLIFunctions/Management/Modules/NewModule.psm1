@@ -13,20 +13,20 @@ using namespace System.Collections.Generic;
 Class for adding modules within the DoFramework environment.
 
 .DESCRIPTION
-The AddModule class is designed to add new modules within the DoFramework 
+The NewModule class is designed to add new modules within the DoFramework 
 environment. It handles the setup of parameters, environment checks, and 
 creation of module descriptors.
 #>
-class AddModule : CLIFunction[DescriptorManagementDictionaryValidator] {
+class NewModule : CLIFunction[DescriptorManagementDictionaryValidator] {
     <#
     .SYNOPSIS
-    Initializes a new instance of the AddModule class.
+    Initializes a new instance of the NewModule class.
 
     .DESCRIPTION
-    Constructor for the AddModule class, which sets up the base name 
-    for the command as "Add-Module".
+    Constructor for the NewModule class, which sets up the base name 
+    for the command as "New-Module".
     #>
-    AddModule() : base("Add-Module") {}
+    NewModule() : base("New-Module") {}
 
     [void] InvokeInternal([Dictionary[string, object]] $params, [IServiceContainer] $serviceContainer) {
         [ServiceContainerExtensions]::AddParameters($serviceContainer, $params);
@@ -50,7 +50,7 @@ class AddModule : CLIFunction[DescriptorManagementDictionaryValidator] {
             [bool] $isSilent = $cliParams.ParseSwitch("silent");
     
             if ($cliParams.ParseSwitch("addTests")) { 
-                doing Add-Test -name "$($params["name"])Tests" -forModule -silent $isSilent;
+                doing new-test -name "$($params["name"])Tests" -forModule -silent $isSilent;
             }
         }
         else {

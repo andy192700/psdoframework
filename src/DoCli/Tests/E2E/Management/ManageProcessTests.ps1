@@ -24,7 +24,7 @@ Describe 'ManageProcessTests' {
     it 'Creates then deletes Process' {
         $script:context.VerifyFiles($script:testsPath, $script:processPath, $false, $false);
 
-        doing add-process -name $script:processName -silent;
+        doing new-process -name $script:processName -silent;
 
         $script:context.VerifyFiles($script:testsPath, $script:processPath, $false, $true);
 
@@ -38,7 +38,7 @@ Describe 'ManageProcessTests' {
 
         $tests.Length | Should -Be 1;
         
-        doing remove-process -name $script:processName -silent;
+        doing delete-process -name $script:processName -silent;
 
         $script:context.VerifyFiles($script:testsPath, $script:processPath, $false, $false);
 
@@ -50,7 +50,7 @@ Describe 'ManageProcessTests' {
     it 'Creates then deletes Process With Tests' {
         $script:context.VerifyFiles($script:testsPath, $script:processPath, $false, $false);
 
-        doing add-process -name $script:processName -addTests -silent;
+        doing new-process -name $script:processName -addTests -silent;
 
         $script:context.VerifyFiles($script:testsPath, $script:processPath, $true, $true);
 
@@ -64,7 +64,7 @@ Describe 'ManageProcessTests' {
 
         $tests -contains $script:context.ComputeLocalProcessTestPath($script:testName) | Should -Be $true;
         
-        doing remove-process -name $script:processName -silent;
+        doing delete-process -name $script:processName -silent;
 
         $script:context.VerifyFiles($script:testsPath, $script:processPath, $false, $false);
 

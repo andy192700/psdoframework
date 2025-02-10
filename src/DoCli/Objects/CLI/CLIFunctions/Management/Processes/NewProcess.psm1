@@ -13,20 +13,20 @@ using namespace System.Collections.Generic;
 Class for adding processes within the DoFramework environment.
 
 .DESCRIPTION
-The AddProcess class is designed to add new processes within the DoFramework 
+The NewProcess class is designed to add new processes within the DoFramework 
 environment. It handles the setup of parameters, environment checks, and 
 creation of process descriptors.
 #>
-class AddProcess : CLIFunction[DescriptorManagementDictionaryValidator] {
+class NewProcess : CLIFunction[DescriptorManagementDictionaryValidator] {
     <#
     .SYNOPSIS
-    Initializes a new instance of the AddProcess class.
+    Initializes a new instance of the NewProcess class.
 
     .DESCRIPTION
-    Constructor for the AddProcess class, which sets up the base name 
-    for the command as "Add-Process".
+    Constructor for the NewProcess class, which sets up the base name 
+    for the command as "New-Process".
     #>
-    AddProcess() : base("Add-Process") {}
+    NewProcess() : base("New-Process") {}
 
     [void] InvokeInternal([Dictionary[string, object]] $params, [IServiceContainer] $serviceContainer) {        
         [ServiceContainerExtensions]::AddParameters($serviceContainer, $params);
@@ -50,7 +50,7 @@ class AddProcess : CLIFunction[DescriptorManagementDictionaryValidator] {
             [bool] $isSilent = $cliParams.ParseSwitch("silent");
     
             if ($cliParams.ParseSwitch("addTests")) { 
-                doing Add-Test -name "$($params["name"])Tests" -forProcess -silent $isSilent;
+                doing new-test -name "$($params["name"])Tests" -forProcess -silent $isSilent;
             }
         }
         else {

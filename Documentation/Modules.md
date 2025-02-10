@@ -16,7 +16,7 @@ Modules provide the following features:
 
 Unit tests can be written for Modules, do the functions and classes function as intended? In depth examples can be found in the sample project.
 
-There are many example Modules in the [Sample Project](../Sample), consult the specific documentation on how to [add modules](./CLIFunctions.md#add-module) to a project. For more information on working with tests see [here](./Testing.md).
+There are many example Modules in the [Sample Project](../Sample), consult the specific documentation on how to [add modules](./CLIFunctions.md#new-module) to a project. For more information on working with tests see [here](./Testing.md).
 
 Additionally, the PowerShell unit/component tests which test this framework also provide good examples to show how the framework can be used, for example see [here](../src/DoCli/Tests/Component/Do/Modules/TestClassModule.psm1) where a dotnet interface consumed by a using statement (similar to a Process) and some classes are specified.
 

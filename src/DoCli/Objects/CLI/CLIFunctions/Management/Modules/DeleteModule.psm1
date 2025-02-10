@@ -8,33 +8,33 @@ using namespace System.Collections.Generic;
 
 <#
 .SYNOPSIS
-Class for removing Composers within the DoFramework environment.
+Class for removing modules within the DoFramework environment.
 
 .DESCRIPTION
-The RemoveComposer class is designed to remove existing Composers within the DoFramework 
+The DeleteModule class is designed to remove existing modules within the DoFramework 
 environment. It handles the setup of parameters, environment checks, and deletion 
-of Composer descriptors.
+of module descriptors.
 #>
-class RemoveComposer : CLIFunction[DescriptorManagementDictionaryValidator] {
+class DeleteModule : CLIFunction[DescriptorManagementDictionaryValidator] {
     <#
     .SYNOPSIS
-    Initializes a new instance of the RemoveComposer class.
+    Initializes a new instance of the DeleteModule class.
 
     .DESCRIPTION
-    Constructor for the RemoveComposer class, which sets up the base name 
-    for the command as "Remove-Composer".
+    Constructor for the DeleteModule class, which sets up the base name 
+    for the command as "Delete-Module".
     #>
-    RemoveComposer() : base("Remove-Composer") {}
+    DeleteModule() : base("Delete-Module") {}
 
     [void] InvokeInternal([Dictionary[string, object]] $params, [IServiceContainer] $serviceContainer) {        
         [ServiceContainerExtensions]::AddParameters($serviceContainer, $params);
         [ServiceContainerExtensions]::CheckEnvironment($serviceContainer);
 
-        [ComposerDescriptor] $descriptor = [ComposerDescriptor]::new();
+        [ModuleDescriptor] $descriptor = [ModuleDescriptor]::new();
     
         $descriptor.Name = $params["name"];
     
-        $serviceContainer.GetService[IDataDeletor[ComposerDescriptor]]().Delete($descriptor);
+        $serviceContainer.GetService[IDataDeletor[ModuleDescriptor]]().Delete($descriptor);
 
         [string] $testName = "$($descriptor.Name)Tests";
 
@@ -42,14 +42,14 @@ class RemoveComposer : CLIFunction[DescriptorManagementDictionaryValidator] {
         
         [List[TestDescriptor]] $tests = $testProvider.Provide($testName);
 
-        [TestDescriptor[]] $processTests = $tests | Where-Object { $_.TestType -eq [TestType]::Composer -and $_.name -eq $testName};
+        [TestDescriptor[]] $processTests = $tests | Where-Object { $_.TestType -eq [TestType]::Module -and $_.name -eq $testName};
 
         [CLIFunctionParameters] $parameters = $serviceContainer.GetService[CLIFunctionParameters]();
 
         [bool] $isSilent = $parameters.ParseSwitch("silent");
 
         foreach ($processTest in $processTests) {
-            doing remove-test -name $processTest.Name -silent $isSilent;
+            doing delete-test -name $processTest.Name -silent $isSilent;
         }
     }
 }

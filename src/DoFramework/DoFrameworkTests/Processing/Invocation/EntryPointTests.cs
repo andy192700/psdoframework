@@ -19,11 +19,18 @@ public class EntryPointTests
         string name)
     {
         // Arrange
-        var logger = new Logger(new ConsoleWrapper());
+        parameters.Parameters = [];
+
+        parameters.Parameters.Add("silent", true);
+
+        var logger = new Logger(new ConsoleWrapper())
+        {
+            Parameters = parameters
+        };
+
         var validator = new ProcessingRequestValidator();
         var context = new TestContext();
         context.Session.CurrentProcessName = name;
-        parameters.Parameters = [];
 
         parameters.Parameters!.Add("name", name);
 
@@ -55,11 +62,18 @@ public class EntryPointTests
         string name)
     {
         // Arrange
-        var logger = new Logger(new ConsoleWrapper());
+        parameters.Parameters = [];
+
+        parameters.Parameters.Add("silent", true);
+
+        var logger = new Logger(new ConsoleWrapper())
+        {
+            Parameters = parameters
+        };
+
         var validator = new ProcessingRequestValidator();
         var context = new TestContext();
         context.Session.CurrentProcessName = name;
-        parameters.Parameters = [];
 
         parameters.Parameters!.Add("name", name);
 
@@ -89,11 +103,18 @@ public class EntryPointTests
     {
         // Arrange
         var processingRequest = new ProcessingRequest([]);
-        var logger = new Logger(new ConsoleWrapper());
+        parameters.Parameters = [];
+
+        parameters.Parameters.Add("silent", true);
+
+        var logger = new Logger(new ConsoleWrapper())
+        {
+            Parameters = parameters
+        };
+
         var validator = new ProcessingRequestValidator();
         var context = new TestContext();
         context.Session.CurrentProcessName = name;
-        parameters.Parameters = [];
 
         parameters.Parameters!.Add("name", name);
 
@@ -125,12 +146,19 @@ public class EntryPointTests
         string name)
     {
         // Arrange
-        var logger = new Logger(new ConsoleWrapper());
+        parameters.Parameters = [];
+
+        parameters.Parameters.Add("silent", true);
+
+        var logger = new Logger(new ConsoleWrapper())
+        {
+            Parameters = parameters
+        };
+
         var processingRequest = new ProcessingRequest([]);
         var validator = new ProcessingRequestValidator();
         var context = new TestContext();
         context.Session.CurrentProcessName = name;
-        parameters.Parameters = [];
 
         parameters.Parameters!.Add("name", name);
 

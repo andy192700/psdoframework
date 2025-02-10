@@ -13,20 +13,20 @@ using namespace System.Collections.Generic;
 Class for adding Composers within the DoFramework environment.
 
 .DESCRIPTION
-The AddComposer class is designed to add new Composers within the DoFramework 
+The NewComposer class is designed to add new Composers within the DoFramework 
 environment. It handles the setup of parameters, environment checks, and 
 creation of Composer descriptors.
 #>
-class AddComposer : CLIFunction[DescriptorManagementDictionaryValidator] {
+class NewComposer : CLIFunction[DescriptorManagementDictionaryValidator] {
     <#
     .SYNOPSIS
     Initializes a new instance of the AddComposer class.
 
     .DESCRIPTION
-    Constructor for the AddComposer class, which sets up the base name 
-    for the command as "Add-Composer".
+    Constructor for the NewComposer class, which sets up the base name 
+    for the command as "New-Composer".
     #>
-    AddComposer() : base("Add-Composer") {}
+    NewComposer() : base("New-Composer") {}
 
     [void] InvokeInternal([Dictionary[string, object]] $params, [IServiceContainer] $serviceContainer) {
         [ServiceContainerExtensions]::AddParameters($serviceContainer, $params);
@@ -50,7 +50,7 @@ class AddComposer : CLIFunction[DescriptorManagementDictionaryValidator] {
             [bool] $isSilent = $cliParams.ParseSwitch("silent");
     
             if ($cliParams.ParseSwitch("addTests")) { 
-                doing Add-Test -name "$($params["name"])Tests" -forComposer -silent $isSilent;
+                doing new-test -name "$($params["name"])Tests" -forComposer -silent $isSilent;
             }
         }
         else {
