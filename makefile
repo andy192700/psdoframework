@@ -20,7 +20,7 @@ dotnettest:
 	dotnet test $(solutionFile) --configuration $(solutionConfig) --no-build --logger "trx;LogFileName=test-results.trx" --results-directory ./test-results
 
 dotnetpublish:
-	pwsh -ExecutionPolicy Bypass -Command "& '${CURDIR}/Scripts/dotnettoolpublish.ps1' -psNuGetSourceName $(psNuGetSourceName) -solutionFile $(solutionFile) -solutionConfig $(solutionConfig);"
+	pwsh -ExecutionPolicy Bypass -Command "& '${CURDIR}/Scripts/dotnettoolpublish.ps1' -psNuGetSourceName $(psNuGetSourceName) -solutionFile $(solutionFile) -solutionConfig $(solutionConfig) -psNuGetApiKey $(psNuGetApiKey);"
 
 # DoFramework PowerShell Testing
 pstests:

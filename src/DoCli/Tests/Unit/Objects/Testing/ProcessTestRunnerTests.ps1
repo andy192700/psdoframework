@@ -157,7 +157,7 @@ Describe 'ProcessTestRunnerTests' {
         $mockReadProcessLocation.Proxy.MockMethod("Read", {
             [string] $currentDir = (Get-Location);
 
-            return (Join-Path -ChildPath "$($sep)src$($sep)DoCli$($sep)Tests$($sep)Component" -Path $currentDir);
+            return (Join-Path -ChildPath "$($sep)src$($sep)DoCli$($sep)Tests$($sep)E2E" -Path $currentDir);
         });
 
         [ProxyResult] $mockFileSystem = doing mock -type ([IFileManager]);

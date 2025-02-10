@@ -24,6 +24,10 @@ public class ToolingArgMapper : IMapper<string[], Process>
         process.StartInfo.FileName = "pwsh";
 
         process.StartInfo.Arguments = cmd.ToString();
+        
+        process.StartInfo.RedirectStandardError = true;
+
+        process.StartInfo.UseShellExecute = false;
 
         return process;
     }

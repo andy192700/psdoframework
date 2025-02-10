@@ -15,7 +15,5 @@ if (![string]::IsNullOrEmpty($psNuGetApiKey)) {
     Publish-Module -Path $modulePath -Repository $psNuGetSourceName -NuGetApiKey $psNuGetApiKey;
 }
 else {
-    make dotnetpublish psNuGetSourceName=$psNuGetSourceName;
-
     Publish-Module -Path $modulePath -Repository $psNuGetSourceName;
 }

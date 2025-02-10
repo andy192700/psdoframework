@@ -27,7 +27,13 @@ function RunTests {
         [string] $testRoot
     )
 
-    [string[]] $paths = Get-ChildItem -Path $testRoot -Recurse -File -Filter "*Tests.ps1" | ForEach-Object { $_.FullName };
+    [string[]] $paths = Get-ChildItem -Path $testRoot -Recurse -File -Filter "*Tests.ps1" | 
+        Where-Object { 
+            $_.FullName -notmatch "E2E[\\/]Do" -and $_.FullName -notmatch "E2ETool[\\/]Do"
+        } |
+        ForEach-Object { 
+            $_.FullName 
+        };
 
     Write-Host "Running $($paths.Length) test files.";
 
@@ -62,7 +68,12 @@ if (!$useLatest) {
 }
 
 # run component tests
-RunTests -testRoot "$($testRoot)$($sep)Component";
+RunTests -testRoot "$($testRoot)$($sep)E2E";
+
+if ($useLatest) {
+    # run some E2E tests on the dotnet tool
+    RunTests -testRoot "$($testRoot)$($sep)E2ETool";
+}
 
 # run sample project tests
-doing test -filter .* -outputFormat NUnitXml -silent -projectPath "$(Get-Location)$($sep)Sample$($sep)";
+doing test -filter .* -silent -projectPath "$(Get-Location)$($sep)Sample$($sep)";
