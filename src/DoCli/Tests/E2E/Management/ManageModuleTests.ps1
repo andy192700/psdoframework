@@ -36,7 +36,7 @@ Describe 'ManageModuleTests' {
 
         $tests.Length | Should -Be 1;
         
-        doing remove-module -name $script:moduleName -silent;
+        doing delete-module -name $script:moduleName -silent;
 
         $script:context.VerifyFiles($script:testsPath, $script:modulePath, $false, $false);
     }
@@ -58,7 +58,7 @@ Describe 'ManageModuleTests' {
 
         $tests -contains $script:context.ComputeLocalModuleTestPath($script:testName) | Should -Be $true;
         
-        doing remove-module -name $script:moduleName -silent;
+        doing delete-module -name $script:moduleName -silent;
 
         $script:context.VerifyFiles($script:testsPath, $script:modulePath, $false, $false);
     }

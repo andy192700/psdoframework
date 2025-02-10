@@ -11,20 +11,20 @@ using namespace System.Collections.Generic;
 Class for removing processes within the DoFramework environment.
 
 .DESCRIPTION
-The RemoveProcess class is designed to remove existing processes within the DoFramework 
+The DeleteProcess class is designed to remove existing processes within the DoFramework 
 environment. It handles the setup of parameters, environment checks, and deletion 
 of process descriptors.
 #>
-class RemoveProcess : CLIFunction[DescriptorManagementDictionaryValidator] {
+class DeleteProcess : CLIFunction[DescriptorManagementDictionaryValidator] {
     <#
     .SYNOPSIS
-    Initializes a new instance of the RemoveProcess class.
+    Initializes a new instance of the DeleteProcess class.
 
     .DESCRIPTION
-    Constructor for the RemoveProcess class, which sets up the base name 
-    for the command as "Remove-Process".
+    Constructor for the DeleteProcess class, which sets up the base name 
+    for the command as "Delete-Process".
     #>
-    RemoveProcess() : base("Remove-Process") {}
+    DeleteProcess() : base("Delete-Process") {}
 
     [void] InvokeInternal([Dictionary[string, object]] $params, [IServiceContainer] $serviceContainer) {       
         [ServiceContainerExtensions]::AddParameters($serviceContainer, $params);
@@ -49,7 +49,7 @@ class RemoveProcess : CLIFunction[DescriptorManagementDictionaryValidator] {
         [bool] $isSilent = $parameters.ParseSwitch("silent");
 
         foreach ($moduleTest in $moduleTests) {
-            doing remove-test -name $moduleTest.Name -silent $isSilent;
+            doing delete-test -name $moduleTest.Name -silent $isSilent;
         }
     }
 }

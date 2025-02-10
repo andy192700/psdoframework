@@ -36,7 +36,7 @@ Describe 'ManageComposerTests' {
 
         $tests.Length | Should -Be 1;
         
-        doing remove-composer -name $script:composerName -silent;
+        doing delete-composer -name $script:composerName -silent;
 
         $script:context.VerifyFiles($script:testsPath, $script:composerPath, $false, $false);
     }
@@ -58,7 +58,7 @@ Describe 'ManageComposerTests' {
 
         $tests -contains $script:context.ComputeLocalComposerTestPath($script:testName) | Should -Be $true;
         
-        doing remove-composer -name $script:composerName -silent;
+        doing delete-composer -name $script:composerName -silent;
 
         $script:context.VerifyFiles($script:testsPath, $script:composerPath, $false, $false);
     }

@@ -93,10 +93,10 @@ doing new-process -name "My/Nested/ProcessFile"
 doing new-process -name "My/Nested/ProcessFile" -addTests
 ```
 
-### Remove-Process
+### delete-process
 Removes a Process from a project, deleting the file, if it exists.
 
-If there is a test file associated with the specified Process, the framework will call the [remove-test](#remove-test) function.
+If there is a test file associated with the specified Process, the framework will call the [delete-test](#delete-test) function.
 
 Parameters:
 | Parameter Name  | Required | Desription | Type | Default Value |
@@ -105,7 +105,7 @@ Parameters:
 
 Example calls via PowerShell:
 ```PowerShell
-doing remove-process -name MyProcess
+doing delete-process -name MyProcess
 ```
 
 ### new-module
@@ -128,10 +128,10 @@ doing new-module -name "My/Nested/ModuleFile"
 doing new-module -name "My/Nested/ModuleFile" -addTests
 ```
 
-### Remove-Module
+### delete-module
 Removes a Module from a project, deleting the file, if it exists.
 
-If there is a test file associated with the specified Module, the framework will call the [remove-test](#remove-test) function.
+If there is a test file associated with the specified Module, the framework will call the [delete-test](#delete-test) function.
 
 Parameters:
 | Parameter Name  | Required | Desription | Type | Default Value |
@@ -140,7 +140,7 @@ Parameters:
 
 Example calls via PowerShell:
 ```PowerShell
-doing remove-module -name MyModule
+doing delete-module -name MyModule
 ```
 ### new-composer
 Adds a new Composer to a project, see the [Composer](./Composers.md) documentation to learn more.
@@ -162,10 +162,10 @@ doing new-composer -name "My/Nested/MyComposer"
 doing new-composer -name "My/Nested/MyComposer" -addTests
 ```
 
-### Remove-Composer
+### delete-composer
 Removes a Composer from a project, deleting the file, if it exists.
 
-If there is a test file associated with the specified Composer, the framework will call the [remove-test](#remove-test) function.
+If there is a test file associated with the specified Composer, the framework will call the [delete-test](#delete-test) function.
 
 Parameters:
 | Parameter Name  | Required | Desription | Type | Default Value |
@@ -174,7 +174,7 @@ Parameters:
 
 Example calls via PowerShell:
 ```PowerShell
-doing remove-composer -name MyComposer
+doing delete-composer -name MyComposer
 ```
 
 ### new-test
@@ -209,7 +209,7 @@ doing new-test -name "My/Nested/ModuleFileTests" -forModule
 doing new-test -name "My/Nested/MyComposerTests" -forComposer
 ```
 
-### Remove-Test
+### delete-test
 Removes a Test from a project, deleting the file, if it exists.
 
 Parameters:
@@ -219,9 +219,9 @@ Parameters:
 
 Example calls via PowerShell:
 ```PowerShell
-doing remove-test -name MyProcessTests
+doing delete-test -name MyProcessTests
 
-doing remove-test -name MyModuleTests
+doing delete-test -name MyModuleTests
 ```
 
 ## Invocation Functions

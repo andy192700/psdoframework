@@ -10,20 +10,20 @@ using namespace DoFramework.Validators;
 Class for removing tests within the DoFramework environment.
 
 .DESCRIPTION
-The RemoveTest class is designed to remove existing tests within the DoFramework 
+The DeleteTest class is designed to remove existing tests within the DoFramework 
 environment. It handles the setup of parameters, environment checks, and deletion 
 of test descriptors.
 #>
-class RemoveTest : CLIFunction[DescriptorManagementDictionaryValidator] {
+class DeleteTest : CLIFunction[DescriptorManagementDictionaryValidator] {
     <#
     .SYNOPSIS
     Initializes a new instance of the RemoveTest class.
 
     .DESCRIPTION
-    Constructor for the RemoveTest class, which sets up the base name 
-    for the command as "Remove-Test".
+    Constructor for the DeleteTest class, which sets up the base name 
+    for the command as "Delete-Test".
     #>
-    RemoveTest() : base("Remove-Test") {}
+    DeleteTest() : base("Delete-Test") {}
 
     [void] InvokeInternal([Dictionary[string, object]] $params, [IServiceContainer] $serviceContainer) {        
         [ServiceContainerExtensions]::AddParameters($serviceContainer, $params);
