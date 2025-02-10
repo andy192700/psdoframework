@@ -22,7 +22,7 @@ Describe 'ManageModuleTests' {
     it 'Creates then deletes Module' {
         $script:context.VerifyFiles($script:testsPath, $script:modulePath, $false, $false);
 
-        doing add-module -name $script:moduleName -silent;
+        doing new-module -name $script:moduleName -silent;
 
         $script:context.VerifyFiles($script:testsPath, $script:modulePath, $false, $true);
 
@@ -44,7 +44,7 @@ Describe 'ManageModuleTests' {
     it 'Creates then deletes Module With Tests' {
         $script:context.VerifyFiles($script:testsPath, $script:modulePath, $false, $false);
 
-        doing add-module -name $script:moduleName -addTests -silent;
+        doing new-module -name $script:moduleName -addTests -silent;
 
         $script:context.VerifyFiles($script:testsPath, $script:modulePath, $true, $true);
 

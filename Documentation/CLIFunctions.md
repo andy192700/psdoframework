@@ -108,7 +108,7 @@ Example calls via PowerShell:
 doing remove-process -name MyProcess
 ```
 
-### Add-Module
+### new-module
 Adds a new Module to a project, see the [Modules](./Modules.md) documentation to learn more.
 
 If desired, this function can create the associated test file for the Module, in this case the framework will also call the [add-test](#add-test) function.
@@ -121,11 +121,11 @@ Parameters:
 
 Example calls via PowerShell:
 ```PowerShell
-doing add-module -name MyModule
+doing new-module -name MyModule
 
-doing add-module -name "My/Nested/ModuleFile"
+doing new-module -name "My/Nested/ModuleFile"
 
-doing add-module -name "My/Nested/ModuleFile" -addTests
+doing new-module -name "My/Nested/ModuleFile" -addTests
 ```
 
 ### Remove-Module
@@ -136,7 +136,7 @@ If there is a test file associated with the specified Module, the framework will
 Parameters:
 | Parameter Name  | Required | Desription | Type | Default Value |
 |----------|----------|----------|----------|----------|
-| name | Yes | The Module's name, this should not include the full path like the associated `add-module` function. | string | N/A |
+| name | Yes | The Module's name, this should not include the full path like the associated `new-module` function. | string | N/A |
 
 Example calls via PowerShell:
 ```PowerShell
@@ -180,7 +180,7 @@ doing remove-composer -name MyComposer
 ### Add-Test
 Adds a new Test to a project, see the [Testing](./Testing.md) documentation to learn more.
 
-Called by the [new-process](#new-process), [add-module](#add-module) and [add-composer](#add-composer) functions if the `addTests` parameter is supplied.
+Called by the [new-process](#new-process), [new-module](#new-module) and [add-composer](#add-composer) functions if the `addTests` parameter is supplied.
 
 This can also be called retrospectively to supplement an existing Module/Process if the Test file was not created at their time of creation.
 
@@ -215,7 +215,7 @@ Removes a Test from a project, deleting the file, if it exists.
 Parameters:
 | Parameter Name  | Required | Desription | Type | Default Value |
 |----------|----------|----------|----------|----------|
-| name | Yes | The Test's name, this should not include the full path like the associated `add-module` function. | string | N/A |
+| name | Yes | The Test's name, this should not include the full path like the associated `new-module` function. | string | N/A |
 
 Example calls via PowerShell:
 ```PowerShell
