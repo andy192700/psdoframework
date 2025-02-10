@@ -16,3 +16,5 @@ if ((Get-PSRepository -Name $psNuGetSourceName -ErrorAction SilentlyContinue)) {
 if ((Test-Path -Path $psNuGetSourceLocation)) {
     Remove-Item -Path $psNuGetSourceLocation -Recurse | Out-Null;
 }
+
+Remove-Item ".\nuget.config" -Force;

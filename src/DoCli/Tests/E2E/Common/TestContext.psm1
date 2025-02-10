@@ -13,7 +13,7 @@ class TestContext {
     TestContext() {
         $this.Sep = [Environment.Environment]::Separator.ToString();
         $this.OriginalDirectory = (Get-Location);
-        $this.ComponentTestsPath = "$($this.OriginalDirectory)$($this.Sep)src$($this.Sep)DoCli$($this.Sep)Tests$($this.Sep)Component";
+        $this.ComponentTestsPath = "$($this.OriginalDirectory)$($this.Sep)src$($this.Sep)DoCli$($this.Sep)Tests$($this.Sep)E2E";
         $this.ProjectPath = "$($this.ComponentTestsPath)$($this.Sep)do.json";
         $this.SecondProjectDirectory = "$($this.ComponentTestsPath)$($this.Sep)SecondProjectPath";
         

@@ -13,3 +13,7 @@ Write-Host "Latest PSDoFramework version on the repository $($psNuGetSourceName)
 Install-Module -Name "PSDoFramework" -RequiredVersion $version -Repository $psNuGetSourceName -Force;
 
 Write-Host "Installed PSDoFramework version $version from the repository: $($psNuGetSourceName)";
+
+dotnet tool uninstall PSDoFramework.Tool --global;
+
+dotnet tool install PSDoFramework.Tool --global --source $psNuGetSourceName;

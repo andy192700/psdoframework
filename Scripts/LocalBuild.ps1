@@ -23,6 +23,8 @@ if (!$skipTests) {
 
 make publishmodule psNuGetSourceName=$psNuGetSourceName;
 
+make dotnetpublish psNuGetSourceName=$psNuGetSourceName;
+
 make installmodule;
 
 if (!$skipTests) {

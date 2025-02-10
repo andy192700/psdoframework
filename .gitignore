@@ -48,3 +48,4 @@ test-results/ProcessTestResults.xml
 test-results/ModuleTestResults.xml
 Sample/ComposerTestCoverage.xml
 Sample/ComposerTestResults.xml
+nuget.config
