@@ -22,7 +22,7 @@ Describe 'ManageComposerTests' {
     it 'Creates then deletes Composer' {
         $script:context.VerifyFiles($script:testsPath, $script:composerPath, $false, $false);
 
-        doing add-composer -name $script:composerName -silent;
+        doing new-composer -name $script:composerName -silent;
 
         $script:context.VerifyFiles($script:testsPath, $script:composerPath, $false, $true);
 
@@ -44,7 +44,7 @@ Describe 'ManageComposerTests' {
     it 'Creates then deletes composer With Tests' {
         $script:context.VerifyFiles($script:testsPath, $script:composerPath, $false, $false);
 
-        doing add-composer -name $script:composerName -addTests -silent;
+        doing new-composer -name $script:composerName -addTests -silent;
 
         $script:context.VerifyFiles($script:testsPath, $script:composerPath, $true, $true);
 

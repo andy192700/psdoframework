@@ -36,7 +36,7 @@ For more information regarding Modules see the relevant [documentation](./Module
 ## Composers
 DoFramework Composers are .ps1 files that handle DI registration and configuration, like Processes the intent is that they house a single class implementing the `DoFramework.Processing.IComposer` interface, click [here](./Composers.md) to find out more.
 
-To add these to your project see the [add-composer](./CLIFunctions.md#add-composer) function.
+To add these to your project see the [new-composer](./CLIFunctions.md#new-composer) function.
 
 These files must exist within the Composers directory, it is possible to create these within nested directories underneath allowing for scalability.
 
@@ -45,7 +45,7 @@ Tests are optional .ps1 files which run off the module Pester (which is deployed
 
 Tests test either Modules/Processes, they reside in Tests/Modules or Tests/Processes directory, mirroring the Process/Module directory structure to enfore consistency.
 
-Tests can be added with the optional switches on the `new-process`, `new-module` or `add-composer` functions. If an entity is created without Tests (as mentioned above these are optional) these can be added afterwards using the [add-test](./CLIFunctions.md#add-test) function.
+Tests can be added with the optional switches on the `new-process`, `new-module` or `new-composer` functions. If an entity is created without Tests (as mentioned above these are optional) these can be added afterwards using the [add-test](./CLIFunctions.md#add-test) function.
 
 For more information regarding Tests see the relevant [documentation](./Testing.md).
 

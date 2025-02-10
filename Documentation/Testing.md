@@ -9,7 +9,7 @@ It is also worth pointing out that the execution of a Process using Do is perfor
 
 Full examples are included in the [sample project](../Sample/).
 
-Adding tests can be done 3 ways - see the new-process, new-module, add-composer and add-test functions [here](./CLIFunctions.md).
+Adding tests can be done 3 ways - see the new-process, new-module, new-composer and add-test functions [here](./CLIFunctions.md).
 
 To run tests see the [test](./CLIFunctions.md#test) function.
 

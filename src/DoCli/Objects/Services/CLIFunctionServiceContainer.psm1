@@ -4,7 +4,7 @@ using module "..\CLI\CLIFunctions\Management\Modules\NewModule.psm1";
 using module "..\CLI\CLIFunctions\Management\Modules\RemoveModule.psm1";
 using module "..\CLI\CLIFunctions\Management\Tests\AddTest.psm1";
 using module "..\CLI\CLIFunctions\Management\Tests\RemoveTest.psm1";
-using module "..\CLI\CLIFunctions\Management\Composers\AddComposer.psm1";
+using module "..\CLI\CLIFunctions\Management\Composers\NewComposer.psm1";
 using module "..\CLI\CLIFunctions\Management\Composers\RemoveComposer.psm1";
 using module "..\CLI\CLIFunctions\Management\NewProject.psm1";
 using module "..\CLI\CLIFunctions\Invocation\Compose.psm1";
@@ -59,7 +59,7 @@ class CLIFunctionServiceContainer {
         $container.RegisterService[NewProcess]();
         $container.RegisterService[NewModule]();
         $container.RegisterService[AddTest]();
-        $container.RegisterService[AddComposer]();
+        $container.RegisterService[NewComposer]();
         $container.RegisterService[NewProject]();
         $container.RegisterService[RemoveModule]();
         $container.RegisterService[RemoveTest]();
