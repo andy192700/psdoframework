@@ -1,5 +1,6 @@
-using module "..\Environment\ReadProcessLocation.psm1";
-using module "..\Environment\SetProcessLocation.psm1";
+using module "..\FileSystem\DoFileCreator.psm1";
+using module "..\FileSystem\ReadProcessLocation.psm1";
+using module "..\FileSystem\SetProcessLocation.psm1";
 using module "..\Processing\ProcessBuilder.psm1";
 using module "..\Processing\DisplayReports.psm1";
 using module "..\Processing\DoFileTargetValidator.psm1";
@@ -106,6 +107,7 @@ class ApplicationServiceContainer {
         $container.RegisterService[ProxyClassTypeDefinitionBuilder]();
         $container.RegisterService[DoFileTargetValidator]();
         $container.RegisterService[IDoFileInvoker, DoFileInvoker]();
+        $container.RegisterService[IDoFileCreator, DoFileCreator]();
 
         return $container;
     }
