@@ -63,7 +63,7 @@ foreach ($item in $items) {
     CompanyName     = "Andy192700"
     ModuleVersion   = $version
     PowerShellVersion = "7.4"
-    FunctionsToExport = "Doing"
+    FunctionsToExport = @("Doing", "Target")
     NestedModules = $nestedModules.ToArray()
     RequiredAssemblies = @(".$($sep)DoFramework.dll")
     ScriptsToProcess = @(".$($sep)ModuleDependenciesInstall.ps1")

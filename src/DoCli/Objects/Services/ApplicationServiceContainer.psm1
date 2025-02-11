@@ -2,6 +2,8 @@ using module "..\Environment\ReadProcessLocation.psm1";
 using module "..\Environment\SetProcessLocation.psm1";
 using module "..\Processing\ProcessBuilder.psm1";
 using module "..\Processing\DisplayReports.psm1";
+using module "..\Processing\DoFileTargetValidator.psm1";
+using module "..\Processing\DoFileInvoker.psm1";
 using module "..\Testing\ModuleTestRunner.psm1";
 using module "..\Testing\ProcessTesterRunner.psm1";
 using module "..\Testing\ComposerTesterRunner.psm1";
@@ -102,6 +104,8 @@ class ApplicationServiceContainer {
         $container.RegisterService[IOSSanitise, OSSanitise]();
         $container.RegisterService[ProxyTypeValidator]();
         $container.RegisterService[ProxyClassTypeDefinitionBuilder]();
+        $container.RegisterService[DoFileTargetValidator]();
+        $container.RegisterService[IDoFileInvoker, DoFileInvoker]();
 
         return $container;
     }

@@ -10,6 +10,7 @@ using module "..\CLI\CLIFunctions\Management\NewProject.psm1";
 using module "..\CLI\CLIFunctions\Invocation\Compose.psm1";
 using module "..\CLI\CLIFunctions\Invocation\RunProcess.psm1";
 using module "..\CLI\CLIFunctions\Invocation\RunTests.psm1";
+using module "..\CLI\CLIFunctions\Invocation\ExecDoFile.psm1";
 using module "..\CLI\CLIFunctions\Util\ReadArgs.psm1";
 using module "..\CLI\CLIFunctions\Util\GetMethodInfo.psm1";
 using module "..\CLI\CLIFunctions\Util\CreateMock.psm1";
@@ -66,6 +67,7 @@ class CLIFunctionServiceContainer {
         $container.RegisterService[DeleteProcess]();
         $container.RegisterService[DeleteComposer]();
         $container.RegisterService[RunTests]();
+        $container.RegisterService[ExecDoFile]();
         $container.RegisterService[ReadArgs]();
         $container.RegisterService[GetMethodInfo]();
         $container.RegisterService[CreateMock]();

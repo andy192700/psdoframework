@@ -174,7 +174,7 @@ Describe 'CreateProjectTests' {
         New-Item -ItemType Directory -Path $projectDirectory | Out-Null;
 
         # Act
-        doing new-project -projectPath $projectDirectory -silent;
+        doing new-project -home $projectDirectory -silent;
 
         # Assert
         (Test-Path -Path $projectDirectory) | Should -Be $true;
@@ -240,7 +240,7 @@ Describe 'CreateProjectTests' {
 
         # Act
         $func = {
-            doing new-project -projectPath $projectDirectory -silent;
+            doing new-project -home $projectDirectory -silent;
         };
 
         # Assert
