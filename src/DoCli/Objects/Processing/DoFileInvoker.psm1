@@ -6,7 +6,7 @@ using namespace DoFramework.Validators;
 using namespace DoFramework.Services;
 using namespace System.Collections.Generic;
 using module ".\DoFileTarget.psm1";
-using module ".\DoFileTargetValidator.psm1";
+using module "..\Validators\DoFileTargetValidator.psm1";
 
 class DoFileInvoker : IDoFileInvoker {
     [CLIFunctionParameters] $Parameters;
