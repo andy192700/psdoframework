@@ -46,6 +46,10 @@ $items += Get-ChildItem "$baseDir$($sep)Objects$($sep)CLI" -Recurse;
 $items += Get-ChildItem "$baseDir$($sep)Objects$($sep)Services$($sep)CLIFunctionServiceContainer.psm1";
 $items += Get-ChildItem "$baseDir$($sep)Functions";
 
+foreach ($item in $items) {
+    Write-Host $item.FullName;
+}
+
 [string] $manifestPath = "$buildDir$($sep)PSDoFramework.psd1";
 
 [List[string]] $nestedModules = [List[string]]::new();
