@@ -64,7 +64,7 @@ Target C {}
 
             Should -Invoke Set-Content -Times 1 -Exactly -ParameterFilter { $Path -eq "$($script:readLocation.Instance.Read())$($script:sep)dofile.ps1" -and $Value -eq $content};
             
-            $script:logger.Proxy.CountCalls("LogInfo", (doing args -message "Successfully created `dofile.ps1.' in the current directory.")) | Should -Be 1;
+            $script:logger.Proxy.CountCalls("LogInfo", (doing args -message "Successfully created 'dofile.ps1.' in the current directory.")) | Should -Be 1;
         }
         
         it 'Does not create file as already exists' {

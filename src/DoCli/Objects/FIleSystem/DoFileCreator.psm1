@@ -47,7 +47,7 @@ Target C {}
 
             Set-Content -Path $dofilePath -Value $content;
 
-            $this.Logger.LogInfo("Successfully created `dofile.ps1.' in the current directory.");
+            $this.Logger.LogInfo("Successfully created 'dofile.ps1.' in the current directory.");
         }
     }
 }

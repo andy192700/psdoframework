@@ -13,10 +13,6 @@ Target A {
     Write-Host $myVar;
 }
 
-Target a {
-
-}
-
 Target B -inherits A {
     Write-Host "the end";
 }

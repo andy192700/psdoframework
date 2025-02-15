@@ -8,6 +8,8 @@ class NewDoFile : CLIFunction[EmptyCLIFunctionDictionaryValidator] {
     NewDoFile() : base("new-dofile") {}
 
     [void] InvokeInternal([Dictionary[string, object]] $params, [IServiceContainer] $serviceContainer) {
+        [ServiceContainerExtensions]::AddParameters($serviceContainer, $params);
+
         [IDoFileCreator] $creator = $serviceContainer.GetService([IDoFileCreator]);
 
         $creator.Create();

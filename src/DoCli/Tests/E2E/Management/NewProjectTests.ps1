@@ -1,6 +1,6 @@
 using module "..\Common\TestContext.psm1";
 
-Describe 'CreateProjectTests' {
+Describe 'NewProjectTests' {
     BeforeEach {
         [TestContext] $script:context = [TestContext]::new();
 
