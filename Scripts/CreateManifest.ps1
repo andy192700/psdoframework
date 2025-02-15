@@ -36,19 +36,7 @@ Copy-Item -Path "$rootDir$($sep)src$($sep)DoFramework$($sep)DoFramework$($sep)bi
 
 [FileSystemInfo[]] $items = @();
 
-$items += Get-ChildItem "$baseDir$($sep)Objects$($sep)FileSystem" -Recurse;
-$items += Get-ChildItem "$baseDir$($sep)Objects$($sep)Mappers" -Recurse;
-$items += Get-ChildItem "$baseDir$($sep)Objects$($sep)Modules" -Recurse;
-$items += Get-ChildItem "$baseDir$($sep)Objects$($sep)Processing" -Recurse;
-$items += Get-ChildItem "$baseDir$($sep)Objects$($sep)Validators" -Recurse;
-$items += Get-ChildItem "$baseDir$($sep)Objects$($sep)Services$($sep)ApplicationServiceContainer.psm1";
-$items += Get-ChildItem "$baseDir$($sep)Objects$($sep)CLI" -Recurse;
-$items += Get-ChildItem "$baseDir$($sep)Objects$($sep)Services$($sep)CLIFunctionServiceContainer.psm1";
 $items += Get-ChildItem "$baseDir$($sep)Functions";
-
-foreach ($item in $items) {
-    Write-Host $item.FullName;
-}
 
 [string] $manifestPath = "$buildDir$($sep)PSDoFramework.psd1";
 
