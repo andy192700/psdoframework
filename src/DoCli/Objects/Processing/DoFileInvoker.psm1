@@ -5,12 +5,10 @@ using namespace DoFramework.Processing;
 using namespace DoFramework.Validators;
 using namespace DoFramework.Services;
 using namespace System.Collections.Generic;
-using module ".\DoFileTarget.psm1";
-using module "..\Validators\DoFileTargetValidator.psm1";
 
 class DoFileInvoker : IDoFileInvoker {
     [CLIFunctionParameters] $Parameters;
-    [DoFileTargetValidator] $Validator;
+    [IValidator[string]] $Validator;
     [IValidationErrorWriter] $ValidationErrorWriter;
     [IFileManager] $FileManager;
     [ILogger] $Logger;
@@ -19,7 +17,7 @@ class DoFileInvoker : IDoFileInvoker {
 
     DoFileInvoker (
         [CLIFunctionParameters] $parameters,
-        [DoFileTargetValidator] $validator,
+        [IValidator[string]] $validator,
         [IValidationErrorWriter] $validationErrorWriter,
         [IFileManager] $fileManager,
         [ILogger] $logger,
@@ -36,7 +34,7 @@ class DoFileInvoker : IDoFileInvoker {
     }
 
     [void] InvokeTarget([string] $target) {
-        [Dictionary[string, DoFileTarget]] $Global:targets = [Dictionary[string, DoFileTarget]]::new();
+        [Dictionary[string, object]] $Global:targets = [Dictionary[string, object]]::new();
 
         [char] $sep = [DoFramework.Environment.Environment]::Separator;
 
@@ -45,7 +43,7 @@ class DoFileInvoker : IDoFileInvoker {
         [string] $dofilePath = "$($currentDir)$($sep)dofile.ps1";
 
         if (!$this.FileManager.FileExists($dofilePath)) {
-            $this.Logger.LogFatal("Could not locate 'dofile.ps1' in the current directory");
+            $this.Logger.LogFatal("Could not locate 'dofile.ps1' in the current directory.");
         }
         else {
             try {
@@ -59,7 +57,20 @@ class DoFileInvoker : IDoFileInvoker {
                 else {
                     foreach ($key in $this.Parameters.Parameters.Keys) {
                         if ($key -ne "target") {
-                            Set-Variable -Name $key -Value $this.Parameters.Parameters[$key];
+                            [bool] $varExists = $false;
+
+                            try {
+                                Get-Variable -Name $key;
+
+                                $varExists = $true;
+                            }
+                            catch {}
+
+                            if ($varExists) {
+                                Remove-Variable -Name $key;
+                            }
+
+                            New-Variable -Name $key -Value $this.Parameters.Parameters[$key];
                         }
                     }        
             
@@ -67,7 +78,7 @@ class DoFileInvoker : IDoFileInvoker {
                 }
             }
             catch {
-                $this.Logger.LogError("Error whilst attempting to execute target '$target'");
+                $this.Logger.LogError("Error whilst attempting to execute target '$target'.");
                 $this.Logger.LogError($_.Exception.Message);
             }
 

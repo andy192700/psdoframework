@@ -10,7 +10,7 @@ class DoFileTarget {
         $this.Inherits = $inherits;
     }
 
-    [ScriptBlock] ToScriptBlock([IDictionary[string, DoFileTarget]] $targets) {
+    [ScriptBlock] ToScriptBlock([IDictionary[string, object]] $targets) {
         if (![string]::IsNullOrEmpty($this.Inherits)) {
             return [ScriptBlock]::Create($targets[$this.Inherits].ToScriptBlock($targets).ToString() + $this.Block.ToString());
         }

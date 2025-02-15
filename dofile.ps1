@@ -10,7 +10,11 @@ Target A {
         Write-Host boolset;
     }
 
-    Write-Host $myVar $theBool;
+    Write-Host $myVar;
+}
+
+Target a {
+
 }
 
 Target B -inherits A {

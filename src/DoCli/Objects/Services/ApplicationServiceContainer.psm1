@@ -105,7 +105,7 @@ class ApplicationServiceContainer {
         $container.RegisterService[IOSSanitise, OSSanitise]();
         $container.RegisterService[ProxyTypeValidator]();
         $container.RegisterService[ProxyClassTypeDefinitionBuilder]();
-        $container.RegisterService[DoFileTargetValidator]();
+        $container.RegisterService[IValidator[string], DoFileTargetValidator]();
         $container.RegisterService[IDoFileInvoker, DoFileInvoker]();
         $container.RegisterService[IDoFileCreator, DoFileCreator]();
 
