@@ -1,6 +1,8 @@
 using namespace DoFramework.FileSystem;
 using namespace DoFramework.Logging;
 
+# Class responsible for creating a 'dofile.ps1' in the current directory.
+# Implements the IDoFileCreator interface, which contains the method to create the file.
 class DoFileCreator : IDoFileCreator {
     [IFileManager] $FileManager;
     [ILogger] $Logger;
@@ -15,6 +17,7 @@ class DoFileCreator : IDoFileCreator {
         $this.Logger = $logger;
     }
 
+    # Method to create a 'dofile.ps1' if it does not already exist in the current directory.
     [void] Create() {        
         [char] $sep = [DoFramework.Environment.Environment]::Separator;
 

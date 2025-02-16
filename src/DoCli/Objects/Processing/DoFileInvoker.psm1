@@ -6,6 +6,8 @@ using namespace DoFramework.Validators;
 using namespace DoFramework.Services;
 using namespace System.Collections.Generic;
 
+# Class responsible for invoking a specified target within a file.
+# Implements the IDoFileInvoker interface, including functionality for validating, setting process locations, and executing a target.
 class DoFileInvoker : IDoFileInvoker {
     [CLIFunctionParameters] $Parameters;
     [IValidator[string]] $Validator;
@@ -33,6 +35,7 @@ class DoFileInvoker : IDoFileInvoker {
         $this.SetProcessLocation = $setProcessLocation
     }
 
+    # Method to invoke a specific target from a file, validating and setting required parameters before execution.
     [void] InvokeTarget([string] $target) {
         [Dictionary[string, object]] $Global:targets = [Dictionary[string, object]]::new();
 
