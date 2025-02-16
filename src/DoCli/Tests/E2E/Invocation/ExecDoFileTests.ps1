@@ -93,7 +93,7 @@ Target $target {
         [string] $global:outputString = $null;
 
         Set-Content -Path $script:testDoFile -Value @"
-[string] `$wrench = 'mr str';
+[string] `$wrench = 'torqueWrench123';
 [bool] `$something = `$false;
 
 Target $target {
@@ -105,6 +105,6 @@ Target $target {
         doing exec -target $target -silent;
 
         # Assert
-        $global:outputString | Should -Be "mr str False"
+        $global:outputString | Should -Be "torqueWrench123 False"
     }
 }
