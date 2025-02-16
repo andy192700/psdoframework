@@ -17,8 +17,6 @@ Target B -inherits A {
     Write-Host "the end";
 }
 
-Target C {}
-
 Target SampleProcess {
     doing run -name $processName -showReports -home "$homeDir/Sample";
 }

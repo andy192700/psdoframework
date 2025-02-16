@@ -1,3 +1,4 @@
+using namespace System;
 using namespace System.Collections.Generic;
 using namespace System.Management.Automation;
 
@@ -16,6 +17,10 @@ class DoFileTarget {
     # Returns the resulting ScriptBlock.
     [ScriptBlock] ToScriptBlock([IDictionary[string, object]] $targets) {
         if (![string]::IsNullOrEmpty($this.Inherits)) {
+            if (!$targets.ContainsKey($this.Inherits)) {
+                throw [ArgumentException]::new("The inherited target '$($this.Inherits)' does not exist.");
+            }
+
             return [ScriptBlock]::Create($targets[$this.Inherits].ToScriptBlock($targets).ToString() + $this.Block.ToString());
         }
 

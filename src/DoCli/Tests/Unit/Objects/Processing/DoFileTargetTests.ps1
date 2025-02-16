@@ -16,9 +16,13 @@ Describe 'DoFileTargetValidatorTests' {
 
         [string] $Script:target = "target1";
 
+        [string] $Script:targetNotExist = "target2";
+
         [DoFileTarget] $script:dft1 = [DoFileTarget]::new($Script:sb1, $null);
 
         [DoFileTarget] $script:dft2 = [DoFileTarget]::new($Script:sb2, $Script:target);
+
+        [DoFileTarget] $script:dft3 = [DoFileTarget]::new($Script:sb2, $Script:targetNotExist);
 
         $Global:targets[$Script:target] = $script:dft1;
     }
@@ -42,6 +46,16 @@ Describe 'DoFileTargetValidatorTests' {
 
             # Assert
             $result.ToString() | Should -Be ([ScriptBlock]::Create($Script:sb1.ToString() + $Script:sb2.ToString()).ToString());
+        }
+        
+        it 'ToScriptBlock Throws' {
+            # Arrange / Act
+            $func = {
+                $script:dft3.ToScriptBlock($Global:targets);
+            };
+
+            # Assert
+            $func | Should -Throw -ExceptionType ([System.ArgumentException]) -ExpectedMessage "The inherited target '$($Script:targetNotExist)' does not exist.";
         }
     }
 }
