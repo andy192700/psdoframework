@@ -76,4 +76,4 @@ if ($useLatest) {
 }
 
 # run sample project tests
-doing test -filter .* -silent -projectPath "$(Get-Location)$($sep)Sample$($sep)";
+doing test -filter .* -silent -home "$(Get-Location)$($sep)Sample$($sep)";

@@ -6,7 +6,7 @@ The syntax, available functions and parameter options are detailed on this page.
 # Usage
 The current directory for the current PowerShell instance is where the framework expects to be operating from, most functions require to be in a directory where it can locate the project file.
 
-To allow more flexibility the `projectPath` may be supplied such that calling functions to operate on a project can be ran from anywhere. The `projectPath` parameter is a universally available to all functions, see the [Universal Parameters](#Universal-Parameters) for more details.
+To allow more flexibility the `home` may be supplied such that calling functions to operate on a project can be ran from anywhere. The `home` parameter is a universally available to all functions, see the [Universal Parameters](#Universal-Parameters) for more details.
 
 One nuance to be aware of is when making code changes to existing Composers, Processes, Modules and Tests that the framework may not always pick up changes to method signatures etc. It is considered best practice to reload the PowerShell terminal before re-running, one way to work around this is to use make, see the make targets `runsample*` in the base of this repository.
 
@@ -40,16 +40,16 @@ Universal Parameters:
 | Parameter Name  | Desription | Type | Default Value |
 |----------|----------|----------|----------|
 | silent | A switch which suppresses logging by the framework | switch/boolean | false |
-| projectPath | This framework requires the executing shell to be in the directory of a project by default, by supplying this parameter, this does not have to be the case. By supplying the full path of the parent directory of a project, a developer can use the functions specified in this document from anywhere. The make targets `runsample*` in the root of this repository demonstrate its usage. | string | N/A | 
+| home | This framework requires the executing shell to be in the directory of a project by default, by supplying this parameter, this does not have to be the case. By supplying the full path of the parent directory of a project, a developer can use the functions specified in this document from anywhere. The make targets `runsample*` in the root of this repository demonstrate its usage. | string | N/A | 
 
 Example calls via PowerShell, demonstrated using the `new-project` function:
 
 ```PowerShell
 doing new-project -silent
 
-doing new-project -projectPath "C:\\my\path\to\my\project"
+doing new-project -home "C:\\my\path\to\my\project"
 
-doing new-project -projectPath "my/path/to/my/project"
+doing new-project -home "my/path/to/my/project"
 ```
 add
 # Available Functions

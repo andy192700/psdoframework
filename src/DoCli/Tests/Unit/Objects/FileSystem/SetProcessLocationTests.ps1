@@ -2,8 +2,7 @@ Describe 'SetProcessLocationTests' {
     BeforeEach {
         [string] $sep = [DoFramework.Environment.Environment]::Separator.ToString();
 
-        # Ensure native PowerShell methods are mock-able by using Invoke-Expression rather than a using module statement.
-        Invoke-Expression -Command "$(Get-Content "$PSScriptRoot$($sep)..$($sep)..$($sep)..$($sep)..$($sep)Objects$($sep)Environment$($sep)SetProcessLocation.psm1")";
+        Invoke-Expression -Command "$(Get-Content "$PSScriptRoot$($sep)..$($sep)..$($sep)..$($sep)..$($sep)Objects$($sep)FileSystem$($sep)SetProcessLocation.psm1")";
     }
     
     Context 'Tests' {

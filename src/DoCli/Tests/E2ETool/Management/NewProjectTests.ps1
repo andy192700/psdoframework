@@ -174,7 +174,7 @@ Describe 'CreateProjectTests' {
         New-Item -ItemType Directory -Path $projectDirectory | Out-Null;
 
         # Act
-        psdoing new-project -projectPath $projectDirectory -silent;
+        psdoing new-project -home $projectDirectory -silent;
 
         # Assert
         (Test-Path -Path $projectDirectory) | Should -Be $true;
@@ -239,7 +239,7 @@ Describe 'CreateProjectTests' {
         [string] $projectDirectory = $script:context.SecondProjectDirectory;
 
         # Act
-        [string] $result = psdoing new-project -projectPath $projectDirectory -silent;
+        [string] $result = psdoing new-project -home $projectDirectory -silent;
 
         # Assert
         $result | Should -BeLike "*Requested project path '$projectDirectory' does not exist.*";

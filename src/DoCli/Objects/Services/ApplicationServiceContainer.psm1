@@ -1,7 +1,9 @@
-using module "..\Environment\ReadProcessLocation.psm1";
-using module "..\Environment\SetProcessLocation.psm1";
+using module "..\FileSystem\DoFileCreator.psm1";
+using module "..\FileSystem\ReadProcessLocation.psm1";
+using module "..\FileSystem\SetProcessLocation.psm1";
 using module "..\Processing\ProcessBuilder.psm1";
 using module "..\Processing\DisplayReports.psm1";
+using module "..\Processing\DoFileInvoker.psm1";
 using module "..\Testing\ModuleTestRunner.psm1";
 using module "..\Testing\ProcessTesterRunner.psm1";
 using module "..\Testing\ComposerTesterRunner.psm1";
@@ -10,6 +12,7 @@ using module "..\Testing\PesterRunner.psm1";
 using module "..\Testing\ProxyClassTypeDefinitionBuilder.psm1";
 using module "..\Mappers\RunMethodInfoMapper.psm1";
 using module "..\Validators\ProxyTypeValidator.psm1";
+using module "..\Validators\DoFileTargetValidator.psm1";
 
 using namespace DoFramework.Data;
 using namespace DoFramework.Domain;
@@ -102,6 +105,9 @@ class ApplicationServiceContainer {
         $container.RegisterService[IOSSanitise, OSSanitise]();
         $container.RegisterService[ProxyTypeValidator]();
         $container.RegisterService[ProxyClassTypeDefinitionBuilder]();
+        $container.RegisterService[IValidator[string], DoFileTargetValidator]();
+        $container.RegisterService[IDoFileInvoker, DoFileInvoker]();
+        $container.RegisterService[IDoFileCreator, DoFileCreator]();
 
         return $container;
     }
