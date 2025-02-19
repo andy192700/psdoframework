@@ -11,7 +11,7 @@ validate:
 
 # Dotnet CLI
 dotnetbuild:
-	dotnet build $(solutionFile) --configuration $(solutionConfig) '/p:Version=$(version)'
+	pwsh -ExecutionPolicy Bypass -Command "& '${CURDIR}/Scripts/dotnetbuild.ps1' -psNuGetSourceName $(psNuGetSourceName) -solutionFile $(solutionFile) -solutionConfig $(solutionConfig);"
 
 dotnettest:
 	dotnet test $(solutionFile) --configuration $(solutionConfig) --no-build --logger "trx;LogFileName=test-results.trx" --results-directory ./test-results

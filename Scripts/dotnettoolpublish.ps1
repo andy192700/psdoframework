@@ -10,7 +10,7 @@ param (
 
 $ErrorActionPreference = "Stop";
 
-[string] $version = [VersionCalculator]::Calculate($psNuGetSourceName);
+[string] $version = [VersionCalculator]::GetLatest($psNuGetSourceName);
 
 [char] $sep = [Path]::DirectorySeparatorChar;
 

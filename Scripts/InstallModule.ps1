@@ -8,12 +8,10 @@ $ErrorActionPreference = "Stop";
 
 [string] $version = [VersionCalculator]::GetLatest($psNuGetSourceName);
 
-Write-Host "Latest PSDoFramework version on the repository $($psNuGetSourceName): $version";
-
-Install-Module -Name "PSDoFramework" -RequiredVersion $version -Repository $psNuGetSourceName -Force;
-
-Write-Host "Installed PSDoFramework version $version from the repository: $($psNuGetSourceName)";
-
 dotnet tool uninstall PSDoFramework.Tool --global;
 
-dotnet tool install PSDoFramework.Tool --global --source $psNuGetSourceName;
+dotnet tool install PSDoFramework.Tool --global --version $version --source $psNuGetSourceName;
+
+Write-Host "Executing dummy call to dotnet tool to install powershell module behind the scenes....."; 
+# call the dotnet tool to install the module the first time...
+psdoing;
