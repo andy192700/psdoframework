@@ -12,6 +12,6 @@ dotnet tool uninstall PSDoFramework.Tool --global;
 
 dotnet tool install PSDoFramework.Tool --global --version $version --source $psNuGetSourceName;
 
-Write-Host "Executing dummy call to dotnet tool to install powershell module behind the scenes....."; 
+Write-Host "Executing dummy call to dotnet tool to install powershell module behind the scenes.....";
 # call the dotnet tool to install the module the first time...
 psdoing;
