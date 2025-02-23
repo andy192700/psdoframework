@@ -17,4 +17,8 @@ Write-Host "Executing dummy call to dotnet tool to install powershell module beh
 # call the dotnet tool to install the module the first time...
 psdoing;
 
+[char] $sep = [System.IO.Path]::DirectorySeparatorChar;
+
+[string] $testRoot = Join-Path -Path $PSScriptRoot -ChildPath "..$($sep)src$($sep)DoCli$($sep)Tests";
+
 RunTests -testRoot "$($testRoot)$($sep)E2ETool";
