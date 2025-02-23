@@ -16,7 +16,7 @@ class VersionCalculator {
 
         [System.Version] $newVersion = $null;
 
-        [int] $comparisonResult = $latestModuleVersion.ToString().CompareTo($highestReadMeVersion.ToString());
+        [int] $comparisonResult = $latestModuleVersion.CompareTo($highestReadMeVersion.ToString());
         
         if ($comparisonResult -gt 0) {
             $newVersion = $latestModuleVersion;
@@ -28,7 +28,7 @@ class VersionCalculator {
             $newVersion = $latestModuleVersion;
         }
 
-        Write-Host $latestModuleVersion $highestReadMeVersion; 
+        Write-Host $latestModuleVersion $highestReadMeVersion $newVersion; 
 
         return $newVersion.ToString();
     }
