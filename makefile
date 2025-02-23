@@ -20,6 +20,9 @@ dotnettest:
 dotnetpublish:
 	pwsh -ExecutionPolicy Bypass -Command "& '${CURDIR}/Scripts/dotnettoolpublish.ps1' -nuGetGallerySourceName $(nuGetGallerySourceName) -solutionFile $(solutionFile) -solutionConfig $(solutionConfig) -psNuGetApiKey $(psNuGetApiKey);"
 
+installtool:
+	pwsh -ExecutionPolicy Bypass -Command "& '${CURDIR}/Scripts/InstallTool.ps1' -psNuGetSourceName $(psNuGetSourceName)"
+
 # DoFramework PowerShell Testing
 pstests:
 	pwsh -ExecutionPolicy Bypass -Command "& '${CURDIR}/Scripts/PSTestOrchestrator.ps1';"
