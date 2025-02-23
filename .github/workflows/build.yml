@@ -165,20 +165,20 @@ jobs:
 
     - name: publish module
       id: publish_module
-      if: ${{ github.ref == 'refs/heads/main' && steps.ps_tests.conclusion == 'success' }}
+      if: ${{ steps.ps_tests.conclusion == 'success' }}
       run: |
         make publishmodule psNuGetSourceName=PSGallery psNuGetApiKey=${{ secrets.PSGALLERY_KEY }}
 
     - name: publish dotnet tool
       id: publish_dotnet_tool
-      if: ${{ github.ref == 'refs/heads/main' && steps.publish_module.conclusion == 'success' }}
+      if: ${{ steps.publish_module.conclusion == 'success' }}
       run: |
         make dotnetpublish psNuGetSourceName="https://api.nuget.org/v3/index.json" psNuGetApiKey=${{ secrets.NUGETGALLERY_KEY }}
 
   windowsinstall:
     name: "Windows Install & Test"
     needs: linuxbuild
-    if: ${{ github.ref == 'refs/heads/main' && success() }}
+    if: ${{ success() }}
     runs-on: windows-latest
 
     steps:
@@ -201,7 +201,7 @@ jobs:
   macosinstall:
     name: "MacOS Install & Test"
     needs: windowsinstall
-    if: ${{ github.ref == 'refs/heads/main' && success() }}
+    if: ${{ success() }}
     runs-on: macos-latest
 
     steps:
@@ -224,7 +224,7 @@ jobs:
   linuxinstall:
     name: "Linux Install & Test"
     needs: macosinstall
-    if: ${{ github.ref == 'refs/heads/main' && success() }}
+    if: ${{ success() }}
     runs-on: ubuntu-latest
 
     steps:
@@ -247,7 +247,7 @@ jobs:
   tag_release:
     name: "Tag Release"
     needs: linuxinstall
-    if: ${{ github.ref == 'refs/heads/main' && success() }}
+    if: ${{ success() }}
     runs-on: ubuntu-latest
 
     steps:
