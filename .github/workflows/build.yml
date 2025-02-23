@@ -197,7 +197,7 @@ jobs:
       id: install_module
       if: steps.dotnet_install.conclusion == 'success'
       run: |
-        make installmodule psNuGetSourceName="https://api.nuget.org/v3/index.json"
+        make installmodule psNuGetSourceName=PSGallery
 
     - name: run powershell tests
       id: ps_tests_install
@@ -227,7 +227,7 @@ jobs:
       id: install_module
       if: steps.dotnet_install.conclusion == 'success'
       run: |
-        make installmodule psNuGetSourceName="https://api.nuget.org/v3/index.json"
+        make installmodule psNuGetSourceName=PSGallery
 
     - name: run powershell tests
       id: ps_tests_install
@@ -257,7 +257,7 @@ jobs:
       id: install_module
       if: steps.dotnet_install.conclusion == 'success'
       run: |
-        make installmodule psNuGetSourceName="https://api.nuget.org/v3/index.json"
+        make installmodule psNuGetSourceName=PSGallery
 
     - name: run powershell tests
       id: ps_tests_install

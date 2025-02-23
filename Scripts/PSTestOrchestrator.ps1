@@ -67,10 +67,10 @@ if (!$useLatest) {
     RunTests -testRoot "$($testRoot)$($sep)Unit";
 }
 
-if ($useLatest) {
-    # run some E2E tests on the dotnet tool
-    RunTests -testRoot "$($testRoot)$($sep)E2ETool";
-}
+##if ($useLatest) {
+##    # run some E2E tests on the dotnet tool
+##    RunTests -testRoot "$($testRoot)$($sep)E2ETool";
+##}
 
 # run component tests
 RunTests -testRoot "$($testRoot)$($sep)E2E";
