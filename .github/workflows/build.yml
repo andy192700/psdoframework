@@ -186,13 +186,6 @@ jobs:
       id: checkout
       uses: actions/checkout@v2
 
-    - name: Set up .NET 8 SDK
-      id: dotnet_install
-      if: steps.checkout.conclusion == 'success'
-      uses: actions/setup-dotnet@v2
-      with:
-        dotnet-version: '8.0.x'
-
     - name: install module
       id: install_module
       if: steps.dotnet_install.conclusion == 'success'
@@ -216,13 +209,6 @@ jobs:
       id: checkout
       uses: actions/checkout@v2
 
-    - name: Set up .NET 8 SDK
-      id: dotnet_install
-      if: steps.checkout.conclusion == 'success'
-      uses: actions/setup-dotnet@v2
-      with:
-        dotnet-version: '8.0.x'
-
     - name: install module
       id: install_module
       if: steps.dotnet_install.conclusion == 'success'
@@ -245,13 +231,6 @@ jobs:
     - name: Checkout code
       id: checkout
       uses: actions/checkout@v2
-
-    - name: Set up .NET 8 SDK
-      id: dotnet_install
-      if: steps.checkout.conclusion == 'success'
-      uses: actions/setup-dotnet@v2
-      with:
-        dotnet-version: '8.0.x'
 
     - name: install module
       id: install_module
