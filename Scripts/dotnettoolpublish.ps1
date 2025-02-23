@@ -2,7 +2,6 @@ using namespace System.IO;
 using module ".\lib\VersionCalculator.psm1";
 
 param (
-    [Parameter(Mandatory=$true)] [ValidateNotNullOrEmpty()] [string] $psNuGetSourceName,
     [Parameter(Mandatory=$true)] [ValidateNotNullOrEmpty()] [string] $nuGetGallerySourceName,
     [Parameter(Mandatory=$true)] [ValidateNotNullOrEmpty()] [string] $solutionFile,
     [Parameter(Mandatory=$true)] [ValidateNotNullOrEmpty()] [string] $solutionConfig,
@@ -11,7 +10,7 @@ param (
 
 $ErrorActionPreference = "Stop";
 
-[string] $version = [VersionCalculator]::GetLatest($psNuGetSourceName);
+[string] $version = [VersionCalculator]::GetCurrent();
 
 [char] $sep = [Path]::DirectorySeparatorChar;
 

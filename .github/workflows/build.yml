@@ -173,7 +173,7 @@ jobs:
       id: publish_dotnet_tool
       if: ${{ steps.publish_module.conclusion == 'success' }}
       run: |
-        make dotnetpublish psNuGetSourceName=PSGallery nuGetGallerySourceName="https://api.nuget.org/v3/index.json" psNuGetApiKey=${{ secrets.NUGETGALLERY_KEY }}
+        make dotnetpublish nuGetGallerySourceName="https://api.nuget.org/v3/index.json" psNuGetApiKey=${{ secrets.NUGETGALLERY_KEY }}
 
   windowsinstall:
     name: "Windows Install & Test"

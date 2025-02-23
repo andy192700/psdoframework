@@ -43,6 +43,14 @@ class VersionCalculator {
         return $version;
     }
 
+    static [string] GetCurrent() {
+        Import-Module .\Build\PSDoFramework\PSDoFramework.psd1 -Force;
+
+        [PSCustomObject] $module = Get-Module -Name "PSDoFramework";
+
+        return $module.Version;
+    }
+
     static [System.Version] GetLatestReadMe() {
         [char] $sep = [System.IO.Path]::DirectorySeparatorChar;
         [string] $releaseNotesDir = "$(Get-Location)$($sep)Documentation$($sep)ReleaseNotes";
