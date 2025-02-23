@@ -47,7 +47,7 @@ jobs:
       id: manifest_build
       if: steps.dotnet_test.conclusion == 'success'
       run: |
-        make createmanifest
+        make createmanifest psNuGetSourceName=PSGallery
 
     - name: run powershell tests
       id: ps_tests
