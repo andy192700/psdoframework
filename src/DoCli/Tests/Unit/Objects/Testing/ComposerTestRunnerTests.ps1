@@ -154,6 +154,8 @@ Describe 'ComposerTestRunnerTests' {
 
         [ProxyResult] $mockReadProcessLocation = doing mock -type ([IReadProcessLocation]);
 
+        [char] $sep = [DoFramework.Environment.Environment]::Separator;
+
         $mockReadProcessLocation.Proxy.MockMethod("Read", {
             [string] $currentDir = (Get-Location);
 
@@ -188,8 +190,6 @@ Describe 'ComposerTestRunnerTests' {
             $mockReadProcessLocation.Instance,
             $mockProjectProvider.Instance
         );
-
-        [char] $sep = [DoFramework.Environment.Environment]::Separator;
 
         [ComposerTesterRunner] $sut = [ComposerTesterRunner]::new(
             $mockProvider.Instance, 

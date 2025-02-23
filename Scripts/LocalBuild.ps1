@@ -29,4 +29,6 @@ make installmodule;
 
 if (!$skipTests) {
     make pstestspostinstall;
+    
+    make installtool psNuGetSourceName=$psNuGetSourceName;
 }
