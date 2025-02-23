@@ -116,20 +116,20 @@ jobs:
 
     - name: publish module
       id: publish_module
-      if: ${{ steps.ps_tests.conclusion == 'success' }}
+      if: ${{ github.ref == 'refs/heads/main' && steps.ps_tests.conclusion == 'success' }}
       run: |
         make publishmodule psNuGetSourceName=PSGallery psNuGetApiKey=${{ secrets.PSGALLERY_KEY }}
 
     - name: publish dotnet tool
       id: publish_dotnet_tool
-      if: ${{ steps.publish_module.conclusion == 'success' }}
+      if: ${{ github.ref == 'refs/heads/main' && steps.publish_module.conclusion == 'success' }}
       run: |
         make dotnetpublish nuGetGallerySourceName="https://api.nuget.org/v3/index.json" psNuGetApiKey=${{ secrets.NUGETGALLERY_KEY }}
 
   install:
     name: "Install & Test"
     needs: linuxbuild
-    if: ${{ success() }}
+    if: ${{ github.ref == 'refs/heads/main' && success() }}
 
     strategy:
       matrix:
@@ -157,7 +157,7 @@ jobs:
   tag_release:
     name: "Tag Release"
     needs: install
-    if: ${{ success() }}
+    if: ${{ github.ref == 'refs/heads/main' && success() }}
     runs-on: ubuntu-latest
 
     steps:
