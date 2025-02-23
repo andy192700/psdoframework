@@ -188,7 +188,7 @@ jobs:
 
     - name: install module
       id: install_module
-      if: steps.dotnet_install.conclusion == 'success'
+      if: steps.checkout.conclusion == 'success'
       run: |
         make installmodule psNuGetSourceName=PSGallery
 
@@ -211,7 +211,7 @@ jobs:
 
     - name: install module
       id: install_module
-      if: steps.dotnet_install.conclusion == 'success'
+      if: steps.checkout.conclusion == 'success'
       run: |
         make installmodule psNuGetSourceName=PSGallery
 
@@ -234,7 +234,7 @@ jobs:
 
     - name: install module
       id: install_module
-      if: steps.dotnet_install.conclusion == 'success'
+      if: steps.checkout.conclusion == 'success'
       run: |
         make installmodule psNuGetSourceName=PSGallery
 
