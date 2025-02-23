@@ -27,7 +27,8 @@
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
 	  <None Update="README.md">
-	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		<Pack>true</Pack>
+		<PackagePath>README.md</PackagePath>
 	  </None>
 	</ItemGroup>
 </Project>
