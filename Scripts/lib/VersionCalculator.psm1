@@ -1,8 +1,8 @@
 class VersionCalculator {
     static [string] Calculate([string] $psNuGetSourceName) {
-        [System.Version] $highestReadMeVersion = [VersionCalculator]::GetLatestReadMe();
+        [string] $highestReadMeVersion = [VersionCalculator]::GetLatestReadMe().ToString();
 
-        [System.Version] $latestModuleVersion = [System.Version]::Parse("1.1.0");
+        [string] $latestModuleVersion = "1.1.0";
 
         [PSCustomObject] $module = Find-Module -Name "PSDoFramework" -Repository $psNuGetSourceName -ErrorAction SilentlyContinue;
 
@@ -14,18 +14,20 @@ class VersionCalculator {
             $latestModuleVersion = [System.Version]::Parse("$($parts[0]).$($parts[1]).$(([int]::Parse($parts[2])) + 1)")
         }
 
-        [System.Version] $newVersion = $null;
+        [string] $newVersion = $latestModuleVersion;
 
-        [int] $comparisonResult = $latestModuleVersion.CompareTo($highestReadMeVersion.ToString());
-        
-        if ($comparisonResult -gt 0) {
-            $newVersion = $latestModuleVersion;
-        } 
-        elseif ($comparisonResult -lt 0) {
-            $newVersion = $highestReadMeVersion;
-        } 
-        else {
-            $newVersion = $latestModuleVersion;
+        $latestParts = $latestModuleVersion.Split('.');
+        $highestParts = $highestReadMeVersion.Split('.');
+
+        for ($i = 0; $i -lt 3; $i++) {
+            if ([int]$latestParts[$i] -gt [int]$highestParts[$i]) {
+                $newVersion = $latestModuleVersion;
+                break;
+            } 
+            elseif ([int]$latestParts[$i] -lt [int]$highestParts[$i]) {
+                $newVersion = $highestReadMeVersion;
+                break;
+            }
         }
 
         Write-Host $latestModuleVersion $highestReadMeVersion $newVersion; 
