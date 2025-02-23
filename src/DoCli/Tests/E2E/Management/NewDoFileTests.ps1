@@ -39,7 +39,7 @@ Describe 'NewDoFileTests' {
 
         (Test-Path -Path $script:testDoFile) | Should -Be $true;
 
-        Get-Content -Path $script:testDoFile -Raw | Should -Be @'
+        (Get-Content -Path $script:testDoFile -Raw).Replace("\r", [string]::Empty) | Should -Be (@'
 $myVar = "hello world!!!";
 $theBool = $false;
 
@@ -57,6 +57,6 @@ Target B -inherits A {
 
 Target C {}
 
-'@;
+'@).Replace("\r", [string]::Empty);
     }
 }
