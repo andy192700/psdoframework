@@ -87,13 +87,30 @@ public class ProcessMapperTests
         var repository = settings.Value.Repository;
 
         return @$"$ErrorActionPreferene = 'Stop';
-        $module = Get-InstalledModule -Name PSDoFramework;
-        if ($null -eq $module -or $module.Version -ne ""{version}"") {{
-            Write-Host ""Installing the PowerShell Module 'PSdoFramework' Version: {version} Repository: {repository}"" -ForegroundColor Yellow;
-            Install-Module -Name PSDoFramework -Repository {repository} -RequiredVersion {version} -Force;
-        }}
 
-        doing {doingArgs.ToString()};";
+$moduleName = 'PSDoFramework';
+$desiredVersion = '{version}';
+$repository = '{repository}';
+
+$installedModule = Get-Module -ListAvailable -Name $moduleName | Where-Object {{ $_.Version -eq $desiredVersion }};
+
+if ($null -eq $installedModule) {{
+    Write-Host PowerShell Module $moduleName version $desiredVersion is not installed. Installing from the repository $repository...;
+
+    Install-Module -Name $moduleName -Repository $repository -RequiredVersion $desiredVersion -Force -Scope CurrentUser;
+
+    $installedModule = Get-Module -ListAvailable -Name $moduleName | Where-Object {{ $_.Version -eq $desiredVersion }};
+    
+    if ($null -ne $installedModule) {{
+        Write-Host PowerShell Module $moduleName version $desiredVersion has been successfully installed.;
+    }} 
+    else {{
+        Write-Host Failed to install PowerShell Module $moduleName version $desiredVersion`.;
+    }}
+}}
+
+Import-Module -Name $moduleName $desiredVersion;
+doing {doingArgs.ToString()};";
     }
 }
 
