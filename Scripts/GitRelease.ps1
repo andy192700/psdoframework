@@ -20,7 +20,7 @@ if ($latestVersion -gt $readmeVersion) {
     $sb.AppendLine();
 }
 
-$sb.Append("Check out the [Release Notes](https://github.com/andy192700/psdoframework/tree/main/Documentation/ReleaseNotes/v$($version).md) ");
+$sb.Append("Check out the [Release Notes](https://github.com/andy192700/psdoframework/tree/main/Documentation/ReleaseNotes/v$($readmeVersion).md) ");
 $sb.Append("and view the published Module on the [PowerShell Gallery](https://www.powershellgallery.com/packages/PSDoFramework/$version).");
 
 gh release create $version --title "Release $version" --notes $sb.ToString();

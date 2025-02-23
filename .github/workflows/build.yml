@@ -35,7 +35,7 @@ jobs:
       id: dotnet_build
       if: steps.validate_make.conclusion == 'success'
       run: |
-        make dotnetbuild
+        make dotnetbuild psNuGetSourceName=PSGallery 
 
     - name: dotnet test
       id: dotnet_test
