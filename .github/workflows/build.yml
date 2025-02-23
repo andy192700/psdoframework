@@ -181,6 +181,9 @@ jobs:
     if: ${{ success() }}
     runs-on: windows-latest
 
+    strategy:
+      matrix:
+        powershell-version: [7.4, 7.5] 
     steps:
     - name: Checkout code
       id: checkout
@@ -204,6 +207,9 @@ jobs:
     if: ${{ success() }}
     runs-on: macos-latest
 
+    strategy:
+      matrix:
+        powershell-version: [7.4, 7.5] 
     steps:
     - name: Checkout code
       id: checkout
@@ -226,7 +232,10 @@ jobs:
     needs: macosinstall
     if: ${{ success() }}
     runs-on: ubuntu-latest
-
+    
+    strategy:
+      matrix:
+        powershell-version: [7.4, 7.5] 
     steps:
     - name: Checkout code
       id: checkout
