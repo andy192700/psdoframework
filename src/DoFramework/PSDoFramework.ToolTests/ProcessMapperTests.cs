@@ -109,7 +109,7 @@ if ($null -eq $installedModule) {{
     }}
 }}
 
-Import-Module -Name $moduleName $desiredVersion;
+Import-Module -Name $moduleName -RequiredVersion $desiredVersion;
 doing {doingArgs.ToString()};";
     }
 }
