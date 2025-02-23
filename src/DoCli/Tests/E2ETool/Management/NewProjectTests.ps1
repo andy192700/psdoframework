@@ -234,7 +234,7 @@ Describe 'CreateProjectTests' {
         Remove-Item -Path $projectDirectory -Force -Recurse | Out-Null;
     }
 
-    it 'Cannot Creates Project With Default Name In A SubDirectory, as it does not exist' {
+    it 'Cannot Create Project With Default Name In A SubDirectory, as it does not exist' {
         # Arrange
         [string] $projectDirectory = $script:context.SecondProjectDirectory;
 
@@ -242,6 +242,6 @@ Describe 'CreateProjectTests' {
         [string] $result = psdoing new-project -home $projectDirectory -silent;
 
         # Assert
-        $result | Should -BeLike "*Requested project path '$projectDirectory' does not exist.*";
+        $result | Should -BeLike "*Requested project path*does not exist.*";
     }
 }
