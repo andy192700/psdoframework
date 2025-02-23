@@ -8,4 +8,8 @@ $ErrorActionPreference = "Stop";
 
 [string] $version = [VersionCalculator]::GetLatest($psNuGetSourceName);
 
-Install-Module -Name PSDoFramework -RequiredVersion $version -Repository $psNuGetSourceName -Force;
+Write-Host "Latest PSDoFramework version on the repository $($psNuGetSourceName): $version";
+
+Install-Module -Name "PSDoFramework" -RequiredVersion $version -Repository $psNuGetSourceName -Force;
+
+Write-Host "Installed PSDoFramework version $version from the repository: $($psNuGetSourceName)";
