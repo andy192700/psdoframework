@@ -1,6 +1,7 @@
 solutionFile='.\src\DoFramework\DoFramework.sln'
 solutionConfig=Release
 psNuGetSourceName=LocalNuGetRepository
+nuGetGallerySourceName=LocalNuGetRepository
 psNuGetSourceLocation=.\LocalNuGetRepository
 psNuGetApiKey=''
 version=1.0.0
@@ -17,7 +18,7 @@ dotnettest:
 	dotnet test $(solutionFile) --configuration $(solutionConfig) --no-build --logger "trx;LogFileName=test-results.trx" --results-directory ./test-results
 
 dotnetpublish:
-	pwsh -ExecutionPolicy Bypass -Command "& '${CURDIR}/Scripts/dotnettoolpublish.ps1' -psNuGetSourceName $(psNuGetSourceName) -solutionFile $(solutionFile) -solutionConfig $(solutionConfig) -psNuGetApiKey $(psNuGetApiKey);"
+	pwsh -ExecutionPolicy Bypass -Command "& '${CURDIR}/Scripts/dotnettoolpublish.ps1' -psNuGetSourceName $(psNuGetSourceName) -nuGetGallerySourceName $(nuGetGallerySourceName) -solutionFile $(solutionFile) -solutionConfig $(solutionConfig) -psNuGetApiKey $(psNuGetApiKey);"
 
 # DoFramework PowerShell Testing
 pstests:
