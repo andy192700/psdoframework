@@ -16,9 +16,11 @@ $ErrorActionPreference = "Stop";
 
 dotnet pack $solutionFile --configuration $solutionConfig --no-build "/p:Version=$version";
 
+[string] $packageLocation = "$(Get-Location)$($sep)src$($sep)DoFramework$($sep)PSDoFramework.Tool$($sep)bin$($sep)$solutionConfig$($sep)PSDoFramework.Tool.$($version).nupkg";
+
 if (![string]::IsNullOrEmpty($psNuGetApiKey)) {
-    dotnet nuget push "$(Get-Location)$($sep)src$($sep)DoFramework$($sep)PSDoFramework.Tool$($sep)bin$($sep)$solutionConfig$($sep)PSDoFramework.Tool.$($version).nupkg" --source $psNuGetSourceName --api-key $psNuGetApiKey;
+    dotnet nuget push $packageLocation --source $psNuGetSourceName --api-key $psNuGetApiKey;
 }
 else {
-    dotnet nuget push "$(Get-Location)$($sep)src$($sep)DoFramework$($sep)PSDoFramework.Tool$($sep)bin$($sep)$solutionConfig$($sep)PSDoFramework.Tool.$($version).nupkg" --source $psNuGetSourceName;
+    dotnet nuget push $packageLocation --source $psNuGetSourceName;
 }

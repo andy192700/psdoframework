@@ -169,6 +169,12 @@ jobs:
       run: |
         make publishmodule psNuGetSourceName=PSGallery psNuGetApiKey=${{ secrets.PSGALLERY_KEY }}
 
+    - name: publish dotnet tool
+      id: publish_dotnet_tool
+      if: ${{ github.ref == 'refs/heads/main' && steps.publish_module.conclusion == 'success' }}
+      run: |
+        make dotnetpublish psNuGetSourceName="https://api.nuget.org/v3/index.json" psNuGetApiKey=${{ secrets.NUGETGALLERY_KEY }}
+
   windowsinstall:
     name: "Windows Install & Test"
     needs: linuxbuild
@@ -184,7 +190,7 @@ jobs:
       id: install_module
       if: steps.checkout.conclusion == 'success'
       run: |
-        make installmodule psNuGetSourceName=PSGallery
+        make installmodule psNuGetSourceName="https://api.nuget.org/v3/index.json"
 
     - name: run powershell tests
       id: ps_tests_install
@@ -207,7 +213,7 @@ jobs:
       id: install_module
       if: steps.checkout.conclusion == 'success'
       run: |
-        make installmodule psNuGetSourceName=PSGallery
+        make installmodule psNuGetSourceName="https://api.nuget.org/v3/index.json"
 
     - name: run powershell tests
       id: ps_tests_install
@@ -230,7 +236,7 @@ jobs:
       id: install_module
       if: steps.checkout.conclusion == 'success'
       run: |
-        make installmodule psNuGetSourceName=PSGallery
+        make installmodule psNuGetSourceName="https://api.nuget.org/v3/index.json"
 
     - name: run powershell tests
       id: ps_tests_install
