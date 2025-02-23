@@ -10,8 +10,6 @@ $ErrorActionPreference = "Stop";
 
 [string] $version = [VersionCalculator]::Calculate($psNuGetSourceName);
 
-Write-Host "NEW VERSION IS $version";
-
 [char] $sep = [Path]::DirectorySeparatorChar;
 
 [string] $rootDir = Resolve-Path (Join-Path -Path $PSScriptRoot -ChildPath "..");

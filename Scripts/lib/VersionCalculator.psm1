@@ -30,8 +30,6 @@ class VersionCalculator {
             }
         }
 
-        Write-Host $latestModuleVersion $highestReadMeVersion $newVersion; 
-
         return $newVersion.ToString();
     }
 
