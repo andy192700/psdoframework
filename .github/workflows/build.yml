@@ -175,75 +175,33 @@ jobs:
       run: |
         make dotnetpublish nuGetGallerySourceName="https://api.nuget.org/v3/index.json" psNuGetApiKey=${{ secrets.NUGETGALLERY_KEY }}
 
-  windowsinstall:
-    name: "Windows Install & Test"
+  install:
+    name: "Install & Test"
     needs: linuxbuild
     if: ${{ success() }}
-    runs-on: windows-latest
 
     strategy:
       matrix:
-        powershell-version: [7.4, 7.5] 
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        powershell-version: [7.4, 7.5]
+
+    runs-on: ${{ matrix.os }}
+
     steps:
     - name: Checkout code
       id: checkout
       uses: actions/checkout@v2
 
-    - name: install module
-      id: install_module
+    - name: Set up PowerShell ${{ matrix.powershell-version }}
+      id: ps_setup
       if: steps.checkout.conclusion == 'success'
-      run: |
-        make installmodule psNuGetSourceName=PSGallery
-
-    - name: run powershell tests
-      id: ps_tests_install
-      if: steps.install_module.conclusion == 'success'
-      run: |
-        make pstestspostinstall psNuGetSourceName=PSGallery
-
-  macosinstall:
-    name: "MacOS Install & Test"
-    needs: windowsinstall
-    if: ${{ success() }}
-    runs-on: macos-latest
-
-    strategy:
-      matrix:
-        powershell-version: [7.4, 7.5] 
-    steps:
-    - name: Checkout code
-      id: checkout
-      uses: actions/checkout@v2
+      uses: PowerShell/PowerShell@v2
+      with:
+        version: ${{ matrix.powershell-version }}
 
     - name: install module
       id: install_module
-      if: steps.checkout.conclusion == 'success'
-      run: |
-        make installmodule psNuGetSourceName=PSGallery
-
-    - name: run powershell tests
-      id: ps_tests_install
-      if: steps.install_module.conclusion == 'success'
-      run: |
-        make pstestspostinstall psNuGetSourceName=PSGallery
-
-  linuxinstall:
-    name: "Linux Install & Test"
-    needs: macosinstall
-    if: ${{ success() }}
-    runs-on: ubuntu-latest
-    
-    strategy:
-      matrix:
-        powershell-version: [7.4, 7.5] 
-    steps:
-    - name: Checkout code
-      id: checkout
-      uses: actions/checkout@v2
-
-    - name: install module
-      id: install_module
-      if: steps.checkout.conclusion == 'success'
+      if: steps.ps_setup.conclusion == 'success'
       run: |
         make installmodule psNuGetSourceName=PSGallery
 
@@ -255,7 +213,7 @@ jobs:
 
   tag_release:
     name: "Tag Release"
-    needs: linuxinstall
+    needs: install
     if: ${{ success() }}
     runs-on: ubuntu-latest
 
