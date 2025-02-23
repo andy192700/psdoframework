@@ -16,16 +16,16 @@ class VersionCalculator {
 
         [System.Version] $newVersion = $null;
 
-        if ($null -eq $highestReadMeVersion) {
+        [int] $comparisonResult = $latestModuleVersion.CompareTo($highestReadMeVersion);
+        
+        if ($comparisonResult -gt 0) {
             $newVersion = $latestModuleVersion;
         } 
+        elseif ($comparisonResult -lt 0) {
+            $newVersion = $highestReadMeVersion;
+        } 
         else {
-            if ($latestModuleVersion -gt $highestReadMeVersion) {
-                $newVersion = $latestModuleVersion;
-            } 
-            else {
-                $newVersion = $highestReadMeVersion;
-            }
+            $newVersion = $latestModuleVersion;
         }
 
         Write-Host $latestModuleVersion $highestReadMeVersion; 
