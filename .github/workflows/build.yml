@@ -5,7 +5,6 @@ on:
 jobs:
   windowsmacbuild:
     name: "Windows & Mac Build"
-    runs-on: windows-latest
 
     strategy:
       matrix:
