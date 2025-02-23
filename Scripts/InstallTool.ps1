@@ -17,6 +17,8 @@ Write-Host "Executing dummy call to dotnet tool to install powershell module beh
 # call the dotnet tool to install the module the first time...
 psdoing;
 
+Import-Module -name PSDoFramework -RequiredVersion $version -Force;
+
 [char] $sep = [System.IO.Path]::DirectorySeparatorChar;
 
 [string] $testRoot = Join-Path -Path $PSScriptRoot -ChildPath "..$($sep)src$($sep)DoCli$($sep)Tests";
