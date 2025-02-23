@@ -13,10 +13,6 @@ function RunTests {
 
     Write-Host "Running $($paths.Length) test files.";
 
-    if (!(Test-Path -Path $script:testResultsPath)) {
-        New-Item -ItemType Directory -Path $script:testResultsPath;
-    }
-
     $pesterConfig = @{
         Run = @{
             Path = $paths

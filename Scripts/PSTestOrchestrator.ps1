@@ -21,8 +21,6 @@ else {
 
 [string] $testRoot = Join-Path -Path $PSScriptRoot -ChildPath "..$($sep)src$($sep)DoCli$($sep)Tests";
 
-[string] $script:testResultsPath = "$(Get-Location)$($sep)test-results";
-
 if (!$useLatest) {
     # run unit tests
     RunTests -testRoot "$($testRoot)$($sep)Unit";
