@@ -23,10 +23,12 @@ if (!$skipTests) {
 
 make publishmodule psNuGetSourceName=$psNuGetSourceName;
 
-make dotnetpublish psNuGetSourceName=$psNuGetSourceName;
+make dotnetpublish nuGetGallerySourceName=$psNuGetSourceName;
 
 make installmodule;
 
 if (!$skipTests) {
     make pstestspostinstall;
+    
+    make installtool psNuGetSourceName=$psNuGetSourceName;
 }

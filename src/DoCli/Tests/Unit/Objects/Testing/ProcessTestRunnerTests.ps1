@@ -154,6 +154,8 @@ Describe 'ProcessTestRunnerTests' {
 
         [ProxyResult] $mockReadProcessLocation = doing mock -type ([IReadProcessLocation]);
 
+        [char] $sep = [DoFramework.Environment.Environment]::Separator;
+
         $mockReadProcessLocation.Proxy.MockMethod("Read", {
             [string] $currentDir = (Get-Location);
 
@@ -188,8 +190,6 @@ Describe 'ProcessTestRunnerTests' {
             $mockReadProcessLocation.Instance,
             $mockProjectProvider.Instance
         );
-
-        [char] $sep = [DoFramework.Environment.Environment]::Separator;
 
         [ProcessTesterRunner] $sut = [ProcessTesterRunner]::new(
             $mockProvider.Instance, 

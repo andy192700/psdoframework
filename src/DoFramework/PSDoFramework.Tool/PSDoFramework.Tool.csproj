@@ -11,6 +11,7 @@
 		<Description>The PSDoFramework, an object orientated Powershell development framework.</Description>
 		<RepositoryUrl>"https://github.com/andy192700/psdoframework/blob/main</RepositoryUrl>
 		<Copyright>(c) Andy192700. All rights reserved.</Copyright>
+		<PackageReadmeFile>README.md</PackageReadmeFile>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -19,5 +20,15 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\DoFramework\DoFramework.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <None Update="appsettings.json">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Update="README.md">
+		<Pack>true</Pack>
+		<PackagePath>README.md</PackagePath>
+	  </None>
 	</ItemGroup>
 </Project>
