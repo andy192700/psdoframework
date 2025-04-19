@@ -2,9 +2,11 @@
 
 The [PSDoFramework.Tool](https://www.nuget.org/packages/PSDoFramework.Tool/) is a .NET global tool called by `psdoing` that wraps the PowerShell-based `DoFramework` CLI function `doing`, enabling seamless usage across any terminal environment — not just PowerShell. Ideal for cross-platform work, CI/CD pipelines, allowing simple calls to the PowerShell module without the need to set up a complicated command.
 
+This tool will install the PowerShell module if the correct version is not installed.
+
 ## Installation
 
-Requires LTS versions of the Dotnet SDK (currently 8) and PowerShell (currently 7.4), please ensure these are in place before proceeding.
+Requires an appropriate OS, LTS versions of the Dotnet SDK (currently 8) and PowerShell (currently 7.4), please ensure these are in place before proceeding.
 
 Install globally from NuGet using the .NET CLI:
 
