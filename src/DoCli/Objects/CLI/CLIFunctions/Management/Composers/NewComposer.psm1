@@ -20,7 +20,7 @@ creation of Composer descriptors.
 class NewComposer : CLIFunction[DescriptorManagementDictionaryValidator] {
     <#
     .SYNOPSIS
-    Initializes a new instance of the AddComposer class.
+    Initializes a new instance of the NewComposer class.
 
     .DESCRIPTION
     Constructor for the NewComposer class, which sets up the base name 

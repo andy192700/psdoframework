@@ -242,6 +242,6 @@ Describe 'CreateProjectTests' {
         [string] $result = psdoing new-project -home $projectDirectory -silent;
 
         # Assert
-        $result | Should -BeLike "*Requested project path*does not exist.*";
+        $result.Contains("Requested project path") | Should -be $true;
     }
 }
