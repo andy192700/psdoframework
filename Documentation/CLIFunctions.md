@@ -50,8 +50,14 @@ doing new-project -silent
 doing new-project -home "C:\\my\path\to\my\project"
 
 doing new-project -home "my/path/to/my/project"
+
+doing new-dofile -silent
+
+doing new-dofile -home "C:\\my\path\to\my\project"
+
+doing new-dofile -home "my/path/to/my/project"
 ```
-add
+
 # Available Functions
 This section contains all of the available functions, their purpose, parameter information and examples.
 
@@ -59,7 +65,7 @@ This section contains all of the available functions, their purpose, parameter i
 Documented within the section are the functions responsible for creating and managing projects.
 
 ### New-Project
-Creates a new project if it does not exist already, see the [Project Structure](./ProjectStructure.md) documentation to understand more about a project's layout and components.
+Creates a new project if it does not exist already, or at the location specified by the [home parameter](#Universal-Parameters), see the [Project Structure](./ProjectStructure.md) documentation to understand more about a project's layout and components.
 
 Parameters:
 | Parameter Name  | Required | Desription | Type | Default Value |
@@ -71,6 +77,14 @@ Example calls via PowerShell:
 doing new-project
 
 doing new-project -name MyProject
+```
+
+### New-DoFile
+Creates a new dofile.ps1 if it does not exist in the current directory, or at the location specified by the [home parameter](#Universal-Parameters).
+
+Example calls via PowerShell:
+```PowerShell
+doing new-dofile
 ```
 
 ### new-process
@@ -311,6 +325,26 @@ doing test -filter .* -outputFormat None
 doing test -filter .* -outputFormat NUnitXml
 
 doing test -filter .* -outputFormat JUnitXml
+```
+
+### Exec
+Executes a target with a dofile.
+
+Parameters:
+| Parameter Name  | Required | Desription | Type | Default Value |
+|----------|----------|----------|----------|----------|
+| target | Yes | The name of the dofile target to execute. | string | N/A |
+| extra parameters | No | Optional collection of additional values or switches, these must also follow the syntax called out in the [Syntax](#syntax) section. These values override default values if specified in the dofile itself (outside of Target functions) or create new ones if they do not exist. | Any | N/A |
+
+Example calls via PowerShell:
+```PowerShell
+doing exec -target MyTarget
+
+doing exec -target MyTarget -myBoolOrSwitch
+
+doing exec -target MyTarget -myString "123"
+
+doing exec -target MyTarget -myString "123" -myBoolOrSwitch
 ```
 
 ## Utility Functions
