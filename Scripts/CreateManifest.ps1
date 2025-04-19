@@ -36,14 +36,6 @@ Copy-Item -Path "$rootDir$($sep)src$($sep)DoFramework$($sep)DoFramework$($sep)bi
 
 [FileSystemInfo[]] $items = @();
 
-$items += Get-ChildItem "$baseDir$($sep)Objects$($sep)Environment" -Recurse;
-$items += Get-ChildItem "$baseDir$($sep)Objects$($sep)Mappers" -Recurse;
-$items += Get-ChildItem "$baseDir$($sep)Objects$($sep)Modules" -Recurse;
-$items += Get-ChildItem "$baseDir$($sep)Objects$($sep)Processing" -Recurse;
-$items += Get-ChildItem "$baseDir$($sep)Objects$($sep)Validators" -Recurse;
-$items += Get-ChildItem "$baseDir$($sep)Objects$($sep)Services$($sep)ApplicationServiceContainer.psm1";
-$items += Get-ChildItem "$baseDir$($sep)Objects$($sep)CLI" -Recurse;
-$items += Get-ChildItem "$baseDir$($sep)Objects$($sep)Services$($sep)CLIFunctionServiceContainer.psm1";
 $items += Get-ChildItem "$baseDir$($sep)Functions";
 
 [string] $manifestPath = "$buildDir$($sep)PSDoFramework.psd1";
@@ -63,7 +55,7 @@ foreach ($item in $items) {
     CompanyName     = "Andy192700"
     ModuleVersion   = $version
     PowerShellVersion = "7.4"
-    FunctionsToExport = "Doing"
+    FunctionsToExport = @("Doing", "Target")
     NestedModules = $nestedModules.ToArray()
     RequiredAssemblies = @(".$($sep)DoFramework.dll")
     ScriptsToProcess = @(".$($sep)ModuleDependenciesInstall.ps1")

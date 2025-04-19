@@ -154,10 +154,12 @@ Describe 'ComposerTestRunnerTests' {
 
         [ProxyResult] $mockReadProcessLocation = doing mock -type ([IReadProcessLocation]);
 
+        [char] $sep = [DoFramework.Environment.Environment]::Separator;
+
         $mockReadProcessLocation.Proxy.MockMethod("Read", {
             [string] $currentDir = (Get-Location);
 
-            return (Join-Path -ChildPath "$($sep)src$($sep)DoCli$($sep)Tests$($sep)Component" -Path $currentDir);
+            return (Join-Path -ChildPath "$($sep)src$($sep)DoCli$($sep)Tests$($sep)E2E" -Path $currentDir);
         });
 
         [ProxyResult] $mockFileSystem = doing mock -type ([IFileManager]);
@@ -188,8 +190,6 @@ Describe 'ComposerTestRunnerTests' {
             $mockReadProcessLocation.Instance,
             $mockProjectProvider.Instance
         );
-
-        [char] $sep = [DoFramework.Environment.Environment]::Separator;
 
         [ComposerTesterRunner] $sut = [ComposerTesterRunner]::new(
             $mockProvider.Instance, 

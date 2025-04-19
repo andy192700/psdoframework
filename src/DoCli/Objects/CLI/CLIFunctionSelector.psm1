@@ -74,8 +74,8 @@ class CLIFunctionSelector {
 
             [string] $path = $originalPath;
 
-            if ($dictionary.ContainsKey("projectPath")) {
-                $path = $dictionary["projectPath"];
+            if ($dictionary.ContainsKey("home")) {
+                $path = $dictionary["home"];
 
                 if (!(Test-Path -Path $path)) {
                     throw "Requested project path '$($path)' does not exist.";

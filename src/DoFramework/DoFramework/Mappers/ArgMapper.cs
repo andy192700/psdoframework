@@ -1,6 +1,4 @@
-﻿using static System.Net.Mime.MediaTypeNames;
-
-namespace DoFramework.Mappers;
+﻿namespace DoFramework.Mappers;
 
 /// <summary>
 /// Class for mapping an array of objects to a dictionary.
@@ -44,13 +42,6 @@ public class ArgMapper : IMapper<object[], Dictionary<string, object>>
 
                 i += 2;
             }
-            //if (i < source.Length - 1)
-            //{
-            //}
-            //else
-            //{
-            //    break;
-            //}
         }
 
         return dictionary;

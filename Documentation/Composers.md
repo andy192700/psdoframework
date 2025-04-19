@@ -3,7 +3,7 @@ Composers represent advanced functionality in the DoFramework, they are .ps1 fil
 
 See [here](./ProjectStructure.md) for more detail on where Composers fit into a project.
 
-See the [add-Composer](./CLIFunctions.md#add-composer) function to learn about adding Composers to your project.
+See the [new-composer](./CLIFunctions.md#new-composer) function to learn about adding Composers to your project.
 
 To learn more about the `compose` function, which runs `Composers`, see [here](./CLIFunctions.md#compose).
 

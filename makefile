@@ -1,12 +1,10 @@
 solutionFile='.\src\DoFramework\DoFramework.sln'
 solutionConfig=Release
 psNuGetSourceName=LocalNuGetRepository
+nuGetGallerySourceName=LocalNuGetRepository
 psNuGetSourceLocation=.\LocalNuGetRepository
 psNuGetApiKey=''
 version=1.0.0
-composerName=AdvancedComposer
-processName=SimpleProcess
-testFilter=.*
 
 # Validation
 validate: 
@@ -14,10 +12,16 @@ validate:
 
 # Dotnet CLI
 dotnetbuild:
-	dotnet build $(solutionFile) --configuration $(solutionConfig) '/p:Version=$(version)'
+	pwsh -ExecutionPolicy Bypass -Command "& '${CURDIR}/Scripts/dotnetbuild.ps1' -psNuGetSourceName $(psNuGetSourceName) -solutionFile $(solutionFile) -solutionConfig $(solutionConfig);"
 
 dotnettest:
 	dotnet test $(solutionFile) --configuration $(solutionConfig) --no-build --logger "trx;LogFileName=test-results.trx" --results-directory ./test-results
+
+dotnetpublish:
+	pwsh -ExecutionPolicy Bypass -Command "& '${CURDIR}/Scripts/dotnettoolpublish.ps1' -nuGetGallerySourceName $(nuGetGallerySourceName) -solutionFile $(solutionFile) -solutionConfig $(solutionConfig) -psNuGetApiKey $(psNuGetApiKey);"
+
+installtool:
+	pwsh -ExecutionPolicy Bypass -Command "& '${CURDIR}/Scripts/InstallTool.ps1' -psNuGetSourceName $(psNuGetSourceName)"
 
 # DoFramework PowerShell Testing
 pstests:
@@ -51,16 +55,6 @@ localbuildSkipTests:
 
 echopsversion:
 	pwsh -ExecutionPolicy Bypass -Command '& Write-Host "PSVersion: $$($$PSVersionTable.PSVersion.ToString())"'
-
-# Run Samples
-runsampleprocess:
-	pwsh -ExecutionPolicy Bypass -Command "doing run -name $(processName) -showReports -projectPath \"${CURDIR}/Sample\""
-	
-runsamplecomposer:
-	pwsh -ExecutionPolicy Bypass -Command "doing compose -name $(composerName) -showReports -projectPath \"${CURDIR}/Sample\""
-
-runsampletests:
-	pwsh -ExecutionPolicy Bypass -Command "doing test -filter $(testFilter) -projectPath \"${CURDIR}/Sample\""
 
 # Pipeline
 gitrelease:

@@ -6,7 +6,7 @@ The syntax, available functions and parameter options are detailed on this page.
 # Usage
 The current directory for the current PowerShell instance is where the framework expects to be operating from, most functions require to be in a directory where it can locate the project file.
 
-To allow more flexibility the `projectPath` may be supplied such that calling functions to operate on a project can be ran from anywhere. The `projectPath` parameter is a universally available to all functions, see the [Universal Parameters](#Universal-Parameters) for more details.
+To allow more flexibility the `home` may be supplied such that calling functions to operate on a project can be ran from anywhere. The `home` parameter is a universally available to all functions, see the [Universal Parameters](#Universal-Parameters) for more details.
 
 One nuance to be aware of is when making code changes to existing Composers, Processes, Modules and Tests that the framework may not always pick up changes to method signatures etc. It is considered best practice to reload the PowerShell terminal before re-running, one way to work around this is to use make, see the make targets `runsample*` in the base of this repository.
 
@@ -40,16 +40,22 @@ Universal Parameters:
 | Parameter Name  | Desription | Type | Default Value |
 |----------|----------|----------|----------|
 | silent | A switch which suppresses logging by the framework | switch/boolean | false |
-| projectPath | This framework requires the executing shell to be in the directory of a project by default, by supplying this parameter, this does not have to be the case. By supplying the full path of the parent directory of a project, a developer can use the functions specified in this document from anywhere. The make targets `runsample*` in the root of this repository demonstrate its usage. | string | N/A | 
+| home | This framework requires the executing shell to be in the directory of a project by default, by supplying this parameter, this does not have to be the case. By supplying the full path of the parent directory of a project, a developer can use the functions specified in this document from anywhere. The make targets `runsample*` in the root of this repository demonstrate its usage. | string | N/A | 
 
-Example calls via PowerShell, demonstrated using the `create-project` function:
+Example calls via PowerShell, demonstrated using the `new-project` function:
 
 ```PowerShell
-doing create-project -silent
+doing new-project -silent
 
-doing create-project -projectPath "C:\\my\path\to\my\project"
+doing new-project -home "C:\\my\path\to\my\project"
 
-doing create-project -projectPath "my/path/to/my/project"
+doing new-project -home "my/path/to/my/project"
+
+doing new-dofile -silent
+
+doing new-dofile -home "C:\\my\path\to\my\project"
+
+doing new-dofile -home "my/path/to/my/project"
 ```
 
 # Available Functions
@@ -58,8 +64,8 @@ This section contains all of the available functions, their purpose, parameter i
 ## Project Management Functions
 Documented within the section are the functions responsible for creating and managing projects.
 
-### Create-Project
-Creates a new project if it does not exist already, see the [Project Structure](./ProjectStructure.md) documentation to understand more about a project's layout and components.
+### New-Project
+Creates a new project if it does not exist already, or at the location specified by the [home parameter](#Universal-Parameters), see the [Project Structure](./ProjectStructure.md) documentation to understand more about a project's layout and components.
 
 Parameters:
 | Parameter Name  | Required | Desription | Type | Default Value |
@@ -68,15 +74,23 @@ Parameters:
 
 Example calls via PowerShell:
 ```PowerShell
-doing create-project
+doing new-project
 
-doing create-project -name MyProject
+doing new-project -name MyProject
 ```
 
-### Add-Process
+### New-DoFile
+Creates a new dofile.ps1 if it does not exist in the current directory, or at the location specified by the [home parameter](#Universal-Parameters).
+
+Example calls via PowerShell:
+```PowerShell
+doing new-dofile
+```
+
+### new-process
 Adds a new Process to a project, see the [Processes](./Processes.md) documentation to learn more.
 
-If desired, this function can create the associated test file for the Process, in this case the framework will also call the [add-test](#add-test) function.
+If desired, this function can create the associated test file for the Process, in this case the framework will also call the [new-test](#new-test) function.
 
 Parameters:
 | Parameter Name  | Required | Desription | Type | Default Value |
@@ -86,32 +100,32 @@ Parameters:
 
 Example calls via PowerShell:
 ```PowerShell
-doing add-process -name MyProcess
+doing new-process -name MyProcess
 
-doing add-process -name "My/Nested/ProcessFile"
+doing new-process -name "My/Nested/ProcessFile"
 
-doing add-process -name "My/Nested/ProcessFile" -addTests
+doing new-process -name "My/Nested/ProcessFile" -addTests
 ```
 
-### Remove-Process
+### delete-process
 Removes a Process from a project, deleting the file, if it exists.
 
-If there is a test file associated with the specified Process, the framework will call the [remove-test](#remove-test) function.
+If there is a test file associated with the specified Process, the framework will call the [delete-test](#delete-test) function.
 
 Parameters:
 | Parameter Name  | Required | Desription | Type | Default Value |
 |----------|----------|----------|----------|----------|
-| name | Yes | The Process's name, this should not include the full path like the associated `add-process` function. | string | N/A |
+| name | Yes | The Process's name, this should not include the full path like the associated `new-process` function. | string | N/A |
 
 Example calls via PowerShell:
 ```PowerShell
-doing remove-process -name MyProcess
+doing delete-process -name MyProcess
 ```
 
-### Add-Module
+### new-module
 Adds a new Module to a project, see the [Modules](./Modules.md) documentation to learn more.
 
-If desired, this function can create the associated test file for the Module, in this case the framework will also call the [add-test](#add-test) function.
+If desired, this function can create the associated test file for the Module, in this case the framework will also call the [new-test](#new-test) function.
 
 Parameters:
 | Parameter Name  | Required | Desription | Type | Default Value |
@@ -121,31 +135,31 @@ Parameters:
 
 Example calls via PowerShell:
 ```PowerShell
-doing add-module -name MyModule
+doing new-module -name MyModule
 
-doing add-module -name "My/Nested/ModuleFile"
+doing new-module -name "My/Nested/ModuleFile"
 
-doing add-module -name "My/Nested/ModuleFile" -addTests
+doing new-module -name "My/Nested/ModuleFile" -addTests
 ```
 
-### Remove-Module
+### delete-module
 Removes a Module from a project, deleting the file, if it exists.
 
-If there is a test file associated with the specified Module, the framework will call the [remove-test](#remove-test) function.
+If there is a test file associated with the specified Module, the framework will call the [delete-test](#delete-test) function.
 
 Parameters:
 | Parameter Name  | Required | Desription | Type | Default Value |
 |----------|----------|----------|----------|----------|
-| name | Yes | The Module's name, this should not include the full path like the associated `add-module` function. | string | N/A |
+| name | Yes | The Module's name, this should not include the full path like the associated `new-module` function. | string | N/A |
 
 Example calls via PowerShell:
 ```PowerShell
-doing remove-module -name MyModule
+doing delete-module -name MyModule
 ```
-### Add-Composer
+### new-composer
 Adds a new Composer to a project, see the [Composer](./Composers.md) documentation to learn more.
 
-If desired, this function can create the associated test file for the Composer, in this case the framework will also call the [add-test](#add-test) function.
+If desired, this function can create the associated test file for the Composer, in this case the framework will also call the [new-test](#new-test) function.
 
 Parameters:
 | Parameter Name  | Required | Desription | Type | Default Value |
@@ -155,32 +169,32 @@ Parameters:
 
 Example calls via PowerShell:
 ```PowerShell
-doing add-composer -name MyComposer
+doing new-composer -name MyComposer
 
-doing add-composer -name "My/Nested/MyComposer"
+doing new-composer -name "My/Nested/MyComposer"
 
-doing add-composer -name "My/Nested/MyComposer" -addTests
+doing new-composer -name "My/Nested/MyComposer" -addTests
 ```
 
-### Remove-Composer
+### delete-composer
 Removes a Composer from a project, deleting the file, if it exists.
 
-If there is a test file associated with the specified Composer, the framework will call the [remove-test](#remove-test) function.
+If there is a test file associated with the specified Composer, the framework will call the [delete-test](#delete-test) function.
 
 Parameters:
 | Parameter Name  | Required | Desription | Type | Default Value |
 |----------|----------|----------|----------|----------|
-| name | Yes | The Composer's name, this should not include the full path like the associated `add-composer` function. | string | N/A |
+| name | Yes | The Composer's name, this should not include the full path like the associated `new-composer` function. | string | N/A |
 
 Example calls via PowerShell:
 ```PowerShell
-doing remove-composer -name MyComposer
+doing delete-composer -name MyComposer
 ```
 
-### Add-Test
+### new-test
 Adds a new Test to a project, see the [Testing](./Testing.md) documentation to learn more.
 
-Called by the [add-process](#add-process), [add-module](#add-module) and [add-composer](#add-composer) functions if the `addTests` parameter is supplied.
+Called by the [new-process](#new-process), [new-module](#new-module) and [new-composer](#new-composer) functions if the `addTests` parameter is supplied.
 
 This can also be called retrospectively to supplement an existing Module/Process if the Test file was not created at their time of creation.
 
@@ -196,32 +210,32 @@ Parameters:
 
 Example calls via PowerShell:
 ```PowerShell
-doing add-test -name MyProcessTests -forProcess
+doing new-test -name MyProcessTests -forProcess
 
-doing add-test -name MyModuleTests -forModule
+doing new-test -name MyModuleTests -forModule
 
-doing add-test -name MyComposerTests -forComposer
+doing new-test -name MyComposerTests -forComposer
 
-doing add-test -name "My/Nested/ProcessFileTests" -forProcess
+doing new-test -name "My/Nested/ProcessFileTests" -forProcess
 
-doing add-test -name "My/Nested/ModuleFileTests" -forModule
+doing new-test -name "My/Nested/ModuleFileTests" -forModule
 
-doing add-test -name "My/Nested/MyComposerTests" -forComposer
+doing new-test -name "My/Nested/MyComposerTests" -forComposer
 ```
 
-### Remove-Test
+### delete-test
 Removes a Test from a project, deleting the file, if it exists.
 
 Parameters:
 | Parameter Name  | Required | Desription | Type | Default Value |
 |----------|----------|----------|----------|----------|
-| name | Yes | The Test's name, this should not include the full path like the associated `add-module` function. | string | N/A |
+| name | Yes | The Test's name, this should not include the full path like the associated `new-module` function. | string | N/A |
 
 Example calls via PowerShell:
 ```PowerShell
-doing remove-test -name MyProcessTests
+doing delete-test -name MyProcessTests
 
-doing remove-test -name MyModuleTests
+doing delete-test -name MyModuleTests
 ```
 
 ## Invocation Functions
@@ -234,7 +248,7 @@ Runs a specified Process, see the [documentation](./Processes.md) for more detai
 Parameters:
 | Parameter Name  | Required | Desription | Type | Default Value |
 |----------|----------|----------|----------|----------|
-| name | Yes | The Process's name, this should not include the full path like the associated `add-process` function. | string | N/A |
+| name | Yes | The Process's name, this should not include the full path like the associated `new-process` function. | string | N/A |
 | doOutput | No | Returns the [DoFramework.Processing.IContext](../src/DoFramework/DoFramework/Processing/Context/IContext.cs) object associated with the run. | switch/boolean | false |
 | showReports | No | Presents a view of the Processes executed, the output ([DoFramework.Domain.ProcessResult](../src/DoFramework/DoFramework/Domain/ProcessResult.cs)) and information relating to execution time, all in tabular form. | switch/boolean | false |
 | extra parameters | No | Optional collection of additional values or switches, these must also follow the syntax called out in the [Syntax](#syntax) section. The intent of these parameters is to load extra data for Process consumption at runtime, see the section in the [Process Context](./ProcessContext.md#cli-based-context-population) documentation to learn more. | Any | N/A |
@@ -256,7 +270,7 @@ Runs a Composer, see the [documentation](./Composers.md) for more detail.
 Parameters:
 | Parameter Name  | Required | Desription | Type | Default Value |
 |----------|----------|----------|----------|----------|
-| name | Yes | The Composer's name, this should not include the full path like the associated `add-composer` function. | string | N/A |
+| name | Yes | The Composer's name, this should not include the full path like the associated `new-composer` function. | string | N/A |
 | doOutput | No | Returns the [DoFramework.Processing.IContext](../src/DoFramework/DoFramework/Processing/Context/IContext.cs) object associated with the run. | switch/boolean | false |
 | showReports | No | Presents a view of the Processes executed, the output ([DoFramework.Domain.ProcessResult](../src/DoFramework/DoFramework/Domain/ProcessResult.cs)) and information relating to execution time, all in tabular form. | switch/boolean | false |
 | extra parameters | No | Optional collection of additional values or switches, these must also follow the syntax called out in the [Syntax](#syntax) section. The intent of these parameters is to load extra data for Process consumption at runtime, see the section in the [Process Context](./ProcessContext.md#cli-based-context-population) documentation to learn more. | Any | N/A |
@@ -311,6 +325,26 @@ doing test -filter .* -outputFormat None
 doing test -filter .* -outputFormat NUnitXml
 
 doing test -filter .* -outputFormat JUnitXml
+```
+
+### Exec
+Executes a target with a dofile.
+
+Parameters:
+| Parameter Name  | Required | Desription | Type | Default Value |
+|----------|----------|----------|----------|----------|
+| target | Yes | The name of the dofile target to execute. | string | N/A |
+| extra parameters | No | Optional collection of additional values or switches, these must also follow the syntax called out in the [Syntax](#syntax) section. These values override default values if specified in the dofile itself (outside of Target functions) or create new ones if they do not exist. | Any | N/A |
+
+Example calls via PowerShell:
+```PowerShell
+doing exec -target MyTarget
+
+doing exec -target MyTarget -myBoolOrSwitch
+
+doing exec -target MyTarget -myString "123"
+
+doing exec -target MyTarget -myString "123" -myBoolOrSwitch
 ```
 
 ## Utility Functions
