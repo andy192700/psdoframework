@@ -43,6 +43,19 @@ find-module -Name PSDoFramework -allversions
 
 Installing this Module delivers all required dependencies.
 
+Alternatively, see the [dotnet tool documentation](./DotnetTool.md) to learn about installing the dotnet tool wrapper.
+
+## Creating a Dofile
+Dofiles are useful utilities which operate as lightweight satelites to drive automation.
+
+To create a dofile in the current directory run the following:
+
+```PowerShell
+doing new-dofile
+```
+
+See the [new-dofile function](./CLIFunctions.md#new-dofile) for more detail, it is also possible to target a specific directory and place the file there using the [home](./CLIFunctions.md#universal-parameters) argument.
+
 ## Creating a Project
 The intention of this section is to provide a walk through of a simplest example of how to setup a project, add a Process and run it.
 
