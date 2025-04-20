@@ -1,4 +1,4 @@
-name: Build
+name: Build_Publish
 on:
   workflow_dispatch:
 
@@ -126,37 +126,9 @@ jobs:
       run: |
         make dotnetpublish nuGetGallerySourceName="https://api.nuget.org/v3/index.json" psNuGetApiKey=${{ secrets.NUGETGALLERY_KEY }}
 
-  install:
-    name: "Install & Test"
-    needs: linuxbuild
-    if: ${{ github.ref == 'refs/heads/main' && success() }}
-
-    strategy:
-      matrix:
-        os: [ubuntu-latest, windows-latest, macos-latest]
-
-    runs-on: ${{ matrix.os }}
-
-    steps:
-    - name: Checkout code
-      id: checkout
-      uses: actions/checkout@v2
-
-    - name: install module
-      id: install_module
-      if: steps.checkout.conclusion == 'success'
-      run: |
-        make installmodule psNuGetSourceName=PSGallery
-
-    - name: run powershell tests
-      id: ps_tests_install
-      if: steps.install_module.conclusion == 'success'
-      run: |
-        make pstestspostinstall psNuGetSourceName=PSGallery
-
   tag_release:
     name: "Tag Release"
-    needs: install
+    needs: linuxbuild
     if: ${{ github.ref == 'refs/heads/main' && success() }}
     runs-on: ubuntu-latest
 

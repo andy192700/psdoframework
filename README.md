@@ -16,11 +16,13 @@ This framework offers developers some excellent features:
 
 To install the module and start creating projects see the [getting started](./Documentation/GettingStarted.md) documentation.
 
+To install the dotnet tool wrapper for the PowerShell module see the [dotnet tool](./Documentation/DotnetTool.md) documentation.
+
 A [sample project](./Sample/) is provided to demonstrate the framework's capabilities.
 
 A [sample dofile](./dofile.ps1) is also provided to show the makefile alternative's simplicity and usage.
 
-All available package versions can be found via Microsoft's [PowerShell Gallery](https://www.powershellgallery.com/packages/PSDoFramework).
+All available PowerShell module versions can be found via Microsoft's [PowerShell Gallery](https://www.powershellgallery.com/packages/PSDoFramework), the versions of the dotnet tool can be found on the [NuGet Gallery](https://www.nuget.org/packages/PSDoFramework.Tool).
 
 Release notes are stored [here](./Documentation/ReleaseNotes/).
 
