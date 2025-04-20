@@ -7,9 +7,9 @@
 		<PackAsTool>true</PackAsTool>
 		<ToolCommandName>psdoing</ToolCommandName>
 		<Authors>Andy192700</Authors>
-		<PackageLicenseUrl>"https://github.com/andy192700/psdoframework/blob/main/LICENSE"</PackageLicenseUrl>
+		<PackageLicenseExpression>MIT</PackageLicenseExpression>
 		<Description>The PSDoFramework, an object orientated Powershell development framework.</Description>
-		<RepositoryUrl>"https://github.com/andy192700/psdoframework/blob/main</RepositoryUrl>
+		<RepositoryUrl>https://github.com/andy192700/psdoframework/blob/main</RepositoryUrl>
 		<Copyright>(c) Andy192700. All rights reserved.</Copyright>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
 	</PropertyGroup>
