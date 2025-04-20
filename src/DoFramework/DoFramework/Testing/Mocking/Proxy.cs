@@ -47,26 +47,26 @@ public class Proxy : DispatchProxy, IProxy
             return _methodCalls.Where(x => x.Method.Name.Equals(methodName)).Count();
         }
 
-        args ??= [];
-
-        return _methodCalls.Where(x =>
-        {
-            var parameterMatchCount = 0;
-
-            foreach (var key in args.Keys)
+        return _methodCalls
+            .Where(x => x.Method.Name.Equals(methodName) && x.Args.Count == args.Count)
+            .Where(x =>
             {
-                if (x.Args.TryGetValue(key, out object? value)
-                && value.GetType().Equals(args[key].GetType())
-                && value.Equals(args[key]))
+                var i = 0;
+            
+                for (var j = 0; j < x.Args.Count; j++)
                 {
-                    parameterMatchCount++;
+                    var actual = x.Args.Values.ElementAt(j);
+            
+                    var expected = args.Values.ElementAt(j);
+            
+                    if (expected.Equals(actual))
+                    {
+                        i++;
+                    }
                 }
-            }
-
-            return x.Method.Name.Equals(methodName)
-                && parameterMatchCount == args.Keys.Count
-                && x.Args.Count == args.Keys.Count;
-        }).Count();
+            
+                return i == x.Args.Count;
+            }).Count();
     }
 
     /// <inheritdoc/>
@@ -104,13 +104,14 @@ public class Proxy : DispatchProxy, IProxy
 
                 var i = 0;
 
-                foreach (var param in expectedParameters)
+                for (var j = 0; j < expectedParameters.Count; j++)
                 {
-                    var type = expectedParameters[param.Key];
+                    var expectedType = expectedParameters.Values.ElementAt(j);
 
-                    if (parameters.TryGetValue(param.Key, out var value)
-                    && (value.GetType().IsAssignableFrom(type)
-                    || value.GetType().IsSubclassOf(type)))
+                    var actualType = parameters.Values.ElementAt(j).GetType();
+
+                    if (actualType.IsAssignableFrom(actualType)
+                    || actualType.IsSubclassOf(actualType))
                     {
                         i++;
                     }
