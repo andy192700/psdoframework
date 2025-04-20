@@ -121,30 +121,6 @@ public class ServiceContainerExtensionsTests
         sut.AddProcessingServices(typeof(TestProcessBuilder));
 
         // Assert
-        sut.GetService<IProcessInstanceRunner>().Should().NotBeNull();
-        sut.GetService<IProcessInstanceRunner>().Should().BeOfType<ProcessInstanceRunner>();
-
-        sut.GetService<IProcessExecutor>().Should().NotBeNull();
-        sut.GetService<IProcessExecutor>().Should().BeOfType<ProcessExecutor>();
-
-        sut.GetService<IProcessRunner>().Should().NotBeNull();
-        sut.GetService<IProcessRunner>().Should().BeOfType<ProcessRunner>();
-
-        sut.GetService<IEntryPoint>().Should().NotBeNull();
-        sut.GetService<IEntryPoint>().Should().BeOfType<EntryPoint>();
-
-        sut.GetService<IFailedReportChecker>().Should().NotBeNull();
-        sut.GetService<IFailedReportChecker>().Should().BeOfType<FailedReportChecker>();
-
-        sut.GetService<ILookupType<IProcess>>().Should().NotBeNull();
-        sut.GetService<ILookupType<IProcess>>().Should().BeOfType<LookupProcessType>();
-
-        sut.GetService<IValidator<IProcessingRequest>>().Should().NotBeNull();
-        sut.GetService<IValidator<IProcessingRequest>>().Should().BeOfType<ProcessingRequestValidator>();
-
-        sut.GetService<TypeValidator<IProcess>>().Should().NotBeNull();
-        sut.GetService<TypeValidator<IProcess>>().Should().BeOfType<ProcessTypeValidator>();
-
         sut.GetService<IProcessBuilder>().Should().NotBeNull();
         sut.GetService<IProcessBuilder>().Should().BeOfType<TestProcessBuilder>();
     }
@@ -180,18 +156,6 @@ public class ServiceContainerExtensionsTests
         sut.AddComposerServices(typeof(TestComposerBuilder));
 
         // Assert
-        sut.GetService<ILookupType<IComposer>>().Should().NotBeNull();
-        sut.GetService<ILookupType<IComposer>>().Should().BeOfType<LookupComposerType>();
-
-        sut.GetService<TypeValidator<IComposer>>().Should().NotBeNull();
-        sut.GetService<TypeValidator<IComposer>>().Should().BeOfType<ComposerTypeValidator>();
-
-        sut.GetService<IProcessRegistry>().Should().NotBeNull();
-        sut.GetService<IProcessRegistry>().Should().BeOfType<ProcessRegistry>();
-
-        sut.GetService<IComposerOrchestrator>().Should().NotBeNull();
-        sut.GetService<IComposerOrchestrator>().Should().BeOfType<ComposerOrchestrator>();
-
         sut.GetService<IComposerBuilder>().Should().NotBeNull();
         sut.GetService<IComposerBuilder>().Should().BeOfType<TestComposerBuilder>();
     }

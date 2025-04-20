@@ -2,8 +2,6 @@
 using DoFramework.FileSystem;
 using DoFramework.Logging;
 using DoFramework.Processing;
-using DoFramework.Types;
-using DoFramework.Validators;
 
 namespace DoFramework.Services;
 
@@ -72,14 +70,6 @@ public static class ServiceContainerExtensions
     /// <returns>The updated service container.</returns>
     public static IServiceContainer AddProcessingServices(this IServiceContainer container, Type processBuilderType)
     {
-        container.RegisterService<IProcessInstanceRunner, ProcessInstanceRunner>();
-        container.RegisterService<IProcessExecutor, ProcessExecutor>();
-        container.RegisterService<IProcessRunner, ProcessRunner>();
-        container.RegisterService<IEntryPoint, EntryPoint>();
-        container.RegisterService<IFailedReportChecker, FailedReportChecker>();
-        container.RegisterService<ILookupType<IProcess>, LookupProcessType>();
-        container.RegisterService<IValidator<IProcessingRequest>, ProcessingRequestValidator>();
-        container.RegisterService<TypeValidator<IProcess>, ProcessTypeValidator>();
         container.RegisterService(typeof(IProcessBuilder), processBuilderType);
 
         return container;
@@ -93,10 +83,6 @@ public static class ServiceContainerExtensions
     /// <returns>The updated service container.</returns>
     public static IServiceContainer AddComposerServices(this IServiceContainer container, Type composerType)
     {
-        container.RegisterService<ILookupType<IComposer>, LookupComposerType>();
-        container.RegisterService<TypeValidator<IComposer>, ComposerTypeValidator>();
-        container.RegisterService<IProcessRegistry, ProcessRegistry>();
-        container.RegisterService<IComposerOrchestrator, ComposerOrchestrator>();
         container.RegisterService(typeof(IComposerBuilder), composerType);
 
         return container;
