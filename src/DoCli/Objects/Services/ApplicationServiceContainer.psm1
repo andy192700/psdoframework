@@ -52,29 +52,67 @@ class ApplicationServiceContainer {
     static [IServiceContainer] Create() {
         [IServiceContainer] $container = [ServiceContainer]::new();
 
+        # Essentials
         $container.RegisterService[IFileManager, FileManager]();
         $container.RegisterService[IJsonConverter, JsonConverter]();
         $container.RegisterService[IEnvironment, DoFramework.Environment.Environment]();
-        $container.RegisterService[ISimpleDataProvider[ProjectContents], ReadProjectContents]();
-        $container.RegisterService[ISimpleDataProvider[Dictionary[string, object]], EnvFileDataProvider]();
-        $container.RegisterService[IDataCollectionProvider[TestDescriptor, string], TestProvider]();
-        $container.RegisterService[IDataCollectionProvider[ProcessDescriptor, string], ProcessProvider]();
-        $container.RegisterService[IDataCollectionProvider[ModuleDescriptor, string], ModuleProvider]();
-        $container.RegisterService[IDataCollectionProvider[ComposerDescriptor, string], ComposerProvider]();
         $container.RegisterService[ISetProcessLocation, SetProcessLocation]();
         $container.RegisterService[IReadProcessLocation, ReadProcessLocation]();
-        $container.RegisterService[IConsoleWrapper, ConsoleWrapper]();
         $container.RegisterService[ILogger, Logger]();
-        $container.RegisterService[IMapper[ProjectContentsStorage, ProjectContents], ReadProjectContentsMapper]();
-        $container.RegisterService[IMapper[ProjectContents, ProjectContentsStorage], SaveProjectContentsMapper]();
+        $container.RegisterService[IConsoleWrapper, ConsoleWrapper]();
         $container.RegisterService[IMapper[string, TestDescriptor], TestDescriptorMapper]();
         $container.RegisterService[IMapper[string, ProcessDescriptor], ProcessDescriptorMapper]();
         $container.RegisterService[IMapper[string, ModuleDescriptor], ModuleDescriptorMapper]();
         $container.RegisterService[IMapper[string, ComposerDescriptor], ComposerDescriptorMapper]();
-        $container.RegisterService[IMapper[object, MethodInfo], RunMethodInfoMapper]();
+        $container.RegisterService[IResolver[ProcessDescriptor], ProcessResolver]();
+        $container.RegisterService[IResolver[ModuleDescriptor], ModuleResolver]();
+        $container.RegisterService[IResolver[ComposerDescriptor], ComposerResolver]();
+        $container.RegisterService[IResolver[TestDescriptor], TestResolver]();
+        $container.RegisterService[IOSSanitise, OSSanitise]();
+        $container.RegisterService[ISimpleDataProvider[ProjectContents], ReadProjectContents]();
+        $container.RegisterService[IDataCollectionProvider[TestDescriptor, string], TestProvider]();
+        $container.RegisterService[IDataCollectionProvider[ProcessDescriptor, string], ProcessProvider]();
+        $container.RegisterService[IDataCollectionProvider[ModuleDescriptor, string], ModuleProvider]();
+        $container.RegisterService[IDataCollectionProvider[ComposerDescriptor, string], ComposerProvider]();
+
+        # Processing
+        $container.RegisterService[ISimpleDataProvider[Dictionary[string, object]], EnvFileDataProvider]();
         $container.RegisterService[IValidationErrorWriter, ValidationErrorWriter]();
         $container.RegisterService[IValidator[IDescriptor], DescriptorCreatorValidator]();
-        $container.RegisterService[TestDescriptorCreatorValidator]();
+        $container.RegisterService[IContext, Context]();
+        $container.RegisterService[ISession, Session]();
+        $container.RegisterService[IDisplayReports, DisplayReports]();
+        $container.RegisterService[IContextWriter, ContextWriter]();
+        $container.RegisterService[IConsumeEnvFiles, ConsumeEnvFiles]();
+        $container.RegisterService[IValidator[string], DoFileTargetValidator]();
+        $container.RegisterService[IDoFileInvoker, DoFileInvoker]();
+        $container.RegisterService[ILookupType[IComposer], LookupComposerType]()
+        $container.RegisterService[TypeValidator[IComposer], ComposerTypeValidator]()
+        $container.RegisterService[IProcessRegistry, ProcessRegistry]()
+        $container.RegisterService[IComposerOrchestrator, ComposerOrchestrator]()
+        $container.RegisterService[IProcessInstanceRunner, ProcessInstanceRunner]()
+        $container.RegisterService[IProcessExecutor, ProcessExecutor]()
+        $container.RegisterService[IProcessRunner, ProcessRunner]()
+        $container.RegisterService[IEntryPoint, EntryPoint]()
+        $container.RegisterService[IFailedReportChecker, FailedReportChecker]()
+        $container.RegisterService[ILookupType[IProcess], LookupProcessType]()
+        $container.RegisterService[IValidator[IProcessingRequest], ProcessingRequestValidator]()
+        $container.RegisterService[TypeValidator[IProcess], ProcessTypeValidator]()
+
+        # Testing
+        $container.RegisterService[PesterConfig]();
+        $container.RegisterService[ProxyTypeValidator]();
+        $container.RegisterService[ProxyClassTypeDefinitionBuilder]();
+        $container.RegisterService[IPesterRunner, PesterRunner]();
+        $container.RegisterService[ITestRunner[ModuleDescriptor], ModuleTestRunner]();
+        $container.RegisterService[ITestRunner[ProcessDescriptor], ProcessTesterRunner]();
+        $container.RegisterService[ITestRunner[ComposerDescriptor], ComposerTesterRunner]();
+        $container.RegisterService[IMapper[object, MethodInfo], RunMethodInfoMapper]();
+
+        ## writing operations
+        $container.RegisterService[IDoFileCreator, DoFileCreator]();
+        $container.RegisterService[IMapper[ProjectContentsStorage, ProjectContents], ReadProjectContentsMapper]();
+        $container.RegisterService[IMapper[ProjectContents, ProjectContentsStorage], SaveProjectContentsMapper]();
         $container.RegisterService[IDataCreator[TestDescriptor], TestCreator]();
         $container.RegisterService[IDataDeletor[TestDescriptor], TestDeletor]();
         $container.RegisterService[IDataCreator[ProcessDescriptor], ProcessCreator]();
@@ -84,30 +122,11 @@ class ApplicationServiceContainer {
         $container.RegisterService[IDataCreator[ComposerDescriptor], ComposerCreator]();
         $container.RegisterService[IDataDeletor[ComposerDescriptor], ComposerDeletor]();
         $container.RegisterService[IDataCreator[ProjectContents], SaveProjectContents]();
-        $container.RegisterService[IContext, Context]();
-        $container.RegisterService[ISession, Session]();
-        $container.RegisterService[IDisplayReports, DisplayReports]();
-        $container.RegisterService[IContextWriter, ContextWriter]();
-        $container.RegisterService[IConsumeEnvFiles, ConsumeEnvFiles]();
-        $container.RegisterService[ITestRunner[ModuleDescriptor], ModuleTestRunner]();
-        $container.RegisterService[ITestRunner[ProcessDescriptor], ProcessTesterRunner]();
-        $container.RegisterService[ITestRunner[ComposerDescriptor], ComposerTesterRunner]();
-        $container.RegisterService[IResolver[ProcessDescriptor], ProcessResolver]();
-        $container.RegisterService[IResolver[ModuleDescriptor], ModuleResolver]();
-        $container.RegisterService[IResolver[ComposerDescriptor], ComposerResolver]();
-        $container.RegisterService[IResolver[TestDescriptor], TestResolver]();
-        $container.RegisterService[PesterConfig]();
-        $container.RegisterService[IPesterRunner, PesterRunner]();
         $container.RegisterService[IDescriptorFileCreator[ProcessDescriptor], ProcessDescriptorFileCreator]();
         $container.RegisterService[IDescriptorFileCreator[ModuleDescriptor], ModuleDescriptorFileCreator]();
         $container.RegisterService[IDescriptorFileCreator[ComposerDescriptor], ComposerDescriptorFileCreator]();
         $container.RegisterService[IDescriptorFileCreator[TestDescriptor], TestDescriptorFileCreator]();
-        $container.RegisterService[IOSSanitise, OSSanitise]();
-        $container.RegisterService[ProxyTypeValidator]();
-        $container.RegisterService[ProxyClassTypeDefinitionBuilder]();
-        $container.RegisterService[IValidator[string], DoFileTargetValidator]();
-        $container.RegisterService[IDoFileInvoker, DoFileInvoker]();
-        $container.RegisterService[IDoFileCreator, DoFileCreator]();
+        $container.RegisterService[TestDescriptorCreatorValidator]();
 
         return $container;
     }
