@@ -51,6 +51,28 @@ Describe 'CreateProxyClassTests' {
         $result | Should -Be $null;
     }
 
+    it 'Successful mock with incorrect parameter names' {
+        # Arrange
+        [Type] $testType = [OverloadedMethods];
+        [string] $testString = "AString";
+        [string] $inputString = "The_InputString";
+        [string] $methodName = "StringMethod";
+
+        [ProxyResult] $mock = doing mock -type ($testType);
+
+        $mock.Proxy.MockMethod($methodName, {
+            param ([string] $IamWronglyNamed)
+            return $testString;
+        });
+
+        # Act / Assert
+        for ($i -eq 0; $i -lt 12; $i++) {
+            $mock.Instance.StringMethod($inputString) | Should -Be $testString;
+        }
+
+        $mock.Proxy.CountCalls($methodName, (doing args -IamAlsoWronglyNamed $inputString)) | Should -Be 12;    
+    }
+
     it 'Creates PowerShell class multiple constructors' {
         # Arrange
         [Type] $testType = [MultipleConstructors];
@@ -473,6 +495,24 @@ Describe 'CreateProxyInterfaceTests' {
 
             # Assert
             $result.Proxy.CountCalls("Clear") | Should -Be 1;
+        }
+
+        It 'Mocks Generic Interface, incorrectly named params but does not matter' {
+            # Arrange
+            [string] $methodName = "Add";
+            [string] $valueToAdd = "some val12455";
+
+            [ProxyResult] $result = doing mock -type ([IList[string]]);
+
+            $result.Proxy.MockMethod($methodName, {
+                param([string] $iHaveAName)
+            });
+
+            # Act
+            $result.Instance.Add($valueToAdd);
+
+            # Assert
+            $result.Proxy.CountCalls($methodName, (doing args -someWronglyNamedParam $valueToAdd)) | Should -Be 1;
         }
     }
 }
