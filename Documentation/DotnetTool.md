@@ -6,7 +6,7 @@ This tool will install the PowerShell module if the correct version is not insta
 
 ## Installation
 
-Requires an appropriate OS, LTS versions of the Dotnet SDK (currently 8) and PowerShell (currently 7.4), please ensure these are in place before proceeding.
+Requires an appropriate OS, LTS versions of the Dotnet SDK (currently 10) and PowerShell (currently 7.6), please ensure these are in place before proceeding.
 
 Install globally from NuGet using the .NET CLI:
 

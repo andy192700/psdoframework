@@ -12,9 +12,9 @@ The DoFramework is proven out in it's build pipeline, fully built and tested wit
 
 The DoFramework will **always** be supported by the current LTS version of PowerShell, this will only change in the months running up to the change over of LTS versions.
 
-Currently this is **PowerShell 7.4**, developers must ensure this is installed before attempting to install the module.
+Currently this is **PowerShell 7.6**, developers must ensure this is installed before attempting to install the module.
 
-Information on available PowerShell versions can be discovered [here](https://learn.microsoft.com/en-us/powershell/scripting/install/powershell-support-lifecycle?view=powershell-7.4#powershell-end-of-support-dates).
+Information on available PowerShell versions can be discovered [here](https://learn.microsoft.com/en-us/powershell/scripting/install/powershell-support-lifecycle?view=powershell-7.6#powershell-end-of-support-dates).
 
 **Ensure PowerShell is enabled.**.
 
@@ -112,7 +112,7 @@ This section covers what is required to setup for local development and what is 
 ## Local Development Setup
 In addition to the prerequisites to use the DoFramework, some extra dependencies are required to aid local setup:
 - GNU Make
-- Dotnet 8
+- Dotnet 10
 
 To build the framework locally we use the make target `localbuild`, this builds the framework's PowerShell from the code, publishes it to a local PowerShell NuGet repository and installs it.
 

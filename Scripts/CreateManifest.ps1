@@ -54,7 +54,7 @@ foreach ($item in $items) {
     Author          = "Andy192700"
     CompanyName     = "Andy192700"
     ModuleVersion   = $version
-    PowerShellVersion = "7.4"
+    PowerShellVersion = "7.6"
     FunctionsToExport = @("Doing", "Target")
     NestedModules = $nestedModules.ToArray()
     RequiredAssemblies = @(".$($sep)DoFramework.dll")
