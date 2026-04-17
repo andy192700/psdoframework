@@ -24,26 +24,9 @@ jobs:
       with:
         dotnet-version: '10.0.x'
 
-    # powershell 7.6 not yet native to github actions, temp method to accomplish such  
-    # Linux + macOS
-    - name: Install PowerShell 7.6 (Unix)
-      id: ps_install
-      if: runner.os != 'Windows' && steps.dotnet_install.conclusion == 'success'
-      shell: bash
-      run: |
-        curl -L https://aka.ms/install-powershell.sh | sudo bash -s -- -version 7.6.0
-
-    # Windows
-    - name: Install PowerShell 7.6 (Windows)
-      id: ps_installwin
-      if: runner.os == 'Windows' && steps.dotnet_install.conclusion == 'success'
-      shell: powershell
-      run: |
-        winget install --id Microsoft.PowerShell --version 7.6.0 --source winget --accept-package-agreements --accept-source-agreements
-
     - name: Echo PS Version
       id: echo_psversion
-      if: steps.ps_install.conclusion == 'success' || steps.ps_installwin.conclusion == 'success'
+      if: steps.dotnet_install.conclusion == 'success'
       run: |
         make echopsversion
 
