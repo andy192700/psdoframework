@@ -8,8 +8,6 @@ public abstract class TypeValidator<TBaseType> : IValidator<Type> where TBaseTyp
 {
     protected abstract string TypeError { get; set; }
 
-    protected abstract string MultipleConstructorError {  get; set; }
-
     /// <summary>
     /// Validates the specified process type.
     /// </summary>
@@ -22,13 +20,6 @@ public abstract class TypeValidator<TBaseType> : IValidator<Type> where TBaseTyp
         if (!item.IsAssignableTo(typeof(TBaseType)))
         {
             errors.Add(TypeError);
-        }
-
-        var constructors = item.GetConstructors();
-
-        if (constructors.Length > 1)
-        {
-            errors.Add(MultipleConstructorError);
         }
 
         return new ValidationResult(errors);

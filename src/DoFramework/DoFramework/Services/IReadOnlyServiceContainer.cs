@@ -18,4 +18,18 @@ public interface IReadOnlyServiceContainer
     /// <param name="type">The type of the service to retrieve.</param>
     /// <returns>An instance of the specified service type.</returns>
     object GetService(Type type);
+
+    /// <summary>
+    /// Checks to see if a service of the has been registered.
+    /// </summary>
+    /// <typeparam name="TService">The type of the service to check.</typeparam>
+    /// <returns>A boolean indicating that the Service Container has the service registered.</returns>
+    bool HasService<TService>();
+
+    /// <summary>
+    /// Checks to see if a service of the has been registered.
+    /// </summary>
+    /// <param name="type">The type of the service to check.</param>
+    /// <returns>A boolean indicating that the Service Container has the service registered.</returns>
+    bool HasService(Type type);
 }

@@ -59,4 +59,4 @@ It is possible to inject developer defined classes into Processes too, as previo
 
 The framework will attempt to fulfill any required dependencies of a type registered and will only be instantiated once, much like a singleton.
 
-Note - one current limitation with dependency injection using this feature is that dependencies are required to have one constructor.
+The framework will favour the largest constructor which it can satisfy.

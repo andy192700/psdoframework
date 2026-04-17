@@ -19,6 +19,16 @@ public class SampleProces : Process
     }
 }
 
+public class SampleComposerBadConstructor : IComposer
+{
+    public SampleComposerBadConstructor(string IsShouldNotExist) { }
+
+    public void Compose(IComposerWorkBench workBench)
+    {
+        throw new NotImplementedException();
+    }
+}
+
 public class SampleComposer : IComposer
 {
     public void Compose(IComposerWorkBench workBench)

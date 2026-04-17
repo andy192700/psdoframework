@@ -30,7 +30,7 @@ Copy-Item -Path "$rootDir$($sep)src$($sep)DoCli$($sep)Objects" -Destination "$bu
 
 Copy-Item -Path "$rootDir$($sep)Scripts$($sep)ModuleDependenciesInstall.ps1" -Destination "$buildDir$($sep)ModuleDependenciesInstall.ps1" -Force;
 
-Copy-Item -Path "$rootDir$($sep)src$($sep)DoFramework$($sep)DoFramework$($sep)bin$($sep)Release$($sep)net8$($sep)DoFramework.dll" -Destination "$buildDir";
+Copy-Item -Path "$rootDir$($sep)src$($sep)DoFramework$($sep)DoFramework$($sep)bin$($sep)Release$($sep)net10.0$($sep)DoFramework.dll" -Destination "$buildDir";
 
 [string] $baseDir = "$buildDir$($sep)DoCli";
 

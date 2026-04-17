@@ -23,4 +23,16 @@ public class ReadOnlyServiceContainer : IReadOnlyServiceContainer
     {
         return _serviceContainer.GetService(type);
     }
+
+    /// <inheritdoc />
+    public bool HasService<TService>()
+    {
+        return _serviceContainer.HasService<TService>();
+    }
+
+    /// <inheritdoc />
+    public bool HasService(Type type)
+    {
+        return _serviceContainer.HasService(type);
+    }
 }

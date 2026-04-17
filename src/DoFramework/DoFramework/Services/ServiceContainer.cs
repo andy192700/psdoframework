@@ -108,6 +108,18 @@ public class ServiceContainer : IServiceContainer
         return Instances[type];
     }
 
+    /// <inheritdoc />
+    public bool HasService<TService>()
+    {
+        return HasService(typeof(TService));
+    }
+
+    /// <inheritdoc />
+    public bool HasService(Type type)
+    {
+        return Services.Keys.Any(x => type.IsAssignableTo(x));
+    }
+
     private Type ResolveService(Type type)
     {
         foreach (var key in Services.Keys)
@@ -156,14 +168,19 @@ public class ServiceContainer : IServiceContainer
             throw new Exception($"Service of type {type} could not be initalised, could not find any constructors.");
         }
 
-        if (constructors.Length > 1)
+        var constructor = constructors
+            .Where(x => x.GetParameters().All(y => HasService(y.ParameterType)))
+            .OrderByDescending(x => x.GetParameters().Length)
+            .FirstOrDefault();
+
+        if (constructor is null)
         {
-            throw new Exception($"Service of type {type} could not be initalised, only one constructor is allowed.");
+            throw new Exception($"Service of type {type} could not be initalised, service container could not honour a constructor.");
         }
 
         var constructorParams = new List<object>();
 
-        foreach (var parameter in constructors[0].GetParameters())
+        foreach (var parameter in constructor.GetParameters())
         {
             constructorParams.Add(GetService(parameter.ParameterType));
         }

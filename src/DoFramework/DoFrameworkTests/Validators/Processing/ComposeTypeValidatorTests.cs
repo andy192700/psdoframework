@@ -8,7 +8,7 @@ public class ComposerTypeValidatorTests
 {
     private string TypeError { get; set; } = $"{nameof(IComposer)} classes must derive from the {typeof(IComposer).FullName} class.";
 
-    private string MultipleConstructorError { get; set; } = $"{nameof(IComposer)} classes must not have more than one constructor, only one constructor is allowed.";
+    private string MultipleConstructorError { get; set; } = $"{nameof(IComposer)} classes must have exactly one constructor, only one constructor is allowed.";
 
     [Theory]
     [InlineAutoMoqData]

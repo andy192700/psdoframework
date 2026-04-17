@@ -1,4 +1,6 @@
-﻿namespace DoFramework.Services;
+﻿using System.Reflection;
+
+namespace DoFramework.Services;
 
 /// <summary>
 /// Interface for a service container that allows for registering and retrieving services.
