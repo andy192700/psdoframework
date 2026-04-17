@@ -23,13 +23,23 @@ jobs:
       uses: actions/setup-dotnet@v2
       with:
         dotnet-version: '10.0.x'
-
+    # powershell 7.6 not yet native to github actions, temp method to accomplish such
     - name: Setup PowerShell 7.6
       id: ps_install
-      if: steps.dotnet_install.conclusion == 'success'
-      uses: PowerShell/PowerShell-For-GitHub-Actions@v1
-      with:
-        version: '7.6.x'
+      shell: bash
+      run: |
+        case "${{ runner.os }}" in
+          Linux)
+            wget https://github.com/PowerShell/PowerShell/releases/download/v7.6.0/powershell_7.6.0-1.deb
+            sudo dpkg -i powershell_7.6.0-1.deb
+            ;;
+          macOS)
+            brew install --cask powershell
+            ;;
+          Windows)
+            winget install --id Microsoft.PowerShell --version 7.6.0 --source winget --accept-package-agreements --accept-source-agreements
+            ;;
+        esac
   
     - name: Echo PS Version
       id: echo_psversion
