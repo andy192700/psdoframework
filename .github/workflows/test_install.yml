@@ -49,9 +49,16 @@ jobs:
       uses: actions/setup-dotnet@v2
       with:
         dotnet-version: '10.0.x'
+
+    - name: Setup PowerShell 7.6
+      id: ps_install
+      if: steps.dotnet_install.conclusion == 'success'
+      uses: PowerShell/PowerShell-For-GitHub-Actions@v1
+      with:
+        version: '7.6.x'
     
     - name: install tool
       id: install_tool
-      if: steps.dotnet_install.conclusion == 'success'
+      if: steps.ps_install.conclusion == 'success'
       run: |
         make installtool psNuGetSourceName=PSGallery
