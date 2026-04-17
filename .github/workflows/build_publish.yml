@@ -23,27 +23,27 @@ jobs:
       uses: actions/setup-dotnet@v2
       with:
         dotnet-version: '10.0.x'
-    # powershell 7.6 not yet native to github actions, temp method to accomplish such
-    - name: Setup PowerShell 7.6
+
+    # powershell 7.6 not yet native to github actions, temp method to accomplish such  
+    # Linux + macOS
+    - name: Install PowerShell 7.6 (Unix)
       id: ps_install
+      if: runner.os != 'Windows' && steps.dotnet_install.conclusion == 'success'
       shell: bash
       run: |
-        case "${{ runner.os }}" in
-          Linux)
-            wget https://github.com/PowerShell/PowerShell/releases/download/v7.6.0/powershell_7.6.0-1.deb
-            sudo dpkg -i powershell_7.6.0-1.deb
-            ;;
-          macOS)
-            brew install --cask powershell
-            ;;
-          Windows)
-            winget install --id Microsoft.PowerShell --version 7.6.0 --source winget --accept-package-agreements --accept-source-agreements
-            ;;
-        esac
-  
+        curl -L https://aka.ms/install-powershell.sh | sudo bash -s -- -version 7.6.0
+
+    # Windows
+    - name: Install PowerShell 7.6 (Windows)
+      id: ps_installwin
+      if: runner.os == 'Windows' && steps.dotnet_install.conclusion == 'success'
+      shell: powershell
+      run: |
+        winget install --id Microsoft.PowerShell --version 7.6.0 --source winget --accept-package-agreements --accept-source-agreements
+
     - name: Echo PS Version
       id: echo_psversion
-      if: steps.ps_install.conclusion == 'success'
+      if: steps.ps_install.conclusion == 'success' || steps.ps_installwin.conclusion == 'success'
       run: |
         make echopsversion
 
