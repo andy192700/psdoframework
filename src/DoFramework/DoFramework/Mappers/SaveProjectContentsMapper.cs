@@ -18,8 +18,7 @@ public class SaveProjectContentsMapper : IMapper<ProjectContents, ProjectContent
         var contentsToSave = new ProjectContentsStorage
         {
             Name = source.Name,
-            Version = source.Version,
-            PSVersion = source.PSVersion
+            Version = source.Version
         };
 
         foreach (var process in source.Processes)

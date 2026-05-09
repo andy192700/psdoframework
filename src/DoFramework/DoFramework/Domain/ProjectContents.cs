@@ -16,11 +16,6 @@ public class ProjectContents
     public string? Version { get; set; }
 
     /// <summary>
-    /// Gets or sets the PowerShell Version of the project for compatability purposes
-    /// </summary>
-    public string? PSVersion { get; set; }
-
-    /// <summary>
     /// Gets or sets the list of process descriptors associated with the project.
     /// </summary>
     public List<ProcessDescriptor> Processes { get; set; } = [];

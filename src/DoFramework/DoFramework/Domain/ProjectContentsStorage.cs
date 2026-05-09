@@ -16,11 +16,6 @@ public class ProjectContentsStorage
     public string? Version { get; set; }
 
     /// <summary>
-    /// Gets or sets the PowerShell Version of the project for compatability purposes
-    /// </summary>
-    public string? PSVersion { get; set; }
-
-    /// <summary>
     /// Gets or sets the list of processes associated with the project.
     /// </summary>
     public List<string> Processes { get; set; } = [];

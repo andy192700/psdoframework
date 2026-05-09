@@ -1,7 +1,6 @@
 {
   "Name": "Do",
   "Version": "1.0.179",
-  "PSVersion": "7.4.6",
   "Processes": [
     "TestProcess1.ps1",
     "TestProcess2.ps1",

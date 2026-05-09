@@ -1,3 +1,6 @@
+#Sample do file, includes calls to existing sample project located in \Sample
+#See the documentation here: Documentation\Dofiles.md
+
 $myVar = "hello world!!!";
 $theBool = $false;
 $homeDir = Get-Location;
