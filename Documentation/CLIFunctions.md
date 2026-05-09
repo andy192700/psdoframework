@@ -334,6 +334,7 @@ Parameters:
 | Parameter Name  | Required | Desription | Type | Default Value |
 |----------|----------|----------|----------|----------|
 | target | Yes | The name of the dofile target to execute. | string | N/A |
+| disableReload | No | Instructs the doing CLI to not execute the DoFile target in a child PowerShell process | switch | N/A |
 | extra parameters | No | Optional collection of additional values or switches, these must also follow the syntax called out in the [Syntax](#syntax) section. These values override default values if specified in the dofile itself (outside of Target functions) or create new ones if they do not exist. | Any | N/A |
 
 Example calls via PowerShell:

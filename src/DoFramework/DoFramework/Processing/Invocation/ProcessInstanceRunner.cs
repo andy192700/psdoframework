@@ -48,7 +48,7 @@ public class ProcessInstanceRunner : IProcessInstanceRunner
         {
             report.ProcessResult = ProcessResult.Failed;
 
-            _logger.LogFatal($"Whilst executing {report.Descriptor!.Name}, an error occurred: {ex.Message}");
+            _logger.LogError($"Whilst executing {report.Descriptor!.Name}, an error occurred: {ex.Message}");
 
             _logger.LogFatal($"Process failed: {report.Descriptor.Name}");
         }

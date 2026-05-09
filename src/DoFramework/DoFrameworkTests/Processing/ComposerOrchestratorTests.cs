@@ -96,7 +96,7 @@ public class ComposerOrchestratorTests
         resolver.Verify(x => x.Resolve(composerName), Times.Once());
 
         logger.Verify(x => x.LogFatal($"Error building composer: {composerName}"), Times.Once());
-        logger.Verify(x => x.LogFatal(message), Times.Once());
+        logger.Verify(x => x.LogError(message), Times.Once());
 
         setLocation.Verify(x => x.Set(It.IsAny<string>()), Times.Once);
     }

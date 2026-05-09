@@ -5,6 +5,9 @@ using namespace DoFramework.Processing;
 using namespace DoFramework.Validators;
 using namespace DoFramework.Services;
 using namespace System.Collections.Generic;
+using namespace System.Management.Automation;
+using namespace System.Management.Automation.Runspace;
+using namespace System.Text;
 
 # Class responsible for invoking a specified target within a file.
 # Implements the IDoFileInvoker interface, including functionality for validating, setting process locations, and executing a target.
@@ -16,6 +19,7 @@ class DoFileInvoker : IDoFileInvoker {
     [ILogger] $Logger;
     [IReadProcessLocation] $ReadProcessLocation;
     [ISetProcessLocation] $SetProcessLocation;
+    [IPowerShellRunner] $PSRunner;
 
     DoFileInvoker (
         [CLIFunctionParameters] $parameters,
@@ -24,7 +28,8 @@ class DoFileInvoker : IDoFileInvoker {
         [IFileManager] $fileManager,
         [ILogger] $logger,
         [IReadProcessLocation] $readProcessLocation,
-        [ISetProcessLocation] $setProcessLocation
+        [ISetProcessLocation] $setProcessLocation,
+        [IPowerShellRunner] $psRunner
     ) {
         $this.Parameters = $parameters;
         $this.Validator = $validator
@@ -33,6 +38,7 @@ class DoFileInvoker : IDoFileInvoker {
         $this.Logger = $logger
         $this.ReadProcessLocation = $readProcessLocation
         $this.SetProcessLocation = $setProcessLocation
+        $this.PSRunner = $psRunner;
     }
 
     # Method to invoke a specific target from a file, validating and setting required parameters before execution.
@@ -57,27 +63,32 @@ class DoFileInvoker : IDoFileInvoker {
                 if (!$result.IsValid) {
                     $this.ValidationErrorWriter.Write($result);
                 }
-                else {
-                    foreach ($key in $this.Parameters.Parameters.Keys) {
-                        if ($key -ne "target") {
-                            [bool] $varExists = $false;
+                else {                                        
+                    [bool] $disableReload = $this.Parameters.ParseSwitch("disableReload");
 
-                            try {
-                                Get-Variable -Name $key;
-
-                                $varExists = $true;
+                    if ($disableReload) {
+                        foreach ($key in $this.Parameters.Parameters.Keys) {
+                            if ($key -ne "target") {
+                                New-Variable -Name $key -Value $this.Parameters.Parameters[$key] -Force;
                             }
-                            catch {}
+                        }      
+  
+                        $Global:targets[$target].ToScriptBlock($Global:targets).Invoke();
+                    }
+                    else {
+                        [string] $psProfile = $null;
 
-                            if ($varExists) {
-                                Remove-Variable -Name $key;
-                            }
+                        $profileVar = Get-Variable PROFILE -Scope Global -ErrorAction SilentlyContinue;
 
-                            New-Variable -Name $key -Value $this.Parameters.Parameters[$key];
+                        if ($profileVar -and $profileVar.Value) {
+                            $psProfile = $profileVar.Value.CurrentUserCurrentHost;
                         }
-                    }        
-            
-                    $Global:targets[$target].ToScriptBlock($Global:targets).Invoke();
+
+                        [string] $psScript = $this.GenerateDoFilePSScript($dofilePath, $target);
+                        [string] $psExecPolicy = (Get-ExecutionPolicy)
+
+                        $this.PSRunner.Run($psScript, $psExecPolicy, $psProfile);
+                    }
                 }
             }
             catch {
@@ -90,4 +101,22 @@ class DoFileInvoker : IDoFileInvoker {
 
         $Global:targets = $null;
     }
+
+    [string] GenerateDoFilePSScript([string] $doFilePath, [string] $target) {
+        [StringBuilder] $sb = [StringBuilder]::new();
+
+        $sb.AppendLine("[System.Collections.Generic.Dictionary[string, object]] `$Global:targets = [System.Collections.Generic.Dictionary[string, object]]::new();");
+
+        $sb.AppendLine(". $doFilePath");
+
+        foreach ($key in $this.Parameters.Parameters.Keys) {
+            if ($key -ne "target") {
+                $sb.AppendLine("New-Variable -Name `"$key`" -Value $($this.Parameters.Parameters[$key]) -Force")
+            }
+        }
+
+        $sb.AppendLine($Global:targets[$target].ToScriptBlock($Global:targets).ToString());
+
+        return $sb.ToString();
+    } 
 }

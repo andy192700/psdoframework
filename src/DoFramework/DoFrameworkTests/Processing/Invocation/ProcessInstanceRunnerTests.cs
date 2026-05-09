@@ -82,7 +82,7 @@ public class ProcessInstanceRunnerTests
         report.EndTime.Should().BeAfter(report.StartTime!.Value);
 
         process.Verify(x => x.Run(), Times.Once);
-        logger.Verify(x => x.LogFatal($"Whilst executing {report.Descriptor!.Name}, an error occurred: {exception.Message}"), Times.Once);
+        logger.Verify(x => x.LogError($"Whilst executing {report.Descriptor!.Name}, an error occurred: {exception.Message}"), Times.Once);
         logger.Verify(x => x.LogFatal($"Process failed: {report.Descriptor.Name}"), Times.Once);
         setLocation.Verify(x => x.Set(It.IsAny<string>()), Times.Once);
     }
