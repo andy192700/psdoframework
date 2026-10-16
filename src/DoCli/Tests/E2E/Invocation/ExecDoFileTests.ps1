@@ -42,7 +42,7 @@ Target $target {
 "@;
 
         # Act
-        doing exec -target $target -wrench breakerbar -something -silent;
+        doing exec -target $target -wrench breakerbar -something -silent -disableReload;
 
         # Assert
         $global:outputString | Should -Be "breakerbar True"
@@ -63,7 +63,7 @@ Target $target {
 "@;
 
         # Act
-        doing exec -target $target -wrench wheelbrace -something -silent;
+        doing exec -target $target -wrench wheelbrace -something -silent -disableReload;
 
         # Assert
         $global:outputString | Should -Be "wheelbrace True"
@@ -81,7 +81,7 @@ Target $target {
 "@;
 
         # Act
-        doing exec -target $target -wrench socket -something -silent;
+        doing exec -target $target -wrench socket -something -silent -disableReload;
 
         # Assert
         $global:outputString | Should -Be "socket True"
@@ -102,7 +102,7 @@ Target $target {
 "@;
 
         # Act
-        doing exec -target $target -silent;
+        doing exec -target $target -silent -disableReload;
 
         # Assert
         $global:outputString | Should -Be "torqueWrench123 False"

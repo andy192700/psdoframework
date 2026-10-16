@@ -71,7 +71,7 @@ public class ComposerOrchestrator : IComposerOrchestrator
         catch (Exception ex)
         {
             _logger.LogFatal($"Error building composer: {composerName}");
-            _logger.LogFatal($"{ex.Message}");
+            _logger.LogError($"{ex.Message}");
 
             success = false;
         }

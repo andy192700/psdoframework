@@ -46,7 +46,6 @@ public class ReadProjectContentsMapperTests
 
         result.Name.Should().Be(projectContentsStorage.Name);
         result.Version.Should().Be(projectContentsStorage.Version);
-        result.PSVersion.Should().Be(projectContentsStorage.PSVersion);
 
         result.Processes.Should().HaveCount(projectContentsStorage.Processes.Count);
 

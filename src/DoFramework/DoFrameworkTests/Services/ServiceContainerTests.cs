@@ -1,6 +1,7 @@
 ﻿using DoFramework.Processing;
 using DoFramework.Services;
 using FluentAssertions;
+using System.ComponentModel.DataAnnotations;
 
 namespace DoFrameworkTests.Services;
 
@@ -135,21 +136,6 @@ public class ServiceContainerTests
     }
 
     [Fact]
-    public void ServiceContainer_CannotResolveMultipleConstructors()
-    {
-        // Arrange
-        var sut = new ServiceContainer();
-
-        sut.RegisterService<ExampleService4>();
-
-        // Act
-        var func = () => sut.GetService<ExampleService4>();
-
-        // Assert
-        func.Should().Throw<Exception>().WithMessage($"Service of type {typeof(ExampleService4)} could not be initalised, only one constructor is allowed.");
-    }
-
-    [Fact]
     public void ServiceContainer_ResolvesServices()
     {
         // Arrange / Act
@@ -181,75 +167,145 @@ public class ServiceContainerTests
         services.Any(x => x.GetType() == typeof(ExampleService2)).Should().BeTrue();
     }
 
-    //[Fact]
-    //public void ConfiguresObject_AllPropertiesSet()
-    //{
-    //    // Arrange
-    //    var sut = new ServiceContainer();
+    [Fact]
+    public void ServiceContainer_CannotHonourAConstructor()
+    {
+        // Arrange
+        var sut = new ServiceContainer();
 
-    //    sut.RegisterService<ISession, Session>();
-    //    sut.RegisterService<IContext, Context>();
+        sut.RegisterService<ExampleService4>();
 
-    //    var context = sut.GetService<IContext>();
-    //    context.AddOrUpdate("ExampleType.myInt", 3);
-    //    context.AddOrUpdate("ExampleType.myFloat", 2.2f);
-    //    context.AddOrUpdate("ExampleType.myDouble", 3.5);
-    //    context.AddOrUpdate("ExampleType.myBool", true);
-    //    context.AddOrUpdate("ExampleType.myChar", 'a');
-    //    context.AddOrUpdate("ExampleType.myByte", (byte)8);
-    //    context.AddOrUpdate("ExampleType.myShort", (short)9);
-    //    context.AddOrUpdate("ExampleType.myLong", 4444444L);
-    //    context.AddOrUpdate("ExampleType.myDecimal", 1.14m);
-    //    context.AddOrUpdate("ExampleType.myString", "exampleString");
+        // Act
+        var func = () => sut.GetService<ExampleService4>();
 
-    //    // Act
-    //    sut.Configure(typeof(ExampleType));
+        // Assert
+        func.Should().Throw<Exception>().WithMessage($"Service of type {typeof(ExampleService4)} could not be initalised, service container could not honour a constructor.");
+    }
 
-    //    var result = sut.GetService<ExampleType>();
+    [Fact]
+    public void ServiceContainer_InitialisesLargestConstructor()
+    {
+        // Arrange
+        var sut = new ServiceContainer();
 
-    //    // Assert
-    //    result.Should().NotBeNull();
-    //    result.myInt.Should().Be(3);
-    //    result.myFloat.Should().Be(2.2f);
-    //    result.myDouble.Should().Be(3.5);
-    //    result.myBool.Should().Be(true);
-    //    result.myChar.Should().Be('a');
-    //    result.myByte.Should().Be((byte)8);
-    //    result.myShort.Should().Be((short)9);
-    //    result.myLong.Should().Be(4444444L);
-    //    result.myDecimal.Should().Be(1.14m);
-    //    result.myString.Should().Be("exampleString");
-    //}
+        sut.RegisterService<ExampleService5>();
+        sut.RegisterService<ExampleService>();
+        sut.RegisterService<ExampleService2>();
 
-    //[Fact]
-    //public void ConfiguresObject_NoPropertiesSet()
-    //{
-    //    // Arrange
-    //    var sut = new ServiceContainer();
+        // Act
+        var result = sut.GetService<ExampleService5>();
 
-    //    sut.RegisterService<ISession, Session>();
-    //    sut.RegisterService<IContext, Context>();
+        // Assert
+        result.Should().NotBeNull();
+        result.ExampleService.Should().NotBeNull();
+        result.ExampleService2.Should().NotBeNull();
+    }
 
-    //    var context = sut.GetService<IContext>();
+    [Fact]
+    public void ServiceContainer_InitialisesSmallestConstructor()
+    {
+        // Arrange
+        var sut = new ServiceContainer();
 
-    //    // Act
-    //    sut.Configure(typeof(ExampleType));
+        sut.RegisterService<ExampleService5>();
+        sut.RegisterService<ExampleService>();
 
-    //    var result = sut.GetService<ExampleType>();
+        // Act
+        var result = sut.GetService<ExampleService5>();
 
-    //    // Assert
-    //    result.Should().NotBeNull();
-    //    result.myInt.Should().Be(default);
-    //    result.myFloat.Should().Be(default);
-    //    result.myDouble.Should().Be(default);
-    //    result.myBool.Should().Be(default);
-    //    result.myChar.Should().Be(default);
-    //    result.myByte.Should().Be(default);
-    //    result.myShort.Should().Be(default);
-    //    result.myLong.Should().Be(default);
-    //    result.myDecimal.Should().Be(default);
-    //    result.myString.Should().Be(default);
-    //}
+        // Assert
+        result.Should().NotBeNull();
+        result.ExampleService.Should().NotBeNull();
+        result.ExampleService2.Should().BeNull();
+    }
+
+    [Fact]
+    public void ServiceContainer_CannotHonourChildServiceConstructorOfRequestedService()
+    {
+        // Arrange
+        var sut = new ServiceContainer();
+
+        sut.RegisterService<ExampleService7>();
+        sut.RegisterService<ExampleService4>();
+
+        // Act
+        var func = () => sut.GetService<ExampleService7>();
+
+        // Assert
+        func.Should().Throw<Exception>().WithMessage($"Service of type {typeof(ExampleService4)} could not be initalised, service container could not honour a constructor.");
+    }
+
+    [Fact]
+    public void ServiceContainer_HonoursExplicitDefaultConstructor()
+    {
+        // Arrange / Act
+        var sut = new ServiceContainer();
+
+        sut.RegisterService<ExampleInterface<bool>, ExampleService8>();
+
+        // Act
+        var result = sut.GetService<ExampleInterface<bool>>();
+
+        //Assert
+        result.Should().NotBeNull();
+        result.Should().BeOfType<ExampleService8>();
+    }
+
+    [Fact]
+    public void ServiceContainer_HasServiceGenericTrue()
+    {
+        // Arrange
+        var sut = new ServiceContainer();
+
+        sut.RegisterService<ExampleInterface<int>, ExampleService>();
+
+        // Act
+        var result = sut.HasService<ExampleInterface<int>>();
+
+        // Assert
+        result.Should().BeTrue();
+    }
+
+    [Fact]
+    public void ServiceContainer_HasServiceGenericFalse()
+    {
+        // Arrange
+        var sut = new ServiceContainer();
+
+        // Act
+        var result = sut.HasService<ExampleInterface<int>>();
+
+        // Assert
+        result.Should().BeFalse();
+    }
+
+    [Fact]
+    public void ServiceContainer_HasServiceTypeTrue()
+    {
+        // Arrange
+        var sut = new ServiceContainer();
+
+        sut.RegisterService<ExampleInterface<int>, ExampleService>();
+
+        // Act
+        var result = sut.HasService(typeof(ExampleInterface<int>));
+
+        // Assert
+        result.Should().BeTrue();
+    }
+
+    [Fact]
+    public void ServiceContainer_HasServiceTypeFalse()
+    {
+        // Arrange
+        var sut = new ServiceContainer();
+
+        // Act
+        var result = sut.HasService(typeof(ExampleInterface<int>));
+
+        // Assert
+        result.Should().BeFalse();
+    }
 }
 
 public interface ExampleInterface { }
@@ -267,9 +323,38 @@ public class ExampleService3
 
 public class ExampleService4
 {
-    public ExampleService4() { }
 #pragma warning disable
-    public ExampleService4(string parameter) { }
+    public ExampleService4(ExampleService3 exampleService3) { }
+#pragma warning enable
+}
+
+public class ExampleService5
+{
+    public ExampleService ExampleService { get; set; }
+    public ExampleService2 ExampleService2 { get; set; }
+
+    public ExampleService5(ExampleService exampleService) 
+    {
+        ExampleService = exampleService;
+    }
+    public ExampleService5(ExampleService exampleService, ExampleService2 exampleService2) 
+    { 
+        ExampleService = exampleService;
+        ExampleService2 = exampleService2;
+    }
+}
+
+public class ExampleService7
+{
+#pragma warning disable
+    public ExampleService7(ExampleService4 exampleService4) { }
+#pragma warning enable
+}
+
+public class ExampleService8 : ExampleInterface<bool>
+{
+#pragma warning disable
+    public ExampleService8() { }
 #pragma warning enable
 }
 

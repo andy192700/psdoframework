@@ -70,8 +70,6 @@ Describe 'CreateProjectTests' {
         [string] $name = $projectContent.Name;
 
         [string] $version = $projectContent.Version;
-
-        [string] $psVersion = $projectContent.PSVersion;
         
         $processes.Length | Should -Be 0;
         
@@ -84,8 +82,6 @@ Describe 'CreateProjectTests' {
         $name | Should -Be $projectName;
 
         $version | Should -Be (get-module -Name PSDoFramework).Version.ToString();
-
-        $psVersion | Should -Be $global:psversiontable.PSVersion.ToString();
     }
 
     it 'Creates Project With Default Name' {
@@ -139,8 +135,6 @@ Describe 'CreateProjectTests' {
         [string] $name = $projectContent.Name;
 
         [string] $version = $projectContent.Version;
-
-        [string] $psVersion = $projectContent.PSVersion;
         
         $processes.Length | Should -Be 0;
         
@@ -157,8 +151,6 @@ Describe 'CreateProjectTests' {
         $name | Should -Be $projectName;
 
         $version | Should -Be (get-module -Name PSDoFramework).Version.ToString();
-
-        $psVersion | Should -Be $global:psversiontable.PSVersion.ToString();
     }
 
     it 'Creates Project With Default Name In A SubDirectory' {
@@ -210,8 +202,6 @@ Describe 'CreateProjectTests' {
         [string] $name = $projectContent.Name;
 
         [string] $version = $projectContent.Version;
-
-        [string] $psVersion = $projectContent.PSVersion;
         
         $processes.Length | Should -Be 0;
         
@@ -228,8 +218,6 @@ Describe 'CreateProjectTests' {
         $name | Should -Be $projectName;
 
         $version | Should -Be (get-module -Name PSDoFramework).Version.ToString();
-
-        $psVersion | Should -Be $global:psversiontable.PSVersion.ToString();
 
         Remove-Item -Path $projectDirectory -Force -Recurse | Out-Null;
     }

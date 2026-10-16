@@ -15,7 +15,6 @@ public class SaveProjectContentsMapperTests
         int processTestCount,
         int moduleTestCount,
         int composerTestCount,
-        string psVersion,
         string version,
         string name
     )
@@ -23,7 +22,6 @@ public class SaveProjectContentsMapperTests
         // Arrange
         var projectContents = new ProjectContents();
         projectContents.Name = name;
-        projectContents.PSVersion = psVersion;
         projectContents.Version = version;
 
         var processDescriptors = new List<ProcessDescriptor>();
@@ -71,7 +69,6 @@ public class SaveProjectContentsMapperTests
 
         result.Name.Should().Be(projectContents.Name);
         result.Version.Should().Be(projectContents.Version);
-        result.PSVersion.Should().Be(projectContents.PSVersion);
 
         result.Processes.Should().HaveCount(projectContents.Processes.Count);
 

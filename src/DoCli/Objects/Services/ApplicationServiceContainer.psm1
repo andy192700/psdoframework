@@ -86,18 +86,19 @@ class ApplicationServiceContainer {
         $container.RegisterService[IConsumeEnvFiles, ConsumeEnvFiles]();
         $container.RegisterService[IValidator[string], DoFileTargetValidator]();
         $container.RegisterService[IDoFileInvoker, DoFileInvoker]();
-        $container.RegisterService[ILookupType[IComposer], LookupComposerType]()
-        $container.RegisterService[TypeValidator[IComposer], ComposerTypeValidator]()
-        $container.RegisterService[IProcessRegistry, ProcessRegistry]()
-        $container.RegisterService[IComposerOrchestrator, ComposerOrchestrator]()
-        $container.RegisterService[IProcessInstanceRunner, ProcessInstanceRunner]()
-        $container.RegisterService[IProcessExecutor, ProcessExecutor]()
-        $container.RegisterService[IProcessRunner, ProcessRunner]()
-        $container.RegisterService[IEntryPoint, EntryPoint]()
-        $container.RegisterService[IFailedReportChecker, FailedReportChecker]()
-        $container.RegisterService[ILookupType[IProcess], LookupProcessType]()
-        $container.RegisterService[IValidator[IProcessingRequest], ProcessingRequestValidator]()
-        $container.RegisterService[TypeValidator[IProcess], ProcessTypeValidator]()
+        $container.RegisterService[ILookupType[IComposer], LookupComposerType]();
+        $container.RegisterService[TypeValidator[IComposer], ComposerTypeValidator]();
+        $container.RegisterService[IProcessRegistry, ProcessRegistry]();
+        $container.RegisterService[IComposerOrchestrator, ComposerOrchestrator]();
+        $container.RegisterService[IProcessInstanceRunner, ProcessInstanceRunner]();
+        $container.RegisterService[IProcessExecutor, ProcessExecutor]();
+        $container.RegisterService[IProcessRunner, ProcessRunner]();
+        $container.RegisterService[IEntryPoint, EntryPoint]();
+        $container.RegisterService[IFailedReportChecker, FailedReportChecker]();
+        $container.RegisterService[ILookupType[IProcess], LookupProcessType]();
+        $container.RegisterService[IValidator[IProcessingRequest], ProcessingRequestValidator]();
+        $container.RegisterService[TypeValidator[IProcess], ProcessTypeValidator]();
+        $container.RegisterService[IPowerShellRunner, PowerShellRunner]();
 
         # Testing
         $container.RegisterService[PesterConfig]();

@@ -1,5 +1,6 @@
 using namespace DoFramework.Domain;
 using namespace DoFramework.Environment;
+using namespace DoFramework.Logging;
 using namespace DoFramework.Processing;
 using namespace DoFramework.Services;
 using namespace DoFramework.Types;
@@ -26,14 +27,17 @@ class ProcessBuilder : IProcessBuilder {
     [IEnvironment] $Environment;
     [IReadOnlyServiceContainer] $ServiceContainer;
     [ILookupType[IProcess]] $LookupType;
+    [ILogger] $Logger;
 
     ProcessBuilder(
         [IEnvironment] $environment,
         [IReadOnlyServiceContainer] $serviceContainer,
-        [ILookupType[IProcess]] $lookupType) {
+        [ILookupType[IProcess]] $lookupType,
+        [ILogger] $logger) {
         $this.Environment = $environment;
         $this.ServiceContainer = $serviceContainer;
         $this.LookupType = $lookupType;
+        $this.Logger = $logger;
     }
 
     <#
@@ -49,7 +53,32 @@ class ProcessBuilder : IProcessBuilder {
 
         [Type] $type = $this.LookupType.Lookup($descriptor.Name);
 
-        [ParameterInfo[]] $parameters = $type.GetConstructors()[0].GetParameters();
+        [ParameterInfo[]] $parameters = $null;
+
+        [ConstructorInfo[]] $constructors = $type.GetConstructors() | Sort-Object { $_.GetParameters().Count } -Descending;
+
+        foreach($constructor in $constructors) {
+            [ParameterInfo[]] $constructorParameters = $constructor.GetParameters();
+
+            [int] $serviceCount = 0;
+
+            foreach ($constructorParameter in $constructorParameters) {
+                if ($this.ServiceContainer.HasService($constructorParameter.ParameterType)) {
+                    $serviceCount++;
+                }
+            }
+            
+            if ($serviceCount -eq $constructorParameters.Count) {
+                $parameters = $constructorParameters;
+                break;
+            }
+        }
+
+        if ($null -eq $parameters) {
+            $this.Logger.LogError("Unable to locate a suitable constructor for Process '$($type.FullName)'.");
+
+            return $null;
+        }
         
         [object[]] $constructorParams = @();
 
@@ -61,6 +90,9 @@ class ProcessBuilder : IProcessBuilder {
             }
         }
         catch {
+            $this.Logger.LogError("Error whilst attempting to satisfy dependencies for Process '$($type.FullName)'.");
+            $this.Logger.LogError($_.Exception.Message);
+
             return $null;
         }
         

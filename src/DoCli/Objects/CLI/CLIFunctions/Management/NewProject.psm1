@@ -49,8 +49,6 @@ class NewProject : CLIFunction[EmptyCLIFunctionDictionaryValidator] {
 
             $contents.Version = (get-module -Name PSDoFramework).Version.ToString();
 
-            $contents.PSVersion = $global:psversiontable.PSVersion.ToString();
-
             [IFileManager] $fileManager = [FileManager]::new();
 
             [IJsonConverter] $jsonConverter = [JsonConverter]::new();

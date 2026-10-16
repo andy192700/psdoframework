@@ -12,6 +12,7 @@ Describe 'DoFileInvokerValidatorTests' {
     BeforeEach {
         [CLIFunctionParameters] $script:parameters = [CLIFunctionParameters]::new();
         $script:parameters.Parameters = [Dictionary[string, object]]::new();
+        $script:parameters.Parameters.Add("disableReload", $true);
 
         [ProxyResult] $script:mockValidator = doing mock -type ([IValidator[string]]);
         [ProxyResult] $script:mockValidationErrorWriter = doing mock -type ([IValidationErrorWriter]);
@@ -19,6 +20,7 @@ Describe 'DoFileInvokerValidatorTests' {
         [ProxyResult] $script:mockLogger = doing mock -type ([ILogger]);
         [ProxyResult] $script:mockReadProcessLocation = doing mock -type ([IReadProcessLocation]);
         [ProxyResult] $script:mockSetProcessLocation = doing mock -type ([ISetProcessLocation]);
+        [ProxyResult] $script:mockPSRunner = doing mock -type ([IPowerShellRunner]);
 
         [char] $sep = [DoFramework.Environment.Environment]::Separator;
         New-Item -ItemType Directory -Path "$(Get-Location)$($sep)testdir";
@@ -53,7 +55,8 @@ Describe 'DoFileInvokerValidatorTests' {
                 $script:mockFileManager.Instance,
                 $script:mockLogger.Instance,
                 $script:mockReadProcessLocation.Instance,
-                $script:mockSetProcessLocation.Instance
+                $script:mockSetProcessLocation.Instance,
+                $script:mockPSRunner.Instance
             );
 
             # Act
@@ -95,7 +98,8 @@ Target $target {
                 $script:mockFileManager.Instance,
                 $script:mockLogger.Instance,
                 $script:mockReadProcessLocation.Instance,
-                $script:mockSetProcessLocation.Instance
+                $script:mockSetProcessLocation.Instance,
+                $script:mockPSRunner.Instance
             );
 
             # Act
@@ -147,7 +151,8 @@ Target $target {
                 $script:mockFileManager.Instance,
                 $script:mockLogger.Instance,
                 $script:mockReadProcessLocation.Instance,
-                $script:mockSetProcessLocation.Instance
+                $script:mockSetProcessLocation.Instance,
+                $script:mockPSRunner.Instance
             );
 
             # Act
@@ -205,7 +210,8 @@ Target $target {
                 $script:mockFileManager.Instance,
                 $script:mockLogger.Instance,
                 $script:mockReadProcessLocation.Instance,
-                $script:mockSetProcessLocation.Instance
+                $script:mockSetProcessLocation.Instance,
+                $script:mockPSRunner.Instance
             );
 
             # Act
@@ -264,7 +270,8 @@ Target $target {
                 $script:mockFileManager.Instance,
                 $script:mockLogger.Instance,
                 $script:mockReadProcessLocation.Instance,
-                $script:mockSetProcessLocation.Instance
+                $script:mockSetProcessLocation.Instance,
+                $script:mockPSRunner.Instance
             );
 
             # Act
@@ -320,7 +327,8 @@ Target $target {
                 $script:mockFileManager.Instance,
                 $script:mockLogger.Instance,
                 $script:mockReadProcessLocation.Instance,
-                $script:mockSetProcessLocation.Instance
+                $script:mockSetProcessLocation.Instance,
+                $script:mockPSRunner.Instance
             );
 
             # Act
@@ -376,7 +384,8 @@ Target $target {
                 $script:mockFileManager.Instance,
                 $script:mockLogger.Instance,
                 $script:mockReadProcessLocation.Instance,
-                $script:mockSetProcessLocation.Instance
+                $script:mockSetProcessLocation.Instance,
+                $script:mockPSRunner.Instance
             );
 
             # Act

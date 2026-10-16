@@ -1,4 +1,5 @@
 ﻿using DoFramework.Processing;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace DoFramework.Validators;
 
@@ -9,7 +10,7 @@ public class ComposerTypeValidator : TypeValidator<IComposer>
 {
     protected override string TypeError { get; set; } = $"{nameof(IComposer)} classes must derive from the {typeof(IComposer).FullName} class.";
 
-    protected override string MultipleConstructorError { get; set; } = $"{nameof(IComposer)} classes must not have more than one constructor, only one constructor is allowed.";
+    private string MultipleConstructorError { get; set; } = $"{nameof(IComposer)} classes must have exactly one constructor, only one constructor is allowed.";
 
     private string NoneEmptyConstructorError = $"{nameof(IComposer)} classes must have an empty constructor.";
 
@@ -27,6 +28,10 @@ public class ComposerTypeValidator : TypeValidator<IComposer>
             {
                 result.Errors.Add(NoneEmptyConstructorError);
             }
+        }
+        else
+        {
+            result.Errors.Add(MultipleConstructorError);
         }
 
         return result;

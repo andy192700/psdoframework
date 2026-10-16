@@ -15,6 +15,7 @@ See [here](../dofile.ps1) for a working example.
 - **CLI Flexibility**: Supports PowerShell-style parameters and switches.
 - **Variable Overrides**: Define default variables and override them via CLI, the framework will create them if they are not defined.
 - **Ease of use**: like a makefile a dofile.ps1 can live in the base of a repository meaning it can orchestrate/house automation tasks as soon as a terminal is opened there (like in VSCode or similar).
+- **Enablement of hot-reloads**: by invoking project commands via a DoFile, a developer can observe the changes to Processes, Modules and Composers in realtime, whereas running the doing commands directly will require a reload of the PowerShell terminal when code changes have occurred.
 
 ## 📄 Example Dofile
 Below is some example content of a dofile, note that some of the variables have implicit types - up to a developer to choose whether this is important to them or not.

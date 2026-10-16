@@ -43,8 +43,7 @@ public class ReadProjectContentsMapper : IMapper<ProjectContentsStorage, Project
         var contents = new ProjectContents
         {
             Name = source.Name,
-            Version = source.Version,
-            PSVersion = source.PSVersion   
+            Version = source.Version
         };
 
         foreach (var process in source!.Processes)
