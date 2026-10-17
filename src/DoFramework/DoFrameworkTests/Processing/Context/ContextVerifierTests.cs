@@ -1,6 +1,7 @@
 ﻿using DoFramework.Domain;
 using DoFramework.Processing;
 using FluentAssertions;
+using Moq;
 
 namespace DoFrameworkTests.Processing;
 
@@ -212,5 +213,47 @@ public class ContextVerifierTests
 
         // Assert
         result.Should().BeTrue();
+    }
+
+    [Theory]
+    [InlineAutoMoqData(true)]
+    [InlineAutoMoqData(false)]
+    public void ContextVerifier_SatisfiesCondition(
+        bool checkResult,
+        Mock<IContext> mockContext)
+    {
+        // Arrange
+        var sut = new ContextVerifier(mockContext.Object);
+
+        sut.Satisfies(() => checkResult);
+
+        // Act
+        var result = sut.Verify();
+
+        // Assert
+        result.Should().Be(checkResult);
+    }
+
+    [Theory]
+    [InlineAutoMoqData(true)]
+    [InlineAutoMoqData(false)]
+    public void ContextVerifier_SatisfiesContext(
+        bool value,
+        string key,
+        Mock<IContext> mockContext)
+    {
+        // Arrange
+        mockContext.Setup(x => x.Get<bool>(It.IsAny<string>()))
+            .Returns(value);
+
+        var sut = new ContextVerifier(mockContext.Object);
+
+        sut.ContextSatisfies(c => c.Get<bool>(key));
+
+        // Act
+        var result = sut.Verify();
+
+        // Assert
+        result.Should().Be(value);
     }
 }

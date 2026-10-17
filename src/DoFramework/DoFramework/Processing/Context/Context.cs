@@ -21,9 +21,9 @@ public class Context(ISession session) : IContext
     }
 
     /// <inheritdoc/>
-    public TReturn? Get<TReturn>(string key) where TReturn : class
+    public TReturn? Get<TReturn>(string key)
     {
-        return Get(key) as TReturn;
+        return (TReturn?)Get(key);
     }
 
     /// <inheritdoc/>

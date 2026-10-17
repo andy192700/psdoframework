@@ -76,6 +76,8 @@ It has three methods for checking context state:
 - ComposedBy: Verifies that a Process has been invoked by a specific Composer
 - ConfirmKey: Verifies that a certain key is present in the `IContext`
 - ProcessSucceeded: Verifies that a Process has ran and succeeded
+- Satisfies: Verifies a user defined boolean delegate check
+- ContextSatisfies: Verifies a user defined boolean delegate check with access to the Process' `IContext`
 
 These methods all return the original `IContextVerifier`, and can be chained together:
 
@@ -90,6 +92,14 @@ These methods all return the original `IContextVerifier`, and can be chained tog
     Processucceeded("Process1").
     Processucceeded("Process2").
     Processucceeded("Process3").
+    Satisfies({
+        return 1 -eq 1;
+    }).
+    ContextSatisfies({
+        param([IContext] $c)
+
+        return $c.Get("sample") -eq "123";
+    }).
     Verify();
 ```
 

@@ -31,4 +31,18 @@ public interface IContextVerifier
     /// <param name="processName">The name of the process.</param>
     /// <returns>The context verifier.</returns>
     IContextVerifier ProcessSucceeded(string processName);
+
+    /// <summary>
+    /// Confirms a custom boolean test is true.
+    /// </summary>
+    /// <param name="check">The custom boolean test</param>
+    /// <returns></returns>
+    IContextVerifier Satisfies(Func<bool> check);
+
+    /// <summary>
+    /// Confirms a custom boolean test is true.
+    /// </summary>
+    /// <param name="check">The custom boolean test</param>
+    /// <returns></returns>
+    IContextVerifier ContextSatisfies(Func<IContext, bool> check);
 }

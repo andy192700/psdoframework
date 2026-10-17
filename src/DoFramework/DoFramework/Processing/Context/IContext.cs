@@ -23,7 +23,7 @@ public interface IContext
     /// <typeparam name="TReturn">The Type of the stored key, if it exists</typeparam>
     /// <param name="key">The key whose value to get.</param>
     /// <returns>The value associated with the specified key, or null if the key does not exist.</returns>
-    TReturn? Get<TReturn>(string key) where TReturn : class;
+    TReturn? Get<TReturn>(string key);
 
     /// <summary>
     /// Adds a new key-value pair or updates an existing one.
