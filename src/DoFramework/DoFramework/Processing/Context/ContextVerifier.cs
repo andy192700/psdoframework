@@ -42,6 +42,22 @@ public class ContextVerifier : IContextVerifier
     }
 
     /// <inheritdoc/>
+    public IContextVerifier Satisfies(Func<bool> check)
+    {
+        checks.Add(_ => check());
+
+        return this;
+    }
+
+    /// <inheritdoc/>
+    public IContextVerifier ContextSatisfies(Func<IContext, bool> check)
+    {
+        checks.Add(c => check(c));
+
+        return this;
+    }
+
+    /// <inheritdoc/>
     public bool Verify()
     {
         return checks.All(x => x(_context));

@@ -10,7 +10,8 @@
     "Advanced\\DeleteFile.ps1",
     "Simple\\DoublesANumber.ps1",
     "Simple\\FailingProcess.ps1",
-    "Advanced\\ConfigurationSample.ps1"
+    "Advanced\\ConfigurationSample.ps1",
+    "Simple\\ProcessWithExternalCheck.ps1"
   ],
   "Tests": {
     "ProcessTests": [
@@ -22,7 +23,8 @@
       "Processes\\Simple\\SimpleProcessTests.ps1",
       "Processes\\Simple\\DoublesANumberTests.ps1",
       "Processes\\Simple\\FailingProcessTests.ps1",
-      "Processes\\Advanced\\ConfigurationSampleTests.ps1"
+      "Processes\\Advanced\\ConfigurationSampleTests.ps1",
+      "Processes\\Simple\\ProcessWithExternalCheckTests.ps1"
     ],
     "ModuleTests": [
       "Modules\\Models\\PersonTests.ps1",

@@ -194,7 +194,7 @@ public class TestContext : IContext
         throw new NotImplementedException();
     }
 
-    public TReturn? Get<TReturn>(string key) where TReturn : class
+    public TReturn? Get<TReturn>(string key)
     {
         throw new NotImplementedException();
     }
