@@ -189,27 +189,13 @@ class ProxyClassTypeDefinitionBuilder {
         [MethodInfo[]] $methods = $type.GetMethods();
 
         foreach ($method in $methods) {
-            if ((!$method.IsStatic `
-            -and !$method.IsConstructor `
-            -and !$method.IsGenericMethod `
-            -and ($method.IsAbstract -or $method.IsVirtual) `
-            -and $method.DeclaringType -ne [Object]) `
-            -or ($method.IsSpecialName `
-                -and ($method.Name.StartsWith("get_") `
-                -or $method.Name.StartsWith("set_")))) {
-                $parameters = $method.GetParameters();
+            $parameters = $method.GetParameters();
 
-                if ($method.IsSpecialName -and $method.Name.StartsWith("set_")) {
-                    $modulePaths.AddRange($this.DeriveModuleFromType($parameters[0].ParameterType));
-                }
-                else {
-                    for ($i = 0; $i -lt $parameters.Length; $i++) {
-                        $modulePaths.AddRange($this.DeriveModuleFromType($parameters[$i].ParameterType));
-                    }
-                }
-
-                $modulePaths.AddRange($this.DeriveModuleFromType($method.ReturnType));
+            for ($i = 0; $i -lt $parameters.Length; $i++) {
+                $modulePaths.AddRange($this.DeriveModuleFromType($parameters[$i].ParameterType));
             }
+
+            $modulePaths.AddRange($this.DeriveModuleFromType($method.ReturnType));
         }
 
         return [List[string]]($modulePaths | Select-Object -Unique)
