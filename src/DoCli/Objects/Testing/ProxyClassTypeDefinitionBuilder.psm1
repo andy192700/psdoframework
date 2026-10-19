@@ -212,7 +212,11 @@ class ProxyClassTypeDefinitionBuilder {
             if ($null -ne $attr.ScriptFile) {
                 [string] $moduleString = $attr.ScriptFile.ToString();
 
-                if ($moduleString.Trim().Length -gt 0) {
+                if (
+                    $moduleString.Trim().Length -gt 0 -and
+                    [System.IO.File]::Exists($moduleString) -and
+                    [System.IO.Path]::GetExtension($moduleString) -ieq ".psm1"
+                ) {
                     $modules.Add($moduleString);
                 }
             }

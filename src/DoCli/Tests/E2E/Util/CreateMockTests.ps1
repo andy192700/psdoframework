@@ -2,6 +2,7 @@ using namespace DoFramework.Testing;
 using namespace System.Collections.Generic;
 using namespace System.Management.Automation;
 using module "..\Do\Modules\TestClassModule.psm1";
+using module "..\Do\Modules\TestClassModule2.psm1";
 using module "..\Common\TestContext.psm1";
 
 Describe 'CreateProxyClassTests' {
@@ -514,5 +515,57 @@ Describe 'CreateProxyInterfaceTests' {
             # Assert
             $result.Proxy.CountCalls($methodName, (doing args -someWronglyNamedParam $valueToAdd)) | Should -Be 1;
         }
+
+        It 'Mocks Generic Returned List, correctly identifying the generic types via recursion' {
+            # Arrange
+            [List[AnotherSampleClass]] $samplesList = [List[AnotherSampleClass]]::new();
+            $samplesList.Add([AnotherSampleClass]::new("example 1"));
+            $samplesList.Add([AnotherSampleClass]::new("example 2"));
+
+            [ProxyResult] $mock = doing mock -type ([GenericTypes]);
+
+            [string] $methodName = "GetSamples";
+
+            $mock.Proxy.MockMethod($methodName, {
+                return $samplesList;
+            });
+
+            # Act
+            [List[AnotherSampleClass]] $result = $mock.Instance.GetSamples();
+
+            # Assert
+            ($result | Where-Object { $_.Label -eq "example 1" }).Count | Should -Be 1;
+            ($result | Where-Object { $_.Label -eq "example 2" }).Count | Should -Be 1;
+            $result.Count | Should -Be 2;
+            $mock.Proxy.CountCalls($methodName) | Should -Be 1;
+        }
+
+        It 'Mocks Array Returned Type, correctly identifying the array element type via recursion' {
+            # Arrange
+            [AnotherSampleClass[]] $samples = [AnotherSampleClass[]]::new(2);
+
+            $samples[0] = [AnotherSampleClass]::new("example 1");
+            $samples[1] = [AnotherSampleClass]::new("example 2");
+
+            [ProxyResult] $mock = doing mock -type ([ArrayTypes]);
+
+            [string] $methodName = "GetSampleArray";
+
+            $mock.Proxy.MockMethod($methodName, {
+                return $samples;
+            });
+
+            # Act
+            [AnotherSampleClass[]] $result = $mock.Instance.GetSampleArray();
+
+            # Assert
+            ($result | Where-Object { $_.Label -eq "example 1" }).Count | Should -Be 1;
+            ($result | Where-Object { $_.Label -eq "example 2" }).Count | Should -Be 1;
+
+            $result.Length | Should -Be 2;
+
+            $mock.Proxy.CountCalls($methodName) | Should -Be 1;
+        }
+
     }
 }
