@@ -105,6 +105,8 @@ class DoFileInvoker : IDoFileInvoker {
     [string] GenerateDoFilePSScript([string] $doFilePath, [string] $target) {
         [StringBuilder] $sb = [StringBuilder]::new();
 
+        $sb.AppendLine("Import-Module PSDoFramework -RequiredVersion $((get-module -name PSDoFramework).Version.ToString())");
+
         $sb.AppendLine("[System.Collections.Generic.Dictionary[string, object]] `$Global:targets = [System.Collections.Generic.Dictionary[string, object]]::new();");
 
         $sb.AppendLine(". $doFilePath");

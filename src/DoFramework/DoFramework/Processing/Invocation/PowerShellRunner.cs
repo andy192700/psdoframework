@@ -22,19 +22,26 @@ public class PowerShellRunner : IPowerShellRunner
     /// <inheritdoc />
     public void Run(string script, string executionPolicy, string? profile)
     {
-        var psArgs = profile is not null && _fileManager.FileExists(profile)
-        ? $"-NoProfile -ExecutionPolicy {executionPolicy} -Command \". '{profile}'; {script}\""
-        : $"-NoProfile -ExecutionPolicy {executionPolicy} -Command \"{script}\"";
-
         var psi = new ProcessStartInfo
         {
             FileName = "pwsh",
-            Arguments = psArgs,
             RedirectStandardOutput = true,
             RedirectStandardError = true,
             UseShellExecute = false,
             CreateNoWindow = true
         };
+
+        psi.ArgumentList.Add("-NoProfile");
+        psi.ArgumentList.Add("-ExecutionPolicy");
+        psi.ArgumentList.Add(executionPolicy);
+        psi.ArgumentList.Add("-Command");
+        
+        if (profile is not null && _fileManager.FileExists(profile))
+        {
+            psi.ArgumentList.Add($". '{profile}'");
+        }
+
+        psi.ArgumentList.Add($"{script}");
 
         using var process = new System.Diagnostics.Process();
         process.StartInfo = psi;

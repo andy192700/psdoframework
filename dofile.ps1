@@ -1,3 +1,7 @@
+using namespace DoFramework.Processing;
+using namespace System.Collections.Generic;
+using module ".\Sample\SampleProject\Modules\ReadPersonsFile.psm1";
+using module ".\Sample\SampleProject\Modules\Models\Person.psm1";
 #Sample do file, includes calls to existing sample project located in \Sample
 #See the documentation here: Documentation\Dofiles.md
 
@@ -30,4 +34,49 @@ Target SampleComposer {
 
 Target SampleTests {
     doing test -filter $testFilter -home "$homeDir/Sample";
+}
+
+Target SampleMock {
+    class SampleClass {
+        [string] SayHello() {
+            return [string]::Empty;
+        }
+    }
+
+    [DoFramework.Testing.ProxyResult] $mock = doing mock -type ([SampleClass]);
+
+    $mock.Proxy.MockMethod("SayHello", {
+        return "hello world"
+    });
+
+    Write-Host "Mocked instance says hello: $($mock.Instance.SayHello())";
+}
+
+Target SampleMockWithModuleReference {
+    [DoFramework.Testing.ProxyResult] $mockContext = doing mock -type ([IContext]);
+
+    [DoFramework.Testing.ProxyResult] $mock = doing mock -type ([ReadPersonsFile]) -params @($mockContext.Instance);
+
+    $mock.Proxy.MockMethod("Read", {
+        [List[Person]] $people = [List[Person]]::new();
+
+        [Person] $person = [Person]::new();
+        $person.FirstName = "Ronald";
+        $person.LastName = "Schmitt";
+        $person.Age = 57;
+
+        $people.Add($person);
+
+        return $people;
+    });
+
+    [List[Person]] $mockedPeople = $mock.Instance.Read();
+
+    Write-Host "Mocked people count: $($mockedPeople.Count)";
+
+    foreach ($person in $mockedPeople) {
+        Write-Host "String representation of the mocked person: $($person.ToString())";
+    }
+
+    Write-Host "Persons mocked $($mock.Proxy.CountCalls("Read")) times.";
 }
