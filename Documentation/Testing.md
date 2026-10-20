@@ -73,7 +73,7 @@ Should -Invoke -CommandName MyFunction -ModuleName "MyModule" -Times 1 -Paramete
 ## Mocking PowerShell classes
 As previously mentioned, Do provides additional functionality to create a mock instances of PowerShell classes, these are derivatives of the type being mocked.
 
-This section outlines how to use this functionality, feel free to read through the sample project or [automated tests](../src/DoCli/Tests/Component/Util/CreateProxyTests.ps1) for many working examples.
+This section outlines how to use this functionality, feel free to read through the sample project or [automated tests](../src/DoCli/Tests/E2E/Util/CreateMockTests.ps1) for many working examples.
 
 Consider the below classes:
 
