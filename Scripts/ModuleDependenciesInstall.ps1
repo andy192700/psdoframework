@@ -4,7 +4,7 @@ using namespace System.Collections.Generic
 
 # Required modules
 [Dictionary[string, string]] $requiredModules = [Dictionary[string, string]]::new();
-$requiredModules["Pester"] = "5.7.1";
+$requiredModules["Pester"] = "6.2.0";
 
 # Install required modules
 foreach ($moduleName in $requiredModules.Keys) {

@@ -126,18 +126,9 @@ jobs:
       run: |
         make dotnetpublish nuGetGallerySourceName="https://api.nuget.org/v3/index.json" psNuGetApiKey=${{ secrets.NUGETGALLERY_KEY }}
 
-  tag_release:
-    name: "Tag Release"
-    needs: linuxbuild
-    if: ${{ github.ref == 'refs/heads/main' && success() }}
-    runs-on: ubuntu-latest
-
-    steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
-
     - name: Create Git Tag
       id: create_tag
+      if: ${{ github.ref == 'refs/heads/main' && steps.publish_dotnet_tool.conclusion == 'success' }}
       run: |
         make gitrelease
       env:
