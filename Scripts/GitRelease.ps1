@@ -2,7 +2,7 @@ using namespace System.Text;
 using module ".\lib\VersionCalculator.psm1";
 
 [System.Version] $readmeVersion = [VersionCalculator]::GetLatestReadMe();
-[System.Version] $latestVersion = [System.Version]::Parse([VersionCalculator]::GetLatest("PSGallery"));
+[System.Version] $latestVersion = [System.Version]::Parse([VersionCalculator]::GetCurrent());
 
 [string] $version = $latestVersion.ToString();
 

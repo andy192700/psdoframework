@@ -14,7 +14,7 @@ class PesterRunner : IPesterRunner {
 
     PesterRunner() {
         <# TODO - this is debt and needs moving to an appropriate and general "global import" area. #>
-        Import-Module -Name Pester -RequiredVersion 5.7.1;
+        Import-Module -Name Pester -RequiredVersion 6.2.0;
     }
 
     <#
