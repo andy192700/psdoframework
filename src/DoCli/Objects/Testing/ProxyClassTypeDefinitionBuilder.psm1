@@ -65,9 +65,11 @@ class ProxyClassTypeDefinitionBuilder {
 
         $sb.AppendLine("return [$className]");
 
-        [Type] $type = Invoke-Expression -Command $sb.ToString();
+        $accelerators = [PowerShell].Assembly.GetType("System.Management.Automation.TypeAccelerators");
 
-        return $type;
+        $accelerators::Add($type.FullName, $type);
+
+        return [Type](Invoke-Expression -Command $sb.ToString());
     }
 
     <#
@@ -164,7 +166,7 @@ class ProxyClassTypeDefinitionBuilder {
     becomes [System.Collections.Generic.Dictionary[[System.String],[System.String]]]
     #>
     [string] CleanTypeName([string] $typeName) {
-        return $typeName -replace ', [^]]+', ([string]::Empty) -replace '`\d+', ([string]::Empty)
+        return $typeName -replace ', [^]]+', ([string]::Empty) -replace '`\d+', ([string]::Empty) -replace '^<[^>]+>\.', ([string]::Empty);
     }
 
     [List[string]] DeriveModules([Type] $type) {

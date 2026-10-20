@@ -37,22 +37,34 @@ Target SampleTests {
 }
 
 Target SampleMock {
-    class SampleClass {
-        [string] SayHello() {
+    class SomeOtherClass {
+        [string] Echo() {
             return [string]::Empty;
         }
     }
+    
+    [DoFramework.Testing.ProxyResult] $mock = doing mock -type ([SomeOtherClass]);
 
+    $mock.Proxy.MockMethod("Echo", {
+        return "hello world 12345";
+    });
+
+    Write-Host "Mocked instance echos: $($mock.Instance.Echo())";
+}
+
+Target SampleMockViaDotSource {
+    . .\dofilesampleclass.ps1;
+    
     [DoFramework.Testing.ProxyResult] $mock = doing mock -type ([SampleClass]);
 
     $mock.Proxy.MockMethod("SayHello", {
-        return "hello world"
+        return "hello world";
     });
 
     Write-Host "Mocked instance says hello: $($mock.Instance.SayHello())";
 }
 
-Target SampleMockWithModuleReference {
+Target SampleMockViaModuleReference {
     [DoFramework.Testing.ProxyResult] $mockContext = doing mock -type ([IContext]);
 
     [DoFramework.Testing.ProxyResult] $mock = doing mock -type ([ReadPersonsFile]) -params @($mockContext.Instance);
