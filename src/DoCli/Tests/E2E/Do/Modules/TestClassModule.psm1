@@ -1,3 +1,6 @@
+using namespace System.Collections.Generic;
+using module ".\TestClassModule2.psm1";
+
 Add-Type -Language CSharp -TypeDefinition "public sealed class SealedClass {}";
 
 Add-Type -TypeDefinition @"
@@ -49,5 +52,17 @@ class OverloadedMethods {
 
     [string] StringMethod([string] $input1, [int] $input2) {
         return [string]::Empty;
+    }
+}
+
+class GenericTypes {
+    [List[AnotherSampleClass]] GetSamples() {
+        return $null;
+    }
+}
+
+class ArrayTypes {
+    [AnotherSampleClass[]] GetSampleArray() {
+        return $null;
     }
 }

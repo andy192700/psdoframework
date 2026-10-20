@@ -352,7 +352,7 @@ doing exec -target MyTarget -myString "123" -myBoolOrSwitch
 Utility functions are called from within code files within a project structure, the framework provides these to enrich developer experience where necessary.
 
 ### Mock
-Creates a proxy for a given type, allowing mocking of PowerShell classes and Dotnet interfaces. To learn more see how to mock [PowerShell classes](./Testing.md#mocking-powershell-classes) and [Dotnet Interfaces](./Testing.md#mocking-dotnet-interfaces).
+Creates a proxy for a given type, which can be used outside of a doframework project if required, allowing mocking of PowerShell classes and Dotnet interfaces. To learn more see how to mock [PowerShell classes](./Testing.md#mocking-powershell-classes) and [Dotnet Interfaces](./Testing.md#mocking-dotnet-interfaces).
 
 Example calls via PowerShell:
 Parameters:

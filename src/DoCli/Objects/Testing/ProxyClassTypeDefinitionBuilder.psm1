@@ -1,12 +1,9 @@
-using namespace DoFramework.Environment;
-using namespace DoFramework.Data;
-using namespace DoFramework.Domain;
 using namespace DoFramework.Testing;
-using namespace DoFramework.Services;
 using namespace System;
-using namespace System.Text;
-using namespace System.Reflection;
 using namespace System.Collections.Generic;
+using namespace System.Management.Automation;
+using namespace System.Reflection;
+using namespace System.Text;
 
 <#
 .SYNOPSIS
@@ -20,25 +17,6 @@ importing necessary modules, generating constructors, and overriding methods.
 class ProxyClassTypeDefinitionBuilder {
     <#
     .SYNOPSIS
-    Initializes a new instance of the ProxyClassTypeDefinitionBuilder class.
-
-    .DESCRIPTION
-    Constructor for the ProxyClassTypeDefinitionBuilder class, which sets up the 
-    environment and module provider for building proxy class type definitions.
-    #>
-    [IEnvironment] $Environment;
-    [IDataCollectionProvider[ModuleDescriptor, string]] $ModuleProvider;
-
-    ProxyClassTypeDefinitionBuilder(
-        [IEnvironment] $environment,
-        [IDataCollectionProvider[ModuleDescriptor, string]] $moduleProvider
-    ) {
-        $this.Environment = $environment;
-        $this.ModuleProvider = $moduleProvider;
-    }
-
-    <#
-    .SYNOPSIS
     Builds a proxy class type definition based on the provided type and constructor arguments.
 
     .DESCRIPTION
@@ -46,14 +24,14 @@ class ProxyClassTypeDefinitionBuilder {
     necessary modules, creating constructors, and overriding methods.
     #>
     [Type] Build([Type] $type, [object[]] $constructorArgs) {
-        [MethodInfo[]] $methods = $type.GetMethods();
-
         [StringBuilder] $sb = [StringBuilder]::new();
 
-        [List[ModuleDescriptor]] $content = $this.ModuleProvider.Provide(".*");
+        [List[string]] $modules = $this.DeriveModules($type);
         
-        foreach ($descriptor in $content) {
-            $sb.AppendLine("using module $($this.Environment.ModuleDir)\$($descriptor.Path);");
+        foreach ($module in $modules) {
+            if ($module.Trim().Length -gt 0) {
+                $sb.AppendLine("using module '$($module)';");
+            }
         }
         
         [string] $className = "$($type.Name)Proxy";
@@ -67,6 +45,8 @@ class ProxyClassTypeDefinitionBuilder {
         foreach ($constructor in $constructors) {
             $this.AppendConstructor($className, $constructor, $sb);
         }
+        
+        [MethodInfo[]] $methods = $type.GetMethods();
 
         foreach ($method in $methods) {
             if ((!$method.IsStatic `
@@ -85,9 +65,11 @@ class ProxyClassTypeDefinitionBuilder {
 
         $sb.AppendLine("return [$className]");
 
-        [Type] $type = Invoke-Expression -Command $sb.ToString();
+        $accelerators = [PowerShell].Assembly.GetType("System.Management.Automation.TypeAccelerators");
 
-        return $type;
+        $accelerators::Add($type.FullName, $type);
+
+        return [Type](Invoke-Expression -Command $sb.ToString());
     }
 
     <#
@@ -184,6 +166,78 @@ class ProxyClassTypeDefinitionBuilder {
     becomes [System.Collections.Generic.Dictionary[[System.String],[System.String]]]
     #>
     [string] CleanTypeName([string] $typeName) {
-        return $typeName -replace ', [^]]+', ([string]::Empty) -replace '`\d+', ([string]::Empty)
+        return $typeName -replace ', [^]]+', ([string]::Empty) -replace '`\d+', ([string]::Empty) -replace '^<[^>]+>\.', ([string]::Empty);
     }
+
+    [List[string]] DeriveModules([Type] $type) {
+        [List[string]] $modulePaths = [List[string]]::new();
+
+        # lead type
+        $modulePaths.AddRange($this.DeriveModuleFromType($type));
+
+        # constructor param types
+        [ConstructorInfo[]] $constructors = $type.GetConstructors();
+
+        foreach ($constructor in $constructors) {
+            [ParameterInfo[]] $params = $constructor.GetParameters();
+
+            for ([int] $i = 0; $i -lt $params.Length; $i++) {     
+                $modulePaths.AddRange($this.DeriveModuleFromType($params[$i].ParameterType));
+            }
+        }
+
+        # method param types
+        
+        [MethodInfo[]] $methods = $type.GetMethods();
+
+        foreach ($method in $methods) {
+            $parameters = $method.GetParameters();
+
+            for ($i = 0; $i -lt $parameters.Length; $i++) {
+                $modulePaths.AddRange($this.DeriveModuleFromType($parameters[$i].ParameterType));
+            }
+
+            $modulePaths.AddRange($this.DeriveModuleFromType($method.ReturnType));
+        }
+
+        return [List[string]]($modulePaths | Select-Object -Unique)
+    }
+
+    [List[string]] DeriveModuleFromType([Type] $type) {
+        [List[string]] $modules = [List[string]]::new();
+
+        [DynamicClassImplementationAssemblyAttribute] $attr = $type.Module.Assembly.GetCustomAttributes($true) | Where-Object {
+            $_ -is [DynamicClassImplementationAssemblyAttribute]
+        } | Select-Object -First 1;
+
+        if ($null -ne $attr) {
+            if ($null -ne $attr.ScriptFile) {
+                [string] $moduleString = $attr.ScriptFile.ToString();
+
+                if (
+                    $moduleString.Trim().Length -gt 0 -and
+                    [System.IO.File]::Exists($moduleString) -and
+                    [System.IO.Path]::GetExtension($moduleString) -ieq ".psm1"
+                ) {
+                    $modules.Add($moduleString);
+                }
+            }
+        }
+
+        # arrays
+        if ($type.IsArray) {
+            $modules.AddRange($this.DeriveModuleFromType($type.GetElementType()));
+        }
+
+        # generics
+        if ($type.IsGenericType) {
+            [Type[]] $genericArgs = $type.GetGenericArguments();
+
+            foreach ($genericArg in $genericArgs) {
+                $modules.AddRange($this.DeriveModuleFromType($genericArg));
+            }
+        }
+
+        return $modules;
+    } 
 }
